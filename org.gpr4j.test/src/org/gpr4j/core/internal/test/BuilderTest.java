@@ -1,4 +1,4 @@
-package org.gpr4j.core.test;
+package org.gpr4j.core.internal.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,24 +7,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gpr4j.core.GprBuilder;
-import org.gpr4j.core.GprProject;
+import org.gpr4j.core.Factory;
+import org.gpr4j.core.Gpr;
 import org.gpr4j.core.Symbol;
-import org.gpr4j.core.internal.Project;
+import org.gpr4j.core.internal.ProjectUnit;
 import org.junit.Test;
 
-public class GprBuilderTest {
+public class BuilderTest {
 
-	private Project project;
-	private GprBuilder sut;
+	private ProjectUnit project;
 
 	private final String projectPath = System.getProperty("user.dir") + "/src/org/gpr4j/test/gpr";
 
 	private void createFixture() {
-		this.project = new Project(Paths.get(projectPath, "/sample_project.gpr")); // mock(IProject.class);
-		// when(this.projectMock.getPath()).thenReturn(Paths.get(projectPath,
-		// "/sample_project.gpr"));
-		this.sut = new GprBuilder(this.project);
+		this.project = new ProjectUnit(Paths.get(projectPath, "/sample_project.gpr"));
 	}
 
 	@Test
@@ -43,7 +39,7 @@ public class GprBuilderTest {
 		main.add("main.adb");
 		this.project.addAttribute("Main", Symbol.CreateStringList(main));
 
-		GprProject gpr = this.sut.build();
+		Gpr gpr = Factory.CreateGpr(this.project);
 
 		assertEquals("sample_project", gpr.getName());
 		assertEquals(projectPath, gpr.getRootDirPath().toString());

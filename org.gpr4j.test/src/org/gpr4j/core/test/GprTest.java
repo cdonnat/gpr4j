@@ -1,19 +1,19 @@
-package org.gpr4j.core.internal.test;
+package org.gpr4j.core.test;
 
 
 import static org.junit.Assert.*;
 
-import org.gpr4j.core.GprProject;
+import org.gpr4j.core.Gpr;
 import org.junit.Test;
 
-public class GprProjectTest {
+public class GprTest {
 
-	private GprProject sut;
+	private Gpr sut;
 
 	@Test
 	public void testConstructor() {
 
-		this.sut = new GprProject("First_Project", null);
+		this.sut = new Gpr("First_Project", null);
 
 		assertEquals("Project name shall be set", sut.getName(),
 				"First_Project");
@@ -25,7 +25,7 @@ public class GprProjectTest {
 
 	@Test
 	public void testToString() {
-		this.sut = new GprProject("Test",null);
+		this.sut = new Gpr("Test",null);
 
 		this.sut.setExecutable(true);
 		this.sut.addSourceDir(".");

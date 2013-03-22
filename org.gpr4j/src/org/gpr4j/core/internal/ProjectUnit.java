@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gpr4j.core.IProject;
+import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
 
 /**
@@ -12,14 +12,14 @@ import org.gpr4j.core.Symbol;
  * 
  * 
  */
-public class Project implements IProject {
+public class ProjectUnit implements IProjectUnit {
 
 	private String name;
 	private Path pathToGpr;
-	private Package selfPackage;
-	private Package currentPackage;
-	private KeyStringMap<Package> packages;
-	private KeyStringMap<Project> references;
+	private PackageUnit selfPackage;
+	private PackageUnit currentPackage;
+	private KeyStringMap<PackageUnit> packages;
+	private KeyStringMap<ProjectUnit> references;
 
 	/**
 	 * Constructors
@@ -27,14 +27,14 @@ public class Project implements IProject {
 	 * @param name
 	 *            Name of the project.
 	 */
-	public Project(Path pathToGpr) {
+	public ProjectUnit(Path pathToGpr) {
 		this.pathToGpr = pathToGpr;
 		String fileName = pathToGpr.getFileName().toString();
 		String[] tab = fileName.split("\\.");
 		this.name = tab[0].toLowerCase();
-		this.selfPackage = new Package("self");
-		this.packages = new KeyStringMap<Package>();
-		this.references = new KeyStringMap<Project>();
+		this.selfPackage = new PackageUnit("self");
+		this.packages = new KeyStringMap<PackageUnit>();
+		this.references = new KeyStringMap<ProjectUnit>();
 		this.currentPackage = this.selfPackage;
 		this.addDefaultAttribute();
 
@@ -68,8 +68,8 @@ public class Project implements IProject {
 	 * 
 	 * @return The list of reference projects.
 	 */
-	public List<IProject> getReferenceProjects() {
-		return new ArrayList<IProject>(this.references.values());
+	public List<IProjectUnit> getReferenceProjects() {
+		return new ArrayList<IProjectUnit>(this.references.values());
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class Project implements IProject {
 	 * @param reference
 	 *            Reference context to add.
 	 */
-	public void addReferenceProject(Project referenceProject) {
+	public void addReferenceProject(ProjectUnit referenceProject) {
 		this.references.put(referenceProject.getName(), referenceProject);
 	}
 
@@ -160,7 +160,7 @@ public class Project implements IProject {
 	 *            Name of the package.
 	 */
 	public void beginPackage(String packageName) {
-		Package newPackage = new Package(packageName);
+		PackageUnit newPackage = new PackageUnit(packageName);
 		this.packages.put(newPackage.getName(), newPackage);
 		this.currentPackage = newPackage;
 	}
@@ -186,7 +186,7 @@ public class Project implements IProject {
 		// TODOAssert.isLegal(this.references.contains(projectName));
 		// TODOAssert.isLegal(this.references.get(projectName).packages.contains(packageName));
 
-		Package newPackage = new Package(newPackageName,
+		PackageUnit newPackage = new PackageUnit(newPackageName,
 				this.references.get(projectName).packages.get(packageName));
 		this.packages.put(newPackageName, newPackage);
 	}

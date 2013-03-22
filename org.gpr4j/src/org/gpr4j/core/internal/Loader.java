@@ -11,7 +11,7 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.gpr4j.core.ILoader;
-import org.gpr4j.core.IProject;
+import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
@@ -20,12 +20,12 @@ public class Loader implements ILoader {
 
 	private static String GPR_EXTENSION = "gpr";
 
-	private Stack<Project> projectsToLoad;
-	private List<Project> loadedProjects;
+	private Stack<ProjectUnit> projectsToLoad;
+	private List<ProjectUnit> loadedProjects;
 
 	public Loader() {
-		this.projectsToLoad = new Stack<Project>();
-		this.loadedProjects = new ArrayList<Project>();
+		this.projectsToLoad = new Stack<ProjectUnit>();
+		this.loadedProjects = new ArrayList<ProjectUnit>();
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class Loader implements ILoader {
 	 */
 	@Override
 	public void load(Path absolutePathToGpr) throws RecognitionException {
-		Project projectToAdd = new Project(absolutePathToGpr);
+		ProjectUnit projectToAdd = new ProjectUnit(absolutePathToGpr);
 		this.projectsToLoad.push(projectToAdd);
 		this.parseGpr(this.getCurrentProject().getPath());
 		this.projectsToLoad.pop();
@@ -156,7 +156,7 @@ public class Loader implements ILoader {
 		Path projectToAddPath = evaluatePath(relativeProjectPath);
 
 		if (this.projectIsAlreadyLoaded(projectToAddPath)) {
-			Project projectToAdd = this.getProject(projectToAddPath);
+			ProjectUnit projectToAdd = this.getProject(projectToAddPath);
 			this.getCurrentProject().addReferenceProject(projectToAdd);
 		} else {
 			this.load(projectToAddPath);
@@ -167,9 +167,9 @@ public class Loader implements ILoader {
 	 * 
 	 * @return List of the loaded projects.
 	 */
-	public List<IProject> getLoadedProjects() {
-		List<IProject> loadedProjects = new ArrayList<IProject>(this.loadedProjects.size());
-		for (Project project : this.loadedProjects) {
+	public List<IProjectUnit> getLoadedProjects() {
+		List<IProjectUnit> loadedProjects = new ArrayList<IProjectUnit>(this.loadedProjects.size());
+		for (ProjectUnit project : this.loadedProjects) {
 			loadedProjects.add(project);
 		}
 		return loadedProjects;
@@ -209,7 +209,7 @@ public class Loader implements ILoader {
 	/**
 	 * @return The project in progress.
 	 */
-	public Project getCurrentProject() {
+	public ProjectUnit getCurrentProject() {
 		return this.projectsToLoad.peek();
 	}
 
@@ -222,9 +222,9 @@ public class Loader implements ILoader {
 	 * @return Project associated to given path in the list of the loaded
 	 *         project or null if not found.
 	 */
-	private Project getProject(Path pathToGpr) {
-		Project project = null;
-		for (Project loadedProject : this.loadedProjects) {
+	private ProjectUnit getProject(Path pathToGpr) {
+		ProjectUnit project = null;
+		for (ProjectUnit loadedProject : this.loadedProjects) {
 			if (loadedProject.getPath().toString().equalsIgnoreCase(pathToGpr.toString())) {
 				project = loadedProject;
 				break;

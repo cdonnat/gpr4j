@@ -9,7 +9,7 @@ import org.gpr4j.core.internal.IProperties;
  * file.
  * 
  */
-public interface IProject extends IProperties {
+public interface IProjectUnit extends IProperties {
 
 	/**
 	 * Provides the name of the project.

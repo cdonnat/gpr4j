@@ -21,5 +21,5 @@ public interface ILoader {
 	 * @return The list of last loaded project or a null list if load has not
 	 *         been called.
 	 */
-	public List<IProject> getLoadedProjects();
+	public List<IProjectUnit> getLoadedProjects();
 }

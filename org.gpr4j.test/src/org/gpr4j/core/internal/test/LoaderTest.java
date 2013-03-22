@@ -7,19 +7,20 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.core.internal.Loader;
+import org.gpr4j.core.ILoader;
+import org.gpr4j.core.Factory;
 import org.junit.Test;
 
 public class LoaderTest {
 
-	private Loader sut;
+	private ILoader sut;
 	private Path pathToProjectToLoad;
 
 	private static final String SampleFolder = System.getProperty("user.dir")
 			+ "/src/org/gpr4j/test/gpr/";
 
 	private void createFixture(String gprProjectName) {
-		sut = new Loader();
+		sut = Factory.CreateLoader();
 		pathToProjectToLoad = Paths.get(SampleFolder, gprProjectName);
 	}
 

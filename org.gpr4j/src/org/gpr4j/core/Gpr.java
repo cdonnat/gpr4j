@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GprProject {
+public class Gpr {
 
 	private String name;
 	private List<String> sourcesDir = new ArrayList<String>();
@@ -24,7 +24,7 @@ public class GprProject {
 	 * @param rootDir the absolute root directory path
 	 * @pre name is not empty.
 	 */
-	public GprProject(String name, Path rootDir) {
+	public Gpr(String name, Path rootDir) {
 		// TODO Assert.isLegal(!name.isEmpty());
 
 		this.name = name;

@@ -9,7 +9,7 @@ import org.gpr4j.core.Symbol;
  * Represents the package defined in a gpr file.
  * 
  */
-public class Package implements IProperties {
+public class PackageUnit implements IProperties {
 
 	private String name;
 	private SymbolTable variables;
@@ -21,7 +21,7 @@ public class Package implements IProperties {
 	 * @param name
 	 *            Name of the package.
 	 */
-	public Package(String name) {
+	public PackageUnit(String name) {
 		this.name = new String(name.toLowerCase());
 		this.variables = new SymbolTable();
 		this.attributes = new SymbolTable();
@@ -36,7 +36,7 @@ public class Package implements IProperties {
 	 * @param from
 	 *            Package to be copied.
 	 */
-	public Package(String name, Package from) {
+	public PackageUnit(String name, PackageUnit from) {
 		this(name);
 		this.attributes = from.attributes;
 	}

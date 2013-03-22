@@ -1,24 +1,28 @@
-package org.gpr4j.core;
+
+package org.gpr4j.core.internal;
 
 import java.nio.file.Path;
 
-public class GprBuilder {
+import org.gpr4j.core.Gpr;
+import org.gpr4j.core.IProjectUnit;
+
+public class Builder {
 
 	private final static String EXECUTABLE_DIRECTORY_ATTRIBUTE = "Exec_Dir";
 	private final static String OBJECT_DIRECTORY_ATTRIBUTE = "Object_Dir";
 	private final static String MAIN_ATTRIBUTE = "Main";
 	private final static String SOURCE_DIRECTORIES_ATTRIBUTE = "Source_Dirs";
 
-	private IProject referenceProject;
+	private IProjectUnit referenceProject;
 	private Path referencePath;
 
-	public GprBuilder(IProject project) {
+	public Builder(IProjectUnit project) {
 		this.referenceProject = project;
 		this.referencePath = project.getPath();
 	}
 
-	public GprProject build() {
-		GprProject res = new GprProject(this.referenceProject.getName(),
+	public Gpr build() {
+		Gpr res = new Gpr(this.referenceProject.getName(),
 				this.referencePath.getParent());
 		this.addSourceDirs(res);
 		this.addExecDir(res);
@@ -27,7 +31,7 @@ public class GprBuilder {
 		return res;
 	}
 
-	private void addExecutables(GprProject gprProject) {
+	private void addExecutables(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(MAIN_ATTRIBUTE)) {
 
 			gprProject.setExecutable(true);
@@ -39,14 +43,14 @@ public class GprBuilder {
 		}
 	}
 
-	private void addObjectDir(GprProject gprProject) {
+	private void addObjectDir(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(OBJECT_DIRECTORY_ATTRIBUTE)) {
 			gprProject.setObjectDir(this.referenceProject.getAttribute(OBJECT_DIRECTORY_ATTRIBUTE)
 					.getAsString());
 		}
 	}
 
-	private void addExecDir(GprProject gprProject) {
+	private void addExecDir(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(EXECUTABLE_DIRECTORY_ATTRIBUTE)) {
 			gprProject.setExecutable(true);
 			gprProject.setExecutableDir(this.referenceProject.getAttribute(
@@ -54,7 +58,7 @@ public class GprBuilder {
 		}
 	}
 
-	private void addSourceDirs(GprProject gprProject) {
+	private void addSourceDirs(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(SOURCE_DIRECTORIES_ATTRIBUTE)) {
 			for (String sourceDir : this.referenceProject
 					.getAttribute(SOURCE_DIRECTORIES_ATTRIBUTE).getAsStringList()) {
