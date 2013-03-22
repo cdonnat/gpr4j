@@ -1,12 +1,14 @@
 package org.gpr4j.core;
 
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Gpr {
+/**
+ * A Gpr provides a user friendly API to use project unit.
+ * 
+ */
+public final class Gpr {
 
 	private String name;
 	private List<String> sourcesDir = new ArrayList<String>();
@@ -21,7 +23,8 @@ public class Gpr {
 	 * 
 	 * @param name
 	 *            GPR name
-	 * @param rootDir the absolute root directory path
+	 * @param rootDir
+	 *            the absolute root directory path
 	 * @pre name is not empty.
 	 */
 	public Gpr(String name, Path rootDir) {
@@ -194,18 +197,15 @@ public class Gpr {
 	private void appendExecSourceNamesIfAny(StringBuilder stringBuilder) {
 		if (isExecutable) {
 			if (this.getExecutableDir() != null) {
-				stringBuilder.append("\tfor Exec_Dir use \""
-						+ this.getExecutableDir() + "\";\n");
+				stringBuilder.append("\tfor Exec_Dir use \"" + this.getExecutableDir() + "\";\n");
 			}
-			stringBuilder.append("\tfor Main use "
-					+ this.executableNamesAsString() + ";\n");
+			stringBuilder.append("\tfor Main use " + this.executableNamesAsString() + ";\n");
 		}
 	}
 
 	private void appendObjectDirIfDefined(StringBuilder stringBuilder) {
 		if (this.getObjectDir() != null) {
-			stringBuilder.append("\tfor Object_Dir use \""
-					+ this.getObjectDir() + "\";\n");
+			stringBuilder.append("\tfor Object_Dir use \"" + this.getObjectDir() + "\";\n");
 		}
 	}
 
@@ -214,17 +214,16 @@ public class Gpr {
 			stringBuilder.append("\tfor Source_Dirs use (");
 
 			for (int i = 0; i < this.getSourcesDir().size() - 1; i++) {
-				stringBuilder.append("\"" + this.getSourcesDir().get(i)
-						+ "\",\n");
+				stringBuilder.append("\"" + this.getSourcesDir().get(i) + "\",\n");
 			}
-			stringBuilder.append("\""
-					+ this.getSourcesDir().get(this.getSourcesDir().size() - 1)
+			stringBuilder.append("\"" + this.getSourcesDir().get(this.getSourcesDir().size() - 1)
 					+ "\");\n");
 		}
 	}
 
 	/**
 	 * Returns the path to the root directory of the project.
+	 * 
 	 * @return a path denoting the root directory
 	 */
 	public Path getRootDirPath() {

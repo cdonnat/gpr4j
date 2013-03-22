@@ -1,4 +1,3 @@
-
 package org.gpr4j.core.internal;
 
 import java.nio.file.Path;
@@ -6,6 +5,10 @@ import java.nio.file.Path;
 import org.gpr4j.core.Gpr;
 import org.gpr4j.core.IProjectUnit;
 
+/**
+ * A Builder converts a project unit to a Gpr.
+ * 
+ */
 public class Builder {
 
 	private final static String EXECUTABLE_DIRECTORY_ATTRIBUTE = "Exec_Dir";
@@ -22,8 +25,7 @@ public class Builder {
 	}
 
 	public Gpr build() {
-		Gpr res = new Gpr(this.referenceProject.getName(),
-				this.referencePath.getParent());
+		Gpr res = new Gpr(this.referenceProject.getName(), this.referencePath.getParent());
 		this.addSourceDirs(res);
 		this.addExecDir(res);
 		this.addObjectDir(res);

@@ -16,6 +16,10 @@ import org.gpr4j.core.Symbol;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
 
+/**
+ * Loads project units from a gpr file.
+ * 
+ */
 public class Loader implements ILoader {
 
 	private static String GPR_EXTENSION = "gpr";

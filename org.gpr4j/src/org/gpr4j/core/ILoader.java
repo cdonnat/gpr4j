@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 
+/**
+ * Provides an interface to load project units.
+ */
 public interface ILoader {
 
 	/**

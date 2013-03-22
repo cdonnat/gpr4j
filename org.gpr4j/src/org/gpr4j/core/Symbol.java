@@ -1,9 +1,12 @@
 package org.gpr4j.core;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Symbol corresponds to a variable or to an attribute of a project unit.
+ * 
+ */
 public class Symbol {
 
 	private static final int STRING = 1;
@@ -43,41 +46,42 @@ public class Symbol {
 	public List<String> getAsStringList() {
 		return value;
 	}
-	
+
 	private static Symbol ConcatStringLists(Symbol left, Symbol right) {
 		// TODO Assert.isLegal(!left.isAString() && !right.isAString());
-		
+
 		List<String> concatenatedList = new ArrayList<String>(left.getAsStringList());
 		concatenatedList.addAll(right.getAsStringList());
-		
+
 		return CreateStringList(concatenatedList);
 	}
-	
+
 	private static Symbol ConcatStrings(Symbol left, Symbol right) {
 		// TODO Assert.isLegal(left.isAString() && right.isAString());
-		
+
 		return CreateString(left.getAsString() + right.getAsString());
 	}
 
 	public static Symbol Concat(Symbol left, Symbol right) {
 		// TODO Assert.isLegal((left != null) && (right != null));
-		// TODO Assert.isLegal((left.isAString() && right.isAString()) || !left.isAString());
-		
+		// TODO Assert.isLegal((left.isAString() && right.isAString()) ||
+		// !left.isAString());
+
 		Symbol concatenatedSymbol;
 
 		if (left.isAString()) {
-				concatenatedSymbol = ConcatStrings(left, right);
+			concatenatedSymbol = ConcatStrings(left, right);
 		} else {
 			if (right.isAString()) {
 				List<String> concatenatedList = new ArrayList<String>(left.getAsStringList());
 				concatenatedList.add(right.getAsString());
-				
+
 				concatenatedSymbol = CreateStringList(concatenatedList);
 			} else {
 				concatenatedSymbol = ConcatStringLists(left, right);
 			}
 		}
-		
+
 		return concatenatedSymbol;
 	}
 

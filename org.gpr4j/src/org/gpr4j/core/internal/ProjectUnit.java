@@ -8,8 +8,7 @@ import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
 
 /**
- * Represents a project in a gpr file.
- * 
+ * Represents a project unit of a Gpr file.
  * 
  */
 public class ProjectUnit implements IProjectUnit {
@@ -240,31 +239,31 @@ public class ProjectUnit implements IProjectUnit {
 	}
 
 	interface IProviderDelegate {
-		abstract boolean isDefined(IProperties provider, String name);
+		abstract boolean isDefined(IUnit provider, String name);
 
-		abstract Symbol get(IProperties provider, String name);
+		abstract Symbol get(IUnit provider, String name);
 	}
 
 	class VariablesProviderDelegate implements IProviderDelegate {
 		@Override
-		public boolean isDefined(IProperties provider, String name) {
+		public boolean isDefined(IUnit provider, String name) {
 			return provider.variableIsDefined(name);
 		}
 
 		@Override
-		public Symbol get(IProperties provider, String name) {
+		public Symbol get(IUnit provider, String name) {
 			return provider.getVariable(name);
 		}
 	}
 
 	class AttributesProviderDelegate implements IProviderDelegate {
 		@Override
-		public boolean isDefined(IProperties provider, String name) {
+		public boolean isDefined(IUnit provider, String name) {
 			return provider.attributeIsDefined(name);
 		}
 
 		@Override
-		public Symbol get(IProperties provider, String name) {
+		public Symbol get(IUnit provider, String name) {
 			return provider.getAttribute(name);
 		}
 	}
@@ -279,12 +278,12 @@ public class ProjectUnit implements IProjectUnit {
 		}
 
 		if (!isDefined && this.references.contains(prefix)) {
-			IProperties referenceProvider = this.references.get(prefix);
+			IUnit referenceProvider = this.references.get(prefix);
 			isDefined = delegate.isDefined(referenceProvider, nameWithoutPrefix);
 		}
 
 		if (!isDefined && this.packages.contains(prefix)) {
-			IProperties packageProvider = this.packages.get(prefix);
+			IUnit packageProvider = this.packages.get(prefix);
 			isDefined = delegate.isDefined(packageProvider, nameWithoutPrefix);
 		}
 		return isDefined;
@@ -298,10 +297,10 @@ public class ProjectUnit implements IProjectUnit {
 		} else if (delegate.isDefined(this.selfPackage, symbolName)) {
 			res = delegate.get(this.selfPackage, symbolName);
 		} else if (this.references.contains(GetPrefix(symbolName))) {
-			IProperties referenceProvider = this.references.get(GetPrefix(symbolName));
+			IUnit referenceProvider = this.references.get(GetPrefix(symbolName));
 			res = delegate.get(referenceProvider, GetNameWithoutPrefix(symbolName));
 		} else {
-			IProperties packageProvider = this.packages.get(GetPrefix(symbolName));
+			IUnit packageProvider = this.packages.get(GetPrefix(symbolName));
 			res = delegate.get(packageProvider, GetNameWithoutPrefix(symbolName));
 		}
 		return res;

@@ -2,7 +2,11 @@ package org.gpr4j.core.internal;
 
 import org.gpr4j.core.Symbol;
 
-public interface IProperties {
+/**
+ * Provides unit services. An unit can be a project or a package.
+ * 
+ */
+public interface IUnit {
 
 	public abstract boolean variableIsDefined(String name);
 

@@ -2,10 +2,8 @@ package org.gpr4j.core.internal;
 
 import org.gpr4j.core.Symbol;
 
-
-
 /**
- * Symbol of a context.
+ * Symbol of a unit.
  * 
  * 
  */

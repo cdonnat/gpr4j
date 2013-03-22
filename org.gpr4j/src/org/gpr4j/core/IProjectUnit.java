@@ -2,14 +2,13 @@ package org.gpr4j.core;
 
 import java.nio.file.Path;
 
-import org.gpr4j.core.internal.IProperties;
+import org.gpr4j.core.internal.IUnit;
 
 /**
- * A IProject is the representation of a basic representation of a Gpr project
- * file.
+ * A project unit is a basic representation of a Gpr project file.
  * 
  */
-public interface IProjectUnit extends IProperties {
+public interface IProjectUnit extends IUnit {
 
 	/**
 	 * Provides the name of the project.

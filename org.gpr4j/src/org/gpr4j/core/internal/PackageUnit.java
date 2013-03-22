@@ -2,14 +2,11 @@ package org.gpr4j.core.internal;
 
 import org.gpr4j.core.Symbol;
 
-
-
-
 /**
- * Represents the package defined in a gpr file.
+ * Represents the package unit contained in project unit.
  * 
  */
-public class PackageUnit implements IProperties {
+public class PackageUnit implements IUnit {
 
 	private String name;
 	private SymbolTable variables;
