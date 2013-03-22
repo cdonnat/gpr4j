@@ -1,4 +1,4 @@
-package org.gpr4j.api;
+package org.gpr4j.core;
 
 
 import java.util.ArrayList;

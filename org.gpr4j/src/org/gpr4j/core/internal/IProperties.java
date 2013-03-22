@@ -1,11 +1,9 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
 
+import org.gpr4j.core.Symbol;
 
+public interface IProperties {
 
-public interface IPropertiesProvider {
-	
-	public abstract String getName();
-	
 	public abstract boolean variableIsDefined(String name);
 
 	public abstract boolean attributeIsDefined(String name);

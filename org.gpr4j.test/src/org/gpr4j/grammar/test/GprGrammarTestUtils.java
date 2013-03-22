@@ -1,4 +1,4 @@
-package org.gpr4j.api.test;
+package org.gpr4j.grammar.test;
 
 
 
@@ -8,14 +8,14 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.api.GprLoader;
-import org.gpr4j.api.Symbol;
+import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.Loader;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
 
 public class GprGrammarTestUtils {
 
-	public static GprParser CreateParser(GprLexer lexer, GprLoader loader)
+	public static GprParser CreateParser(GprLexer lexer, Loader loader)
 			throws IOException {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		GprParser parser = new GprParser(loader, tokens);

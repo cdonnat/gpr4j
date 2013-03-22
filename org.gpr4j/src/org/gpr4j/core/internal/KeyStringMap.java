@@ -1,4 +1,4 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
  *  
  * @param <T> Type of map value.
  */
-public class KeyStringMap<T> {
+final class KeyStringMap<T> {
 
 	private Map<String, T> map;
 

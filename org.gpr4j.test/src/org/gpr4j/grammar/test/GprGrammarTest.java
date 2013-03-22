@@ -1,4 +1,4 @@
-package org.gpr4j.api.test;
+package org.gpr4j.grammar.test;
 
 
 import static org.junit.Assert.assertFalse;
@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gpr4j.api.Symbol;
+import org.gpr4j.core.Symbol;
 import org.junit.Test;
 
 public class GprGrammarTest {

@@ -1,4 +1,6 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
+
+import org.gpr4j.core.Symbol;
 
 
 
@@ -7,7 +9,7 @@ package org.gpr4j.api;
  * Represents the package defined in a gpr file.
  * 
  */
-public class Package implements IPropertiesProvider {
+public class Package implements IProperties {
 
 	private String name;
 	private SymbolTable variables;

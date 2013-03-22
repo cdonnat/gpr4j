@@ -1,4 +1,4 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -10,17 +10,20 @@ import java.util.Stack;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.gpr4j.core.ILoader;
+import org.gpr4j.core.IProject;
+import org.gpr4j.core.Symbol;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
 
-public class GprLoader {
+public class Loader implements ILoader {
 
 	private static String GPR_EXTENSION = "gpr";
 
 	private Stack<Project> projectsToLoad;
 	private List<Project> loadedProjects;
 
-	public GprLoader() {
+	public Loader() {
 		this.projectsToLoad = new Stack<Project>();
 		this.loadedProjects = new ArrayList<Project>();
 	}
@@ -130,8 +133,9 @@ public class GprLoader {
 	 *            Path to a Gpr file.
 	 * @throws RecognitionException
 	 */
-	public void load(Path pathToGpr) throws RecognitionException {
-		Project projectToAdd = new Project(pathToGpr);
+	@Override
+	public void load(Path absolutePathToGpr) throws RecognitionException {
+		Project projectToAdd = new Project(absolutePathToGpr);
 		this.projectsToLoad.push(projectToAdd);
 		this.parseGpr(this.getCurrentProject().getPath());
 		this.projectsToLoad.pop();
@@ -163,8 +167,12 @@ public class GprLoader {
 	 * 
 	 * @return List of the loaded projects.
 	 */
-	public List<Project> getLoadedProjects() {
-		return this.loadedProjects;
+	public List<IProject> getLoadedProjects() {
+		List<IProject> loadedProjects = new ArrayList<IProject>(this.loadedProjects.size());
+		for (Project project : this.loadedProjects) {
+			loadedProjects.add(project);
+		}
+		return loadedProjects;
 	}
 
 	/**

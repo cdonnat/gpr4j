@@ -1,4 +1,6 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
+
+import org.gpr4j.core.Symbol;
 
 public interface ISymbolProvider {
 

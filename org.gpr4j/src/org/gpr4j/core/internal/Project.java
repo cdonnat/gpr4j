@@ -1,15 +1,18 @@
-package org.gpr4j.api;
+package org.gpr4j.core.internal;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.gpr4j.core.IProject;
+import org.gpr4j.core.Symbol;
 
 /**
  * Represents a project in a gpr file.
  * 
  * 
  */
-public class Project implements IPropertiesProvider {
+public class Project implements IProject {
 
 	private String name;
 	private Path pathToGpr;
@@ -42,8 +45,7 @@ public class Project implements IPropertiesProvider {
 	 */
 	private void addDefaultAttribute() {
 		this.addAttribute("name", Symbol.CreateString(this.name));
-		this.addAttribute("project_dir",
-				Symbol.CreateString(this.pathToGpr.getParent().toString()));
+		this.addAttribute("project_dir", Symbol.CreateString(this.pathToGpr.getParent().toString()));
 	}
 
 	// Queries:
@@ -66,8 +68,8 @@ public class Project implements IPropertiesProvider {
 	 * 
 	 * @return The list of reference projects.
 	 */
-	public List<IPropertiesProvider> getReferenceProjects() {
-		return new ArrayList<IPropertiesProvider>(this.references.values());
+	public List<IProject> getReferenceProjects() {
+		return new ArrayList<IProject>(this.references.values());
 	}
 
 	/**
@@ -238,31 +240,31 @@ public class Project implements IPropertiesProvider {
 	}
 
 	interface IProviderDelegate {
-		abstract boolean isDefined(IPropertiesProvider provider, String name);
+		abstract boolean isDefined(IProperties provider, String name);
 
-		abstract Symbol get(IPropertiesProvider provider, String name);
+		abstract Symbol get(IProperties provider, String name);
 	}
 
 	class VariablesProviderDelegate implements IProviderDelegate {
 		@Override
-		public boolean isDefined(IPropertiesProvider provider, String name) {
+		public boolean isDefined(IProperties provider, String name) {
 			return provider.variableIsDefined(name);
 		}
 
 		@Override
-		public Symbol get(IPropertiesProvider provider, String name) {
+		public Symbol get(IProperties provider, String name) {
 			return provider.getVariable(name);
 		}
 	}
 
 	class AttributesProviderDelegate implements IProviderDelegate {
 		@Override
-		public boolean isDefined(IPropertiesProvider provider, String name) {
+		public boolean isDefined(IProperties provider, String name) {
 			return provider.attributeIsDefined(name);
 		}
 
 		@Override
-		public Symbol get(IPropertiesProvider provider, String name) {
+		public Symbol get(IProperties provider, String name) {
 			return provider.getAttribute(name);
 		}
 	}
@@ -277,12 +279,12 @@ public class Project implements IPropertiesProvider {
 		}
 
 		if (!isDefined && this.references.contains(prefix)) {
-			IPropertiesProvider referenceProvider = this.references.get(prefix);
+			IProperties referenceProvider = this.references.get(prefix);
 			isDefined = delegate.isDefined(referenceProvider, nameWithoutPrefix);
 		}
 
 		if (!isDefined && this.packages.contains(prefix)) {
-			IPropertiesProvider packageProvider = this.packages.get(prefix);
+			IProperties packageProvider = this.packages.get(prefix);
 			isDefined = delegate.isDefined(packageProvider, nameWithoutPrefix);
 		}
 		return isDefined;
@@ -296,10 +298,10 @@ public class Project implements IPropertiesProvider {
 		} else if (delegate.isDefined(this.selfPackage, symbolName)) {
 			res = delegate.get(this.selfPackage, symbolName);
 		} else if (this.references.contains(GetPrefix(symbolName))) {
-			IPropertiesProvider referenceProvider = this.references.get(GetPrefix(symbolName));
+			IProperties referenceProvider = this.references.get(GetPrefix(symbolName));
 			res = delegate.get(referenceProvider, GetNameWithoutPrefix(symbolName));
 		} else {
-			IPropertiesProvider packageProvider = this.packages.get(GetPrefix(symbolName));
+			IProperties packageProvider = this.packages.get(GetPrefix(symbolName));
 			res = delegate.get(packageProvider, GetNameWithoutPrefix(symbolName));
 		}
 		return res;

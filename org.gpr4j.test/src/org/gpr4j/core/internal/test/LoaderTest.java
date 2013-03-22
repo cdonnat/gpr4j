@@ -1,4 +1,4 @@
-package org.gpr4j.api.test;
+package org.gpr4j.core.internal.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,19 +7,19 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.api.GprLoader;
+import org.gpr4j.core.internal.Loader;
 import org.junit.Test;
 
-public class GprLoaderTest {
+public class LoaderTest {
 
-	private GprLoader sut;
+	private Loader sut;
 	private Path pathToProjectToLoad;
 
 	private static final String SampleFolder = System.getProperty("user.dir")
 			+ "/src/org/gpr4j/test/gpr/";
 
 	private void createFixture(String gprProjectName) {
-		sut = new GprLoader();
+		sut = new Loader();
 		pathToProjectToLoad = Paths.get(SampleFolder, gprProjectName);
 	}
 
@@ -59,9 +59,6 @@ public class GprLoaderTest {
 				"-gnaty", "-gnatQ" });
 		checkVariable("sample_project_included_compiler_switches", new String[] { "-gnatwua",
 				"-gnaty", "-gnatQ" });
-
-		assertEquals(this.sut.getLoadedProjects().get(0).getReferenceProjects().size(), 1);
-
 	}
 
 	@Test

@@ -1,10 +1,11 @@
-// $ANTLR 3.4 /Users/Charles/Documents/workspace/gpr4j/org.gpr4j/src/org/gpr4j/grammar/Gpr.g 2013-03-21 21:43:33
+// $ANTLR 3.4 /Users/Charles/Documents/workspace/gpr4j/org.gpr4j/src/org/gpr4j/grammar/Gpr.g 2013-03-22 01:16:17
 
 package org.gpr4j.grammar;
 
 import java.util.ArrayList;
-import org.gpr4j.api.GprLoader;
-import org.gpr4j.api.Symbol;
+
+import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.Loader;
 
 
 import org.antlr.runtime.*;
@@ -102,7 +103,7 @@ public class GprParser extends Parser {
     public String getGrammarFileName() { return "/Users/Charles/Documents/workspace/gpr4j/org.gpr4j/src/org/gpr4j/grammar/Gpr.g"; }
 
 
-     private GprLoader gprLoader = new GprLoader();
+     private Loader gprLoader = new Loader();
       private List<RecognitionException> exceptions = new ArrayList<RecognitionException>();
      
         public List<RecognitionException> getExceptions() {
@@ -114,7 +115,7 @@ public class GprParser extends Parser {
             exceptions.add(e);
         }
      
-     public GprParser(GprLoader gprLoader, TokenStream input) {
+     public GprParser(Loader gprLoader, TokenStream input) {
             this(input, new RecognizerSharedState());
             this.gprLoader = gprLoader;
         }

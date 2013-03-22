@@ -1,4 +1,4 @@
-package org.gpr4j.api;
+package org.gpr4j.core;
 
 import java.nio.file.Path;
 
@@ -9,12 +9,12 @@ public class GprBuilder {
 	private final static String MAIN_ATTRIBUTE = "Main";
 	private final static String SOURCE_DIRECTORIES_ATTRIBUTE = "Source_Dirs";
 
-	private IPropertiesProvider referenceProject;
+	private IProject referenceProject;
 	private Path referencePath;
 
-	public GprBuilder(IPropertiesProvider project, Path gprFilePath) {
+	public GprBuilder(IProject project) {
 		this.referenceProject = project;
-		this.referencePath = gprFilePath;
+		this.referencePath = project.getPath();
 	}
 
 	public GprProject build() {

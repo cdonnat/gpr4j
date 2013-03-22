@@ -1,9 +1,9 @@
-package org.gpr4j.api.test;
+package org.gpr4j.core.internal.test;
 
 
 import static org.junit.Assert.*;
 
-import org.gpr4j.api.GprProject;
+import org.gpr4j.core.GprProject;
 import org.junit.Test;
 
 public class GprProjectTest {
