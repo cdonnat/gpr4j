@@ -3,6 +3,8 @@ package org.gpr4j.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 /**
  * A Symbol corresponds to a variable or to an attribute of a project unit.
  * 
@@ -39,7 +41,7 @@ public class Symbol {
 	}
 
 	public String getAsString() {
-		// TODO Assert.isLegal(isAString());
+		Preconditions.checkArgument(isAString());
 		return value.get(0);
 	}
 
@@ -48,7 +50,7 @@ public class Symbol {
 	}
 
 	private static Symbol ConcatStringLists(Symbol left, Symbol right) {
-		// TODO Assert.isLegal(!left.isAString() && !right.isAString());
+		Preconditions.checkArgument(!left.isAString() && !right.isAString());
 
 		List<String> concatenatedList = new ArrayList<String>(left.getAsStringList());
 		concatenatedList.addAll(right.getAsStringList());
@@ -57,15 +59,14 @@ public class Symbol {
 	}
 
 	private static Symbol ConcatStrings(Symbol left, Symbol right) {
-		// TODO Assert.isLegal(left.isAString() && right.isAString());
+		Preconditions.checkArgument(left.isAString() && right.isAString());
 
 		return CreateString(left.getAsString() + right.getAsString());
 	}
 
 	public static Symbol Concat(Symbol left, Symbol right) {
-		// TODO Assert.isLegal((left != null) && (right != null));
-		// TODO Assert.isLegal((left.isAString() && right.isAString()) ||
-		// !left.isAString());
+		Preconditions.checkArgument((left != null) && (right != null));
+		Preconditions.checkArgument((left.isAString() && right.isAString()) || !left.isAString());
 
 		Symbol concatenatedSymbol;
 

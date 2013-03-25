@@ -51,7 +51,6 @@ public class SymbolTable implements ISymbolProvider {
 	 */
 	@Override
 	public Symbol get(String name) {
-		// TODO Assert.isLegal(this.isDefined(name));
 		return this.properties.get(FormatName(name));
 	}
 

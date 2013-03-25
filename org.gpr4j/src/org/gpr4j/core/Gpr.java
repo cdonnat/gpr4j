@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 /**
  * A Gpr provides a user friendly API to use project unit.
  * 
@@ -28,7 +30,7 @@ public final class Gpr {
 	 * @pre name is not empty.
 	 */
 	public Gpr(String name, Path rootDir) {
-		// TODO Assert.isLegal(!name.isEmpty());
+		Preconditions.checkArgument(!name.isEmpty());
 
 		this.name = name;
 		this.rootDirPath = rootDir;
@@ -88,7 +90,7 @@ public final class Gpr {
 	 * @param execName
 	 */
 	public void addExecutableName(String execName) {
-		// TODO Assert.isLegal(this.isExecutable());
+		Preconditions.checkArgument(this.isExecutable());
 
 		this.execSourceNames.add(execName);
 	}
@@ -100,7 +102,7 @@ public final class Gpr {
 	 * @return The executable directory
 	 */
 	public String getExecutableDir() {
-		// TODO Assert.isLegal(this.isExecutable());
+		Preconditions.checkArgument(this.isExecutable());
 
 		return execDir;
 	}
@@ -120,7 +122,7 @@ public final class Gpr {
 	 * @pre GPR is an executable project.
 	 */
 	public void setExecutableDir(String execDir) {
-		// TODO Assert.isLegal(this.isExecutable());
+		Preconditions.checkState(this.isExecutable());
 
 		this.execDir = execDir;
 	}
@@ -153,7 +155,7 @@ public final class Gpr {
 	 *         the form ("exe1", "exe2",...)
 	 */
 	private String executableNamesAsString() {
-		// TODO Assert.isLegal(this.isExecutable());
+		Preconditions.checkArgument(this.isExecutable());
 
 		String listOfExecutablesAsString = "(";
 

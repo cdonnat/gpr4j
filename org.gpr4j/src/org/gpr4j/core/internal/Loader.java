@@ -1,6 +1,7 @@
 package org.gpr4j.core.internal;
 
 import java.io.IOException;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class Loader implements ILoader {
 
 	private Stack<ProjectUnit> projectsToLoad;
 	private List<ProjectUnit> loadedProjects;
+
+	public boolean test () { return false; }
 
 	public Loader() {
 		this.projectsToLoad = new Stack<ProjectUnit>();
@@ -106,7 +109,6 @@ public class Loader implements ILoader {
 			GprParser parser = new GprParser(this, new CommonTokenStream(lexer));
 			parser.project();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

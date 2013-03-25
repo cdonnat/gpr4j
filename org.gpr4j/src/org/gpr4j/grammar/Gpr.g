@@ -4,8 +4,8 @@ grammar Gpr;
 package org.gpr4j.grammar;
 
 import java.util.ArrayList;
-import org.gpr4j.api.GprLoader;
-import org.gpr4j.api.Symbol;
+import org.gpr4j.core.internal.Loader;
+import org.gpr4j.core.Symbol;
 }
 
 @lexer::header {
@@ -27,7 +27,7 @@ package org.gpr4j.grammar;
 } 
 
 @parser::members {
- private GprLoader gprLoader = new GprLoader();
+ private Loader gprLoader = new Loader();
   private List<RecognitionException> exceptions = new ArrayList<RecognitionException>();
  
     public List<RecognitionException> getExceptions() {
@@ -39,7 +39,7 @@ package org.gpr4j.grammar;
         exceptions.add(e);
     }
  
- public GprParser(GprLoader gprLoader, TokenStream input) {
+ public GprParser(Loader gprLoader, TokenStream input) {
         this(input, new RecognizerSharedState());
         this.gprLoader = gprLoader;
     }

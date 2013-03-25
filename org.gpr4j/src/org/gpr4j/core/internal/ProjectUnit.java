@@ -7,6 +7,8 @@ import java.util.List;
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Represents a project unit of a Gpr file.
  * 
@@ -99,7 +101,7 @@ public class ProjectUnit implements IProjectUnit {
 	 * 
 	 */
 	public Symbol getVariable(String varName) {
-		// TODO Assert.isLegal(this.variableIsDefined(varName));
+		Preconditions.checkArgument(this.variableIsDefined(varName));
 		return this.get(varName, new VariablesProviderDelegate());
 	}
 
@@ -110,7 +112,7 @@ public class ProjectUnit implements IProjectUnit {
 	 * @return Term corresponding to the name of the attribute.
 	 */
 	public Symbol getAttribute(String attributeName) {
-		// TODO Assert.isLegal(this.attributeIsDefined(attributeName));
+		Preconditions.checkArgument(this.attributeIsDefined(attributeName));
 		return this.get(FormatAttribute(attributeName), new AttributesProviderDelegate());
 	}
 
@@ -233,7 +235,7 @@ public class ProjectUnit implements IProjectUnit {
 	 * @return The full name without the prefix.
 	 */
 	private static String GetNameWithoutPrefix(String fullName) {
-		// TODO Assert.isLegal(!GetPrefix(fullName).isEmpty());
+		Preconditions.checkArgument(!GetPrefix(fullName).isEmpty());
 		String[] fullNameAsList = fullName.split("\\.", 2);
 		return Join(fullNameAsList, 1, fullNameAsList.length - 1);
 	}

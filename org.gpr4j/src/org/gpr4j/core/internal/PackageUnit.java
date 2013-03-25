@@ -2,6 +2,8 @@ package org.gpr4j.core.internal;
 
 import org.gpr4j.core.Symbol;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Represents the package unit contained in project unit.
  * 
@@ -76,7 +78,7 @@ public class PackageUnit implements IUnit {
 	 */
 	@Override
 	public Symbol getVariable(String name) {
-		// TODO Assert.isLegal(this.variableIsDefined(name));
+		Preconditions.checkArgument(this.variableIsDefined(name));
 		return this.variables.get(name);
 	}
 
@@ -88,7 +90,7 @@ public class PackageUnit implements IUnit {
 	 */
 	@Override
 	public Symbol getAttribute(String name) {
-		// TODO Assert.isLegal(this.attributeIsDefined(name));
+		Preconditions.checkArgument(this.attributeIsDefined(name));
 		return this.attributes.get(name);
 	}
 
