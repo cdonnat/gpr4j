@@ -1,2 +1,5 @@
 bin
+.DS_Store
+org.gpr4j/src/org/gpr4j/grammar/GprLexer.java
 org.gpr4j/src/org/gpr4j/grammar/GprParser.java
+org.gpr4j.test/.settings/org.eclipse.jdt.apt.core.prefs
