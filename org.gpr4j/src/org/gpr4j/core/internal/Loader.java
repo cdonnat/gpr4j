@@ -122,7 +122,7 @@ public class Loader implements ILoader {
 	 */
 	private Path evaluatePath(String relativeProjectPath) {
 		Path referencePath = this.getCurrentProject().getPath().getParent();
-		Path path = Paths.get(referencePath.toString(), relativeProjectPath);
+		Path path = Paths.get(referencePath.toString(), relativeProjectPath).normalize();
 		boolean hasExtension = path.getFileName().toString().split("\\.").length == 2;
 
 		if (!hasExtension) {
