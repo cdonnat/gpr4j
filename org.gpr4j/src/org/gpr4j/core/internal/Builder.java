@@ -40,7 +40,7 @@ public class Builder {
 
 			for (String execName : this.referenceProject.getAttribute(MAIN_ATTRIBUTE)
 					.getAsStringList()) {
-				gprProject.addExecutableName(execName);
+				gprProject.addSourceExecutableName(execName);
 			}
 		}
 	}

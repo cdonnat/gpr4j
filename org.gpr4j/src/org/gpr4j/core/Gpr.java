@@ -89,8 +89,8 @@ public final class Gpr {
 	 * @pre GPR is an executable project.
 	 * @param execName
 	 */
-	public void addExecutableName(String execName) {
-		Preconditions.checkArgument(this.isExecutable());
+	public void addSourceExecutableName(String execName) {
+		Preconditions.checkState(this.isExecutable());
 
 		this.execSourceNames.add(execName);
 	}

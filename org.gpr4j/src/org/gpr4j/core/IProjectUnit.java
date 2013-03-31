@@ -1,6 +1,7 @@
 package org.gpr4j.core;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.gpr4j.core.internal.IUnit;
 
@@ -63,4 +64,10 @@ public interface IProjectUnit extends IUnit {
 	 * @return Symbol corresponding to the given variable.
 	 */
 	public abstract Symbol getAttribute(String name);
+
+	/**
+	 * 
+	 * @return The list of reference projects.
+	 */
+	public abstract List<IProjectUnit> getReferenceProjects();
 }
