@@ -98,10 +98,25 @@ public class LoaderTest {
 
 		this.exercize();
 
-		this.checkType("mode_type", new String[] { "debug", "release" });
+		this.checkType("mode_type", new String[] { "debug", "release" });		
+	}
+	
+	@Test
+	public void testExternalVarialbe() {
+		this.createFixture("sample_project.gpr");
+
+		this.exercize();
+
 		this.checkVariable("mode", "debug");
-		this.checkExternalVariable("mode", new String[] { "debug", "release" });
-		this.checkExternalVariable("inc_mode", new String[] { "first", "second" });
+		this.checkExternalVariable("mode", "debug", new String[] { "debug", "release" });
+		this.checkExternalVariable("inc_mode", "first", new String[] { "first", "second" });
+			
+		this.sut.setExternalVariable ("mode", "release");
+		this.sut.setExternalVariable("inc_mode", "second");
+		this.exercize();
+		this.checkVariable("mode", "release");
+		this.checkVariable("mode_included", "second");
+
 	}
 
 	private void checkNbOfLoadedProjects(int expectedNumberOfLoadedProject) {
@@ -144,18 +159,19 @@ public class LoaderTest {
 		}
 	}
 
-	private void checkExternalVariable(String extName, String[] expectedValues) {
-		
+	private void checkExternalVariable(String name, String defaultValue, String[] expectedValues) {
+
 		ExternalVariable computed = null;
-		
+
 		for (ExternalVariable tmp : sut.getExternalVariables()) {
-			if (tmp.getName().equals(extName)) {
+			if (tmp.getName().equals(name)) {
 				computed = tmp;
 				break;
 			}
 		}
 
-		assertEquals("Variable name", extName, computed.getName());
+		assertEquals("Variable name", name, computed.getName());
+		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Attribute n?" + i, expectedValues[i], computed.getValues().get(i));
 		}

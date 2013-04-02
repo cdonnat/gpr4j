@@ -224,13 +224,15 @@ attribute_designator returns [String result]
     ('.' package_name = simple_name {result += "." + $package_name.text;})? 
   ;
  
-external_value returns [Symbol result] //TODO
+external_value returns [Symbol result] 
   : 
   EXTERNAL
   '(' 
-  external_name = STRING_LITERAL {gprLoader.addExternalVariable($external_name.text);}
-  (',' defaultValue = STRING_LITERAL { $result = Symbol.CreateString($defaultValue.text);})? 
+  external_name = STRING_LITERAL
+  (',' defaultValue = STRING_LITERAL)? 
   ')'
+   {gprLoader.addExternalVariable($external_name.text, $defaultValue.text);}
+   { $result = gprLoader.getExternalVariable($external_name.text);}
   ; 
 
 variable_declaration 

@@ -27,7 +27,8 @@ public class Loader implements ILoader {
 
 	private Stack<ProjectUnit> projectsToLoad;
 	private List<ProjectUnit> loadedProjects;
-	private List<ExternalVariable> externalVariables;
+	private KeyStringMap<ExternalVariable> externalVariables;
+	private SymbolTable externalVariablesSet;
 	private String currentType;
 
 	public boolean test() {
@@ -37,7 +38,8 @@ public class Loader implements ILoader {
 	public Loader() {
 		this.projectsToLoad = new Stack<ProjectUnit>();
 		this.loadedProjects = new ArrayList<ProjectUnit>();
-		this.externalVariables = new ArrayList<ExternalVariable>();
+		this.externalVariables = new KeyStringMap<ExternalVariable>();
+		this.externalVariablesSet = new SymbolTable();
 	}
 
 	/**
@@ -189,7 +191,7 @@ public class Loader implements ILoader {
 
 	@Override
 	public List<ExternalVariable> getExternalVariables() {
-		return externalVariables;
+		return new ArrayList<ExternalVariable>(externalVariables.values());
 	}
 
 	/**
@@ -288,9 +290,29 @@ public class Loader implements ILoader {
 	 * @param name
 	 *            Name of the external variable.
 	 */
-	public void addExternalVariable(String name) {
-		this.externalVariables.add(new ExternalVariable(name, this.getCurrentProject()
-				.getType(this.currentType).getAsStringList()));
+	public void addExternalVariable(String name, String defaultValue) {
+		List<String> typeValues = this.getCurrentProject().getType(this.currentType)
+				.getAsStringList();
+		this.externalVariables.put(StringUtilities.RemoveQuotes(name), new ExternalVariable(name,
+				defaultValue, typeValues));
 	}
 
+	@Override
+	public void setExternalVariable(String varName, String value) {
+		this.externalVariablesSet.add(varName, Symbol.CreateString(value));
+	}
+
+	public Symbol getExternalVariable(String varName) {
+		final String varNameWithoutQuotes = StringUtilities.RemoveQuotes(varName);
+		Symbol res = null;
+
+		if (this.externalVariablesSet.isDefined(varNameWithoutQuotes)) {
+			res = this.externalVariablesSet.get(varNameWithoutQuotes);
+		} else {
+			res = Symbol.CreateString(this.externalVariables.get(varNameWithoutQuotes)
+					.getDefaultValue());
+		}
+
+		return res;
+	}
 }

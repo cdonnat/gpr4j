@@ -19,6 +19,16 @@ public interface ILoader {
 	public void load(Path absolutePathToGpr) throws RecognitionException;
 
 	/**
+	 * Set an external variable value.
+	 * 
+	 * @param varName
+	 *            Name of the external variable to set.
+	 * @param value
+	 *            Value to set.
+	 */
+	public void setExternalVariable(String varName, String value);
+
+	/**
 	 * Provides the list of loaded projects.
 	 * 
 	 * @return The list of last loaded project or a null list if load has not
