@@ -5,6 +5,8 @@ obj := "obj";
 for Exec_Dir use "exe";
 for Object_Dir use obj;
 
+type Included_Mode_Type  is ("first", "second");
+
 package Compiler is
     Warnings := ("-gnatwua", "-gnaty", "-gnatQ");
     for Switches ("Ada") use warnings;  

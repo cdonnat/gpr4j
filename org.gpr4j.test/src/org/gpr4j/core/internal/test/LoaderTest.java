@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.core.ILoader;
+import org.gpr4j.core.ExternalVariable;
 import org.gpr4j.core.Factory;
+import org.gpr4j.core.ILoader;
 import org.junit.Test;
 
 public class LoaderTest {
@@ -91,6 +92,18 @@ public class LoaderTest {
 		this.checkAttribute("Ide'Ui", "Qt");
 	}
 
+	@Test
+	public void testTypes() {
+		this.createFixture("sample_project.gpr");
+
+		this.exercize();
+
+		this.checkType("mode_type", new String[] { "debug", "release" });
+		this.checkVariable("mode", "debug");
+		this.checkExternalVariable("mode", new String[] { "debug", "release" });
+		this.checkExternalVariable("inc_mode", new String[] { "first", "second" });
+	}
+
 	private void checkNbOfLoadedProjects(int expectedNumberOfLoadedProject) {
 		assertEquals("Number of loaded projects", expectedNumberOfLoadedProject, sut
 				.getLoadedProjects().size());
@@ -121,6 +134,30 @@ public class LoaderTest {
 		assertEquals("Attribute size", expectedValues.length, computed.size());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Attribute n?" + i, expectedValues[i], computed.get(i));
+		}
+	}
+
+	private void checkType(String typeName, String[] expectedValues) {
+		List<String> computed = sut.getLoadedProjects().get(0).getType(typeName).getAsStringList();
+		for (int i = 0; i < expectedValues.length; i++) {
+			assertEquals("Attribute n?" + i, expectedValues[i], computed.get(i));
+		}
+	}
+
+	private void checkExternalVariable(String extName, String[] expectedValues) {
+		
+		ExternalVariable computed = null;
+		
+		for (ExternalVariable tmp : sut.getExternalVariables()) {
+			if (tmp.getName().equals(extName)) {
+				computed = tmp;
+				break;
+			}
+		}
+
+		assertEquals("Variable name", extName, computed.getName());
+		for (int i = 0; i < expectedValues.length; i++) {
+			assertEquals("Attribute n?" + i, expectedValues[i], computed.getValues().get(i));
 		}
 	}
 }

@@ -13,6 +13,7 @@ public class PackageUnit implements IUnit {
 	private String name;
 	private SymbolTable variables;
 	private SymbolTable attributes;
+	private SymbolTable types;
 
 	/**
 	 * Constructors
@@ -24,6 +25,7 @@ public class PackageUnit implements IUnit {
 		this.name = new String(name.toLowerCase());
 		this.variables = new SymbolTable();
 		this.attributes = new SymbolTable();
+		this.types = new SymbolTable();
 	}
 
 	/**
@@ -69,6 +71,11 @@ public class PackageUnit implements IUnit {
 		return this.attributes.isDefined(name);
 	}
 
+	@Override
+	public boolean typeIsDefined(String name) {
+		return this.types.isDefined(name);
+	}
+
 	/**
 	 * @pre varName is defined in the context.
 	 * @param varName
@@ -94,6 +101,12 @@ public class PackageUnit implements IUnit {
 		return this.attributes.get(name);
 	}
 
+	@Override
+	public Symbol getType(String name) {
+		Preconditions.checkArgument(this.types.isDefined(name));
+		return this.types.get(name);
+	}
+
 	/**
 	 * Add a variable to the package.
 	 * 
@@ -116,5 +129,18 @@ public class PackageUnit implements IUnit {
 	 */
 	public void addAttribute(String attributeName, Symbol attributeValue) {
 		this.attributes.add(attributeName, attributeValue);
+	}
+
+	/**
+	 * Add a type to the package.
+	 * 
+	 * @param typeName
+	 *            Name of the type to add.
+	 * @param typeValues
+	 *            Values of the type to add.
+	 */
+	public void addType(String typeName, Symbol typeValues) {
+		Preconditions.checkArgument(!typeValues.isAString());
+		this.types.add(typeName, typeValues);
 	}
 }

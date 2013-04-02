@@ -107,7 +107,15 @@ simple_declarative_item
 
 typed_string_declaration 
   :
-  TYPE simple_name IS '(' STRING_LITERAL (',' STRING_LITERAL)* ')' ';'
+  TYPE 
+  simple_name {ArrayList<String> values = new ArrayList<String>();}
+  IS 
+  '(' 
+  first = STRING_LITERAL { values.add($first.text); } 
+  (',' other = STRING_LITERAL {values.add($other.text);})* 
+  ')'
+  {gprLoader.addType ($simple_name.text, Symbol.CreateStringList(values)); } 
+  ';'
   ;
 
 case_statement 
@@ -168,8 +176,8 @@ package_extension
 typed_variable_declaration 
   :
   simple_name 
-  ':'
-   name 
+  ':' 
+   name { gprLoader.setCurrentType($name.text); }
    ':='
    string_expression
    ';'
@@ -220,7 +228,7 @@ external_value returns [Symbol result] //TODO
   : 
   EXTERNAL
   '(' 
-  STRING_LITERAL 
+  external_name = STRING_LITERAL {gprLoader.addExternalVariable($external_name.text);}
   (',' defaultValue = STRING_LITERAL { $result = Symbol.CreateString($defaultValue.text);})? 
   ')'
   ; 

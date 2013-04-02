@@ -51,69 +51,52 @@ public class ProjectUnit implements IProjectUnit {
 
 	// Queries:
 
-	/**
-	 * @return The name of the context.
-	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	/**
-	 * @return The path to the gpr project.
-	 */
+	@Override
 	public Path getPath() {
 		return this.pathToGpr;
 	}
 
-	/**
-	 * 
-	 * @return The list of reference projects.
-	 */
+	@Override
 	public List<IProjectUnit> getReferenceProjects() {
 		return new ArrayList<IProjectUnit>(this.references.values());
 	}
 
-	/**
-	 * 
-	 * @param varName
-	 *            Name of the variable to look for.
-	 * @return True is returned if the variable is found in the project.
-	 */
+	@Override
 	public boolean variableIsDefined(String varName) {
 		return this.isDefined(varName, new VariablesProviderDelegate());
 	}
 
-	/**
-	 * 
-	 * @param attributeName
-	 *            Name of the attribute to look for
-	 * @return True is returned if the attribute is defined in the project.
-	 */
+	@Override
 	public boolean attributeIsDefined(String attributeName) {
 		return this.isDefined(FormatAttribute(attributeName), new AttributesProviderDelegate());
 	}
 
-	/**
-	 * @pre varName is defined in the context.
-	 * @param varName
-	 *            Name of the variable.
-	 * @return Term corresponding to the name of variable.
-	 * 
-	 */
+	@Override
+	public boolean typeIsDefined(String typeName) {
+		return this.isDefined(typeName, new TypesProviderDelegate());
+	}
+
+	@Override
 	public Symbol getVariable(String varName) {
 		Preconditions.checkArgument(this.variableIsDefined(varName));
 		return this.get(varName, new VariablesProviderDelegate());
 	}
 
-	/**
-	 * @pre attributeName is defined in the context.
-	 * @param attributeName
-	 *            Name of the attribute.
-	 * @return Term corresponding to the name of the attribute.
-	 */
+	@Override
 	public Symbol getAttribute(String attributeName) {
 		Preconditions.checkArgument(this.attributeIsDefined(attributeName));
 		return this.get(FormatAttribute(attributeName), new AttributesProviderDelegate());
+	}
+
+	@Override
+	public Symbol getType(String typeName) {
+		Preconditions.checkArgument(this.typeIsDefined(typeName));
+		return this.get(FormatAttribute(typeName), new TypesProviderDelegate());
 	}
 
 	// Commands:
@@ -140,6 +123,19 @@ public class ProjectUnit implements IProjectUnit {
 	 */
 	public void addAttribute(String attributeName, Symbol attributeValue) {
 		this.currentPackage.addAttribute(attributeName, attributeValue);
+	}
+
+	/**
+	 * Add a type to the context
+	 * 
+	 * @param typeName
+	 *            Name of the type to add.
+	 * @param attributeValue
+	 *            Values of the type to add.
+	 */
+	public void addType(String typeName, Symbol values) {
+		Preconditions.checkArgument(!values.isAString());
+		this.currentPackage.addType(typeName, values);
 	}
 
 	/**
@@ -184,34 +180,12 @@ public class ProjectUnit implements IProjectUnit {
 	 *            Name of the package to copy.
 	 */
 	public void addPackageFrom(String newPackageName, String projectName, String packageName) {
-		// TODOAssert.isLegal(this.references.contains(projectName));
-		// TODOAssert.isLegal(this.references.get(projectName).packages.contains(packageName));
+		Preconditions.checkState(this.references.contains(projectName));
+		Preconditions.checkState(this.references.get(projectName).packages.contains(packageName));
 
 		PackageUnit newPackage = new PackageUnit(newPackageName,
 				this.references.get(projectName).packages.get(packageName));
 		this.packages.put(newPackageName, newPackage);
-	}
-
-	/**
-	 * Join the string element of an array
-	 * 
-	 * @param tab
-	 *            Array containing the element to join
-	 * @param from
-	 *            Starting index in the array
-	 * @param size
-	 *            Number of element to join
-	 * @pre from + size - 1 <= tab.length
-	 * @return A string containing the joined element.
-	 */
-	private static String Join(String[] tab, int from, int size) {
-		// TODOAssert.isLegal(from + size - 1 <= tab.length);
-		StringBuilder res = new StringBuilder();
-
-		for (int i = from; i < from + size; i++) {
-			res.append(tab[i]);
-		}
-		return res.toString();
 	}
 
 	/**
@@ -237,37 +211,7 @@ public class ProjectUnit implements IProjectUnit {
 	private static String GetNameWithoutPrefix(String fullName) {
 		Preconditions.checkArgument(!GetPrefix(fullName).isEmpty());
 		String[] fullNameAsList = fullName.split("\\.", 2);
-		return Join(fullNameAsList, 1, fullNameAsList.length - 1);
-	}
-
-	interface IProviderDelegate {
-		abstract boolean isDefined(IUnit provider, String name);
-
-		abstract Symbol get(IUnit provider, String name);
-	}
-
-	class VariablesProviderDelegate implements IProviderDelegate {
-		@Override
-		public boolean isDefined(IUnit provider, String name) {
-			return provider.variableIsDefined(name);
-		}
-
-		@Override
-		public Symbol get(IUnit provider, String name) {
-			return provider.getVariable(name);
-		}
-	}
-
-	class AttributesProviderDelegate implements IProviderDelegate {
-		@Override
-		public boolean isDefined(IUnit provider, String name) {
-			return provider.attributeIsDefined(name);
-		}
-
-		@Override
-		public Symbol get(IUnit provider, String name) {
-			return provider.getAttribute(name);
-		}
+		return StringUtilities.Join(fullNameAsList, 1, fullNameAsList.length - 1);
 	}
 
 	private boolean isDefined(String symbolName, IProviderDelegate delegate) {

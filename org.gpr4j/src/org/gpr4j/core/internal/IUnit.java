@@ -12,7 +12,11 @@ public interface IUnit {
 
 	public abstract boolean attributeIsDefined(String name);
 
+	public abstract boolean typeIsDefined(String name);
+
 	public abstract Symbol getVariable(String name);
 
 	public abstract Symbol getAttribute(String name);
+
+	public abstract Symbol getType(String name);
 }

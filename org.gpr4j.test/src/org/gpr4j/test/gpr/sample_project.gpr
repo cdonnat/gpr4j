@@ -10,6 +10,11 @@ for Switches ("main.ada") use ("-v", "-gnatv");
 
 null;
 
+type Mode_Type is ("debug", "release");
+Mode : Mode_Type := external ("mode", "debug");
+ 
+Mode_Included :  Sample_project_included.Included_Mode_Type  := external ("inc_mode", "first");
+ 
 for Object_Dir  use Project'Exec_Dir;
 
 my_var := "My_Var";

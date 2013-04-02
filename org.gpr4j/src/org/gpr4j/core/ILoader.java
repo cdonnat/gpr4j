@@ -25,4 +25,11 @@ public interface ILoader {
 	 *         been called.
 	 */
 	public List<IProjectUnit> getLoadedProjects();
+
+	/**
+	 * Provides the list of external variables contained in all projects.
+	 * 
+	 * @return The list of external variables contained in all projects.
+	 */
+	public List<ExternalVariable> getExternalVariables();
 }

@@ -3,6 +3,8 @@ package org.gpr4j.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gpr4j.core.internal.StringUtilities;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -27,12 +29,12 @@ public class Symbol {
 
 	private Symbol(String value) {
 		this.value = new ArrayList<String>(1);
-		this.value.add(RemoveQuotes(value));
+		this.value.add(StringUtilities.RemoveQuotes(value));
 		this.type = STRING;
 	}
 
 	private Symbol(List<String> value) {
-		this.value = new ArrayList<String>(RemoveQuotes(value));
+		this.value = new ArrayList<String>(StringUtilities.RemoveQuotes(value));
 		this.type = STRING_LIST;
 	}
 
@@ -84,21 +86,5 @@ public class Symbol {
 		}
 
 		return concatenatedSymbol;
-	}
-
-	private static String RemoveQuotes(String input) {
-		String res = input;
-		if (input.startsWith("\"") && input.endsWith("\"")) {
-			res = input.substring(1, input.length() - 1);
-		}
-		return res;
-	}
-
-	private static List<String> RemoveQuotes(List<String> input) {
-		ArrayList<String> res = new ArrayList<String>(input.size());
-		for (String element : input) {
-			res.add(RemoveQuotes(element));
-		}
-		return res;
 	}
 }

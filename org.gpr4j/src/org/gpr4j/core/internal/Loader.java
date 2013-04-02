@@ -1,7 +1,6 @@
 package org.gpr4j.core.internal;
 
 import java.io.IOException;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.Stack;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.gpr4j.core.ExternalVariable;
 import org.gpr4j.core.ILoader;
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
@@ -27,12 +27,17 @@ public class Loader implements ILoader {
 
 	private Stack<ProjectUnit> projectsToLoad;
 	private List<ProjectUnit> loadedProjects;
+	private List<ExternalVariable> externalVariables;
+	private String currentType;
 
-	public boolean test () { return false; }
+	public boolean test() {
+		return false;
+	}
 
 	public Loader() {
 		this.projectsToLoad = new Stack<ProjectUnit>();
 		this.loadedProjects = new ArrayList<ProjectUnit>();
+		this.externalVariables = new ArrayList<ExternalVariable>();
 	}
 
 	/**
@@ -173,12 +178,18 @@ public class Loader implements ILoader {
 	 * 
 	 * @return List of the loaded projects.
 	 */
+	@Override
 	public List<IProjectUnit> getLoadedProjects() {
 		List<IProjectUnit> loadedProjects = new ArrayList<IProjectUnit>(this.loadedProjects.size());
 		for (ProjectUnit project : this.loadedProjects) {
 			loadedProjects.add(project);
 		}
 		return loadedProjects;
+	}
+
+	@Override
+	public List<ExternalVariable> getExternalVariables() {
+		return externalVariables;
 	}
 
 	/**
@@ -248,4 +259,38 @@ public class Loader implements ILoader {
 	private boolean projectIsAlreadyLoaded(Path pathToGpr) {
 		return getProject(pathToGpr) != null;
 	}
+
+	/**
+	 * Add a type to current project.
+	 * 
+	 * @param typeName
+	 *            Name of the type.
+	 * @param values
+	 *            Type values.
+	 */
+	public void addType(String typeName, Symbol values) {
+		this.getCurrentProject().addType(typeName, values);
+	}
+
+	/**
+	 * Set the last type parsed.
+	 * 
+	 * @param typeName
+	 *            Name of the type.
+	 */
+	public void setCurrentType(String typeName) {
+		this.currentType = typeName;
+	}
+
+	/**
+	 * Add a external variable.
+	 * 
+	 * @param name
+	 *            Name of the external variable.
+	 */
+	public void addExternalVariable(String name) {
+		this.externalVariables.add(new ExternalVariable(name, this.getCurrentProject()
+				.getType(this.currentType).getAsStringList()));
+	}
+
 }
