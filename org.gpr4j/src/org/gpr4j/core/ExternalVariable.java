@@ -2,7 +2,7 @@ package org.gpr4j.core;
 
 import java.util.List;
 
-import org.gpr4j.core.internal.StringUtilities;
+import org.gpr4j.utilities.StringUtilities;
 
 public class ExternalVariable {
 

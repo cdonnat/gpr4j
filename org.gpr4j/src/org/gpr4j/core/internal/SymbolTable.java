@@ -1,6 +1,7 @@
 package org.gpr4j.core.internal;
 
 import org.gpr4j.core.Symbol;
+import org.gpr4j.utilities.KeyStringMap;
 
 /**
  * Symbol of a unit.

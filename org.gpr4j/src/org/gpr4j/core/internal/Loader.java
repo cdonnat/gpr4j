@@ -16,6 +16,8 @@ import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
+import org.gpr4j.utilities.KeyStringMap;
+import org.gpr4j.utilities.StringUtilities;
 
 /**
  * Loads project units from a gpr file.
@@ -291,8 +293,15 @@ public class Loader implements ILoader {
 	 *            Name of the external variable.
 	 */
 	public void addExternalVariable(String name, String defaultValue) {
-		List<String> typeValues = this.getCurrentProject().getType(this.currentType)
-				.getAsStringList();
+		List<String> typeValues = null;
+
+		if (this.currentType != null) {
+			typeValues = this.getCurrentProject().getType(this.currentType).getAsStringList();
+		}
+		else {
+			typeValues = new ArrayList<String>();
+		}
+
 		this.externalVariables.put(StringUtilities.RemoveQuotes(name), new ExternalVariable(name,
 				defaultValue, typeValues));
 	}

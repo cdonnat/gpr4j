@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
+import org.gpr4j.utilities.KeyStringMap;
+import org.gpr4j.utilities.StringUtilities;
 
 import com.google.common.base.Preconditions;
 

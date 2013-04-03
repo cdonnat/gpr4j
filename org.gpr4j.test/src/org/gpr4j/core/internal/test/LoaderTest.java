@@ -46,10 +46,10 @@ public class LoaderTest {
 		checkAttribute("Switches(\"main.ada\")", new String[] { "-v", "-gnatv" });
 		checkAttribute("Object_Dir", "new_exe");
 
-		checkVariable("my_var", "My_Var");
+		checkVariable("my_var", "My_Var1");
 		checkVariable("my_var2", "My_Var2");
-		checkVariable("Name", "My_Var");
-		checkVariable("Save_Name", "My_Var.saved");
+		checkVariable("Name", "My_Var1");
+		checkVariable("Save_Name", "My_Var1.saved");
 		checkVariable("Empty_List", new String[] {});
 		checkVariable("List_With_One_Element", new String[] { "-gnaty" });
 		checkVariable("List_With_Two_Elements", new String[] { "-gnaty", "-gnatg" });
@@ -98,9 +98,9 @@ public class LoaderTest {
 
 		this.exercize();
 
-		this.checkType("mode_type", new String[] { "debug", "release" });		
+		this.checkType("mode_type", new String[] { "debug", "release" });
 	}
-	
+
 	@Test
 	public void testExternalVarialbe() {
 		this.createFixture("sample_project.gpr");
@@ -110,8 +110,9 @@ public class LoaderTest {
 		this.checkVariable("mode", "debug");
 		this.checkExternalVariable("mode", "debug", new String[] { "debug", "release" });
 		this.checkExternalVariable("inc_mode", "first", new String[] { "first", "second" });
-			
-		this.sut.setExternalVariable ("mode", "release");
+		this.checkExternalVariable("var_ext", "1", new String[] {});
+
+		this.sut.setExternalVariable("mode", "release");
 		this.sut.setExternalVariable("inc_mode", "second");
 		this.exercize();
 		this.checkVariable("mode", "release");
@@ -172,6 +173,7 @@ public class LoaderTest {
 
 		assertEquals("Variable name", name, computed.getName());
 		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
+		assertEquals("Variable possible values", expectedValues.length, computed.getValues().size());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Attribute n?" + i, expectedValues[i], computed.getValues().get(i));
 		}

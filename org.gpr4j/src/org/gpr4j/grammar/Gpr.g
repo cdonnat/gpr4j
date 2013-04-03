@@ -183,6 +183,7 @@ typed_variable_declaration
    ';'
    {!gprLoader.variableIsDefined($simple_name.text)}?
    {gprLoader.addVariable ($simple_name.text, $string_expression.result);}
+   {gprLoader.setCurrentType (null);}
    ;
    
 attribute_declaration
