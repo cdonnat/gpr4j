@@ -108,9 +108,9 @@ public class LoaderTest {
 		this.exercize();
 
 		this.checkVariable("mode", "debug");
-		this.checkExternalVariable("mode", "debug", new String[] { "debug", "release" });
-		this.checkExternalVariable("inc_mode", "first", new String[] { "first", "second" });
-		this.checkExternalVariable("var_ext", "1", new String[] {});
+		this.checkExternalVariable("mode", "debug", true, new String[] { "debug", "release" });
+		this.checkExternalVariable("inc_mode", "first", true, new String[] { "first", "second" });
+		this.checkExternalVariable("var_ext", "1", false, null);
 
 		this.sut.setExternalVariable("mode", "release");
 		this.sut.setExternalVariable("inc_mode", "second");
@@ -160,7 +160,8 @@ public class LoaderTest {
 		}
 	}
 
-	private void checkExternalVariable(String name, String defaultValue, String[] expectedValues) {
+	private void checkExternalVariable(String name, String defaultValue, boolean isTyped,
+			String[] expectedValues) {
 
 		ExternalVariable computed = null;
 
@@ -171,11 +172,15 @@ public class LoaderTest {
 			}
 		}
 
+		assertEquals("Variable is typed", computed.isTyped(), isTyped);
 		assertEquals("Variable name", name, computed.getName());
 		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
-		assertEquals("Variable possible values", expectedValues.length, computed.getValues().size());
-		for (int i = 0; i < expectedValues.length; i++) {
-			assertEquals("Attribute n?" + i, expectedValues[i], computed.getValues().get(i));
+		if (isTyped) {
+			assertEquals("Variable possible values", expectedValues.length, computed
+					.getTypeValues().size());
+			for (int i = 0; i < expectedValues.length; i++) {
+				assertEquals("Attribute n?" + i, expectedValues[i], computed.getTypeValues().get(i));
+			}
 		}
 	}
 }

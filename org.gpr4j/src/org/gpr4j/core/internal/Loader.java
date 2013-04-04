@@ -300,9 +300,6 @@ public class Loader implements ILoader {
 		if (this.currentType != null) {
 			typeValues = this.getCurrentProject().getType(this.currentType).getAsStringList();
 		}
-		else {
-			typeValues = new ArrayList<String>();
-		}
 
 		this.externalVariables.put(StringUtilities.RemoveQuotes(name), new ExternalVariable(name,
 				defaultValue, typeValues));
