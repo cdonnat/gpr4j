@@ -104,7 +104,7 @@ public class GprGrammarTest {
 		assertTrue(
 				"External value",
 				GprGrammarTestUtils.IsStringExpressionIdentified("external(\"External\", \"default\"));",
-						Symbol.CreateString("default")));
+						Symbol.CreateString("")));
 		
 		assertTrue(
 				"Attribute reference",

@@ -1,4 +1,4 @@
-package org.gpr4j.core.internal;
+package org.gpr4j.core.internal.model;
 
 import org.gpr4j.core.Symbol;
 import org.gpr4j.utilities.KeyStringMap;

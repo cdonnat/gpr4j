@@ -3,7 +3,7 @@ package org.gpr4j.core;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.gpr4j.core.internal.IUnit;
+import org.gpr4j.core.internal.model.IUnit;
 
 /**
  * A project unit is a basic representation of a Gpr project file.

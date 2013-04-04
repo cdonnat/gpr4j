@@ -1,4 +1,4 @@
-package org.gpr4j.core.internal;
+package org.gpr4j.core.internal.model;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.List;
 
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.delegates.AttributesProviderDelegate;
+import org.gpr4j.core.internal.delegates.IProviderDelegate;
+import org.gpr4j.core.internal.delegates.TypesProviderDelegate;
+import org.gpr4j.core.internal.delegates.VariablesProviderDelegate;
 import org.gpr4j.utilities.KeyStringMap;
 import org.gpr4j.utilities.StringUtilities;
 

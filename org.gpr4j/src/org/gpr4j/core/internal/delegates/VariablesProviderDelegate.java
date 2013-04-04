@@ -1,8 +1,9 @@
-package org.gpr4j.core.internal;
+package org.gpr4j.core.internal.delegates;
 
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.model.IUnit;
 
-class VariablesProviderDelegate implements IProviderDelegate {
+public class VariablesProviderDelegate implements IProviderDelegate {
 	@Override
 	public boolean isDefined(IUnit provider, String name) {
 		return provider.variableIsDefined(name);

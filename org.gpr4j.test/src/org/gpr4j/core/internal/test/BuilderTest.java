@@ -10,7 +10,7 @@ import java.util.List;
 import org.gpr4j.core.Factory;
 import org.gpr4j.core.Gpr;
 import org.gpr4j.core.Symbol;
-import org.gpr4j.core.internal.ProjectUnit;
+import org.gpr4j.core.internal.model.ProjectUnit;
 import org.junit.Test;
 
 public class BuilderTest {

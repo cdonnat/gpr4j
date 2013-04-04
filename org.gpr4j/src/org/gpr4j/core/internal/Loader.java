@@ -14,6 +14,8 @@ import org.gpr4j.core.ExternalVariable;
 import org.gpr4j.core.ILoader;
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.model.ProjectUnit;
+import org.gpr4j.core.internal.model.SymbolTable;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
 import org.gpr4j.utilities.KeyStringMap;

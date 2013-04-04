@@ -22,6 +22,7 @@ public class GprGrammarFixture {
 		when(this.loader.variableIsDefined(anyString())).thenReturn(forceVariableDefinition);
 		when(this.loader.getVariable(anyString())).thenReturn(Symbol.CreateString(""));
 		when(this.loader.getAttribute(anyString())).thenReturn(Symbol.CreateString(""));
+		when(this.loader.getExternalVariable(anyString())).thenReturn(Symbol.CreateString(""));
 	}
 	
 	public GprGrammarFixture(String testString, boolean forceVariableDefinition) {
