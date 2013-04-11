@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.Type;
 import org.gpr4j.core.internal.delegates.AttributesProviderDelegate;
 import org.gpr4j.core.internal.delegates.IProviderDelegate;
 import org.gpr4j.core.internal.delegates.TypesProviderDelegate;
@@ -51,8 +52,9 @@ public class ProjectUnit implements IProjectUnit {
 	 * Add the default attribute to project ("name", "project_dir, etc).
 	 */
 	private void addDefaultAttribute() {
-		this.addAttribute("name", Symbol.CreateString(this.name));
-		this.addAttribute("project_dir", Symbol.CreateString(this.pathToGpr.getParent().toString()));
+		this.addAttribute(new Symbol("name", Term.CreateString(this.name), null));
+		this.addAttribute(new Symbol("project_dir", Term.CreateString(this.pathToGpr.getParent()
+				.toString()), null));
 	}
 
 	// Queries:
@@ -90,19 +92,19 @@ public class ProjectUnit implements IProjectUnit {
 	@Override
 	public Symbol getVariable(String varName) {
 		Preconditions.checkArgument(this.variableIsDefined(varName));
-		return this.get(varName, new VariablesProviderDelegate());
+		return (Symbol) this.get(varName, new VariablesProviderDelegate());
 	}
 
 	@Override
 	public Symbol getAttribute(String attributeName) {
 		Preconditions.checkArgument(this.attributeIsDefined(attributeName));
-		return this.get(FormatAttribute(attributeName), new AttributesProviderDelegate());
+		return (Symbol) this.get(FormatAttribute(attributeName), new AttributesProviderDelegate());
 	}
 
 	@Override
-	public Symbol getType(String typeName) {
+	public Type getType(String typeName) {
 		Preconditions.checkArgument(this.typeIsDefined(typeName));
-		return this.get(FormatAttribute(typeName), new TypesProviderDelegate());
+		return (Type) this.get(FormatAttribute(typeName), new TypesProviderDelegate());
 	}
 
 	// Commands:
@@ -115,33 +117,28 @@ public class ProjectUnit implements IProjectUnit {
 	 * @param varValue
 	 *            Value of the variable to add.
 	 */
-	public void addVariable(String varName, Symbol varValue) {
-		this.currentPackage.addVariable(varName, varValue);
+	public void addVariable(Symbol variable) {
+		this.currentPackage.addVariable(variable);
 	}
 
 	/**
 	 * Add an attribute to the context
 	 * 
 	 * @param attributeName
-	 *            Name of the attribute to add.
-	 * @param attributeValue
-	 *            Value of the attribute to add.
+	 *            Attribute to add.
 	 */
-	public void addAttribute(String attributeName, Symbol attributeValue) {
-		this.currentPackage.addAttribute(attributeName, attributeValue);
+	public void addAttribute(Symbol attribute) {
+		this.currentPackage.addAttribute(attribute);
 	}
 
 	/**
 	 * Add a type to the context
 	 * 
-	 * @param typeName
-	 *            Name of the type to add.
-	 * @param attributeValue
-	 *            Values of the type to add.
+	 * @param type
+	 *            Type to add.
 	 */
-	public void addType(String typeName, Symbol values) {
-		Preconditions.checkArgument(!values.isAString());
-		this.currentPackage.addType(typeName, values);
+	public void addType(Type type) {
+		this.currentPackage.addType(type);
 	}
 
 	/**
@@ -220,7 +217,7 @@ public class ProjectUnit implements IProjectUnit {
 		return StringUtilities.Join(fullNameAsList, 1, fullNameAsList.length - 1);
 	}
 
-	private boolean isDefined(String symbolName, IProviderDelegate delegate) {
+	private boolean isDefined(String symbolName, IProviderDelegate<? extends Item> delegate) {
 		String prefix = GetPrefix(symbolName);
 		String nameWithoutPrefix = GetNameWithoutPrefix(symbolName);
 		boolean isDefined = delegate.isDefined(this.currentPackage, symbolName);
@@ -241,8 +238,8 @@ public class ProjectUnit implements IProjectUnit {
 		return isDefined;
 	}
 
-	private Symbol get(String symbolName, IProviderDelegate delegate) {
-		Symbol res = null;
+	private Item get(String symbolName, IProviderDelegate<? extends Item> delegate) {
+		Item res = null;
 		boolean isDefined = delegate.isDefined(this.currentPackage, symbolName);
 		if (isDefined) {
 			res = delegate.get(this.currentPackage, symbolName);

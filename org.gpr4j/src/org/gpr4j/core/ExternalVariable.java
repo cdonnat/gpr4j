@@ -1,48 +1,23 @@
 package org.gpr4j.core;
 
-import java.util.List;
+import org.gpr4j.core.internal.model.Term;
 
-import org.gpr4j.utilities.StringUtilities;
+public class ExternalVariable extends Symbol {
 
-import com.google.common.base.Preconditions;
-
-public class ExternalVariable {
-
-	private String name;
-	private String defaultValue;
-	private List<String> typeValues;
+	private Term defaultValue;
 
 	/**
-	 * @pre name != null && (typeValues == null || !typeValues.isEmpty())
+	 * @pre name != null
 	 * @param name
 	 *            Name of the external variable.
 	 * @param defaultValue
 	 *            Default value or null if none.
-	 * @param typeValues
-	 *            Variable type values if the variable is typed, null otherwise.
+	 * @param type
+	 *            Variable type if the variable is typed, null otherwise.
 	 */
-	public ExternalVariable(String name, String defaultValue, List<String> typeValues) {
-		Preconditions.checkArgument(name != null);
-		Preconditions.checkArgument(typeValues == null || !typeValues.isEmpty());
-		this.name = StringUtilities.RemoveQuotes(name);
-		this.defaultValue = defaultValue == null ? "" : StringUtilities.RemoveQuotes(defaultValue);
-		this.typeValues = typeValues;
-	}
-
-	/**
-	 * 
-	 * @return True if the external variable is typed.
-	 */
-	public boolean isTyped() {
-		return this.typeValues != null;
-	}
-
-	/**
-	 * 
-	 * @return Return the name of the external variable.
-	 */
-	public String getName() {
-		return name;
+	public ExternalVariable(String name, String defaultValue, Type type) {
+		super(name, Term.CreateString(defaultValue), type);
+		this.defaultValue = defaultValue == null ? Term.CreateString("") : this.getValue();
 	}
 
 	/**
@@ -50,16 +25,16 @@ public class ExternalVariable {
 	 * @return The default value if specified or empty string if the default
 	 *         value was not given during construction.
 	 */
-	public String getDefaultValue() {
+	public Term getDefaultValue() {
 		return this.defaultValue;
 	}
 
 	/**
-	 * @pre The external variable is typed.
-	 * @return The type of the variable.
+	 * 
+	 * @param value
+	 *            The new value is set to the external variable.
 	 */
-	public List<String> getTypeValues() {
-		Preconditions.checkState(this.isTyped());
-		return typeValues;
+	public void setValue(String value) {
+		this.value = Term.CreateString(value);
 	}
 }

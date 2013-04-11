@@ -1,6 +1,7 @@
 package org.gpr4j.core.internal.model;
 
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.Type;
 
 /**
  * Provides unit services. An unit can be a project or a package.
@@ -18,5 +19,5 @@ public interface IUnit {
 
 	public abstract Symbol getAttribute(String name);
 
-	public abstract Symbol getType(String name);
+	public abstract Type getType(String name);
 }

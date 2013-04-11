@@ -1,6 +1,7 @@
 package org.gpr4j.core.internal.model;
 
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.Type;
 
 import com.google.common.base.Preconditions;
 
@@ -11,9 +12,9 @@ import com.google.common.base.Preconditions;
 public class PackageUnit implements IUnit {
 
 	private String name;
-	private SymbolTable variables;
-	private SymbolTable attributes;
-	private SymbolTable types;
+	private SymbolTable<Symbol> variables;
+	private SymbolTable<Symbol> attributes;
+	private SymbolTable<Type> types;
 
 	/**
 	 * Constructors
@@ -23,9 +24,9 @@ public class PackageUnit implements IUnit {
 	 */
 	public PackageUnit(String name) {
 		this.name = new String(name.toLowerCase());
-		this.variables = new SymbolTable();
-		this.attributes = new SymbolTable();
-		this.types = new SymbolTable();
+		this.variables = new SymbolTable<Symbol>();
+		this.attributes = new SymbolTable<Symbol>();
+		this.types = new SymbolTable<Type>();
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class PackageUnit implements IUnit {
 	}
 
 	@Override
-	public Symbol getType(String name) {
+	public Type getType(String name) {
 		Preconditions.checkArgument(this.types.isDefined(name));
 		return this.types.get(name);
 	}
@@ -110,37 +111,31 @@ public class PackageUnit implements IUnit {
 	/**
 	 * Add a variable to the package.
 	 * 
-	 * @param varName
-	 *            Name of the variable to add.
-	 * @param varValue
-	 *            Value of the variable to add.
+	 * @param variable
+	 *            Variable to add.
+	 * 
 	 */
-	public void addVariable(String varName, Symbol varValue) {
-		this.variables.add(varName, varValue);
+	public void addVariable(Symbol variable) {
+		this.variables.add(variable);
 	}
 
 	/**
 	 * Add an attribute to the package.
 	 * 
-	 * @param attributeName
-	 *            Name of the attribute to add.
-	 * @param attributeValue
-	 *            Value of the attribute to add.
+	 * @param attribute
+	 *            Attribute to add.
 	 */
-	public void addAttribute(String attributeName, Symbol attributeValue) {
-		this.attributes.add(attributeName, attributeValue);
+	public void addAttribute(Symbol attribute) {
+		this.attributes.add(attribute);
 	}
 
 	/**
 	 * Add a type to the package.
 	 * 
-	 * @param typeName
-	 *            Name of the type to add.
-	 * @param typeValues
-	 *            Values of the type to add.
+	 * @param type
+	 *            Type to add.
 	 */
-	public void addType(String typeName, Symbol typeValues) {
-		Preconditions.checkArgument(!typeValues.isAString());
-		this.types.add(typeName, typeValues);
+	public void addType(Type type) {
+		this.types.add(type);
 	}
 }

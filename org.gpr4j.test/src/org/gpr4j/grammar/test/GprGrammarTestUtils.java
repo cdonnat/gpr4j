@@ -8,8 +8,8 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.core.Symbol;
 import org.gpr4j.core.internal.Loader;
+import org.gpr4j.core.internal.model.Term;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
 
@@ -59,16 +59,16 @@ public class GprGrammarTestUtils {
 		return checker.isInputRecognizedByParserRule(fixture, expString);
 	}
 
-	private static boolean RunSymbolParserRuleCheck(
-			SymbolParserRuleChecker checker, String input, Symbol expSymbol) {
+	private static boolean RunTermParserRuleCheck(
+			TermParserRuleChecker checker, String input, Term expTerm) {
 		GprGrammarFixture fixture = new GprGrammarFixture(input);
 
-		return checker.isInputRecognizedByParserRule(fixture, expSymbol);
+		return checker.isInputRecognizedByParserRule(fixture, expTerm);
 	}
 
-	public static abstract class SymbolParserRuleChecker {
+	public static abstract class TermParserRuleChecker {
 
-		private boolean areSymbolsIdentical(Symbol left, Symbol right) {
+		private boolean areSymbolsIdentical(Term left, Term right) {
 			boolean areEqual;
 
 			if (left.isAString() && right.isAString()) {
@@ -84,8 +84,8 @@ public class GprGrammarTestUtils {
 		}
 
 		public boolean isInputRecognizedByParserRule(GprGrammarFixture fixture,
-				Symbol expectedSymbol) {
-			Symbol result = null;
+				Term expectedSymbol) {
+			Term result = null;
 
 			try {
 				result = this.executeParserRule(fixture);
@@ -98,7 +98,7 @@ public class GprGrammarTestUtils {
 					&& this.areSymbolsIdentical(result, expectedSymbol);
 		}
 
-		protected abstract Symbol executeParserRule(GprGrammarFixture fixture)
+		protected abstract Term executeParserRule(GprGrammarFixture fixture)
 				throws RecognitionException;
 	}
 
@@ -169,17 +169,17 @@ public class GprGrammarTestUtils {
 	}
 
 	public static boolean IsExpressionIdentified(String input,
-			Symbol expectedSymbol) {
-		SymbolParserRuleChecker expressionChecker = new SymbolParserRuleChecker() {
+			Term expectedSymbol) {
+		TermParserRuleChecker expressionChecker = new TermParserRuleChecker() {
 
 			@Override
-			protected Symbol executeParserRule(GprGrammarFixture fixture)
+			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
 				return fixture.parser.expression();
 			}
 		};
 
-		return RunSymbolParserRuleCheck(expressionChecker, input,
+		return RunTermParserRuleCheck(expressionChecker, input,
 				expectedSymbol);
 	}
 
@@ -211,18 +211,18 @@ public class GprGrammarTestUtils {
 	}
 
 	public static boolean IsStringListIdentified(String input,
-			Symbol expectedSymbol) {
-		SymbolParserRuleChecker stringListChecker = new SymbolParserRuleChecker() {
+			Term expectedTerm) {
+		TermParserRuleChecker stringListChecker = new TermParserRuleChecker() {
 
 			@Override
-			protected Symbol executeParserRule(GprGrammarFixture fixture)
+			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
 				return fixture.parser.string_list();
 			}
 		};
 
-		return RunSymbolParserRuleCheck(stringListChecker, input,
-				expectedSymbol);
+		return RunTermParserRuleCheck(stringListChecker, input,
+				expectedTerm);
 	}
 
 	public static boolean IsAttributeDeclaration(String input) {
@@ -526,31 +526,31 @@ public class GprGrammarTestUtils {
 		return RunStringParserRuleCheck(attPrefixChecker, input, expString);
 	}
 
-	public static boolean IsTermIdentified(String input, Symbol expSymbol) {
-		SymbolParserRuleChecker termChecker = new SymbolParserRuleChecker() {
+	public static boolean IsTermIdentified(String input, Term expTerm) {
+		TermParserRuleChecker termChecker = new TermParserRuleChecker() {
 
 			@Override
-			protected Symbol executeParserRule(GprGrammarFixture fixture)
+			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
 				return fixture.parser.expression();
 			}
 		};
 
-		return RunSymbolParserRuleCheck(termChecker, input, expSymbol);
+		return RunTermParserRuleCheck(termChecker, input, expTerm);
 	}
 
 	public static boolean IsStringExpressionIdentified(String input,
-			Symbol expSymbol) {
-		SymbolParserRuleChecker stringExpChecker = new SymbolParserRuleChecker() {
+			Term expTerm) {
+		TermParserRuleChecker stringExpChecker = new TermParserRuleChecker() {
 
 			@Override
-			protected Symbol executeParserRule(GprGrammarFixture fixture)
+			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
 				return fixture.parser.string_expression();
 			}
 		};
 
-		return RunSymbolParserRuleCheck(stringExpChecker, input, expSymbol);
+		return RunTermParserRuleCheck(stringExpChecker, input, expTerm);
 	}
 
 }

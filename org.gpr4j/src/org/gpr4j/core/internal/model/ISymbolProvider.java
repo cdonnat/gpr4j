@@ -1,11 +1,10 @@
 package org.gpr4j.core.internal.model;
 
-import org.gpr4j.core.Symbol;
 
-public interface ISymbolProvider {
+public interface ISymbolProvider<I extends Item> {
 
 	public boolean isDefined(String name);
 
-	public Symbol get(String name);
+	public I get(String name);
 
 }

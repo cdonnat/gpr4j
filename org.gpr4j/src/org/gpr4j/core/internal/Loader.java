@@ -14,12 +14,12 @@ import org.gpr4j.core.ExternalVariable;
 import org.gpr4j.core.ILoader;
 import org.gpr4j.core.IProjectUnit;
 import org.gpr4j.core.Symbol;
+import org.gpr4j.core.Type;
+import org.gpr4j.core.internal.model.Environment;
 import org.gpr4j.core.internal.model.ProjectUnit;
-import org.gpr4j.core.internal.model.SymbolTable;
+import org.gpr4j.core.internal.model.Term;
 import org.gpr4j.grammar.GprLexer;
 import org.gpr4j.grammar.GprParser;
-import org.gpr4j.utilities.KeyStringMap;
-import org.gpr4j.utilities.StringUtilities;
 
 /**
  * Loads project units from a gpr file.
@@ -31,43 +31,37 @@ public class Loader implements ILoader {
 
 	private Stack<ProjectUnit> projectsToLoad;
 	private List<ProjectUnit> loadedProjects;
-	private KeyStringMap<ExternalVariable> externalVariables;
-	private SymbolTable externalVariablesSet;
-	private String currentType;
+	private Environment environment;
+	private Type currentType;
 
 	public boolean test() {
 		return false;
 	}
 
 	public Loader() {
-		this.projectsToLoad = new Stack<ProjectUnit>();
-		this.loadedProjects = new ArrayList<ProjectUnit>();
-		this.externalVariables = new KeyStringMap<ExternalVariable>();
-		this.externalVariablesSet = new SymbolTable();
+		this.projectsToLoad = new Stack<>();
+		this.loadedProjects = new ArrayList<>();
+		this.environment = new Environment();
 	}
 
 	/**
 	 * Add a variable to the current project.
 	 * 
-	 * @param name
-	 *            Name of the variable.
-	 * @param value
-	 *            Value of the variable.
+	 * @param variable
+	 *            Variable to add.
 	 */
-	public void addVariable(String name, Symbol value) {
-		this.getCurrentProject().addVariable(name, value);
+	public void addVariable(String varName, Term value) {
+		this.getCurrentProject().addVariable(new Symbol(varName, value, this.currentType));
 	}
 
 	/**
 	 * Add an attribute to the current project.
 	 * 
-	 * @param name
-	 *            Name of the attribute.
-	 * @param value
-	 *            Value of the attribute.
+	 * @param attribute
+	 *            Attribute to add.
 	 */
-	public void addAttribute(String name, Symbol value) {
-		this.getCurrentProject().addAttribute(name, value);
+	public void addAttribute(String attributeName, Term value) {
+		this.getCurrentProject().addAttribute(new Symbol(attributeName, value, null));
 	}
 
 	/**
@@ -193,11 +187,6 @@ public class Loader implements ILoader {
 		return loadedProjects;
 	}
 
-	@Override
-	public List<ExternalVariable> getExternalVariables() {
-		return new ArrayList<ExternalVariable>(externalVariables.values());
-	}
-
 	/**
 	 * Notify current project that a begin package has been found.
 	 * 
@@ -269,13 +258,11 @@ public class Loader implements ILoader {
 	/**
 	 * Add a type to current project.
 	 * 
-	 * @param typeName
-	 *            Name of the type.
-	 * @param values
-	 *            Type values.
+	 * @param type
+	 *            Type to add.
 	 */
-	public void addType(String typeName, Symbol values) {
-		this.getCurrentProject().addType(typeName, values);
+	public void addType(String typeName, List<String> values) {
+		this.getCurrentProject().addType(new Type(typeName, values));
 	}
 
 	/**
@@ -285,7 +272,11 @@ public class Loader implements ILoader {
 	 *            Name of the type.
 	 */
 	public void setCurrentType(String typeName) {
-		this.currentType = typeName;
+		if (typeName != null) {
+			this.currentType = this.getCurrentProject().getType(typeName);
+		} else {
+			this.currentType = null;
+		}
 	}
 
 	/**
@@ -295,32 +286,21 @@ public class Loader implements ILoader {
 	 *            Name of the external variable.
 	 */
 	public void addExternalVariable(String name, String defaultValue) {
-		List<String> typeValues = null;
+		this.environment.addExternalVariable(name, defaultValue, this.currentType);
 
-		if (this.currentType != null) {
-			typeValues = this.getCurrentProject().getType(this.currentType).getAsStringList();
-		}
-
-		this.externalVariables.put(StringUtilities.RemoveQuotes(name), new ExternalVariable(name,
-				defaultValue, typeValues));
 	}
 
 	@Override
 	public void setExternalVariable(String varName, String value) {
-		this.externalVariablesSet.add(varName, Symbol.CreateString(value));
+		this.environment.setExternalVariable(varName, value);
 	}
 
-	public Symbol getExternalVariable(String varName) {
-		final String varNameWithoutQuotes = StringUtilities.RemoveQuotes(varName);
-		Symbol res = null;
+	public ExternalVariable getExternalVariable(String varName) {
+		return this.environment.getExternalVariable(varName);
+	}
 
-		if (this.externalVariablesSet.isDefined(varNameWithoutQuotes)) {
-			res = this.externalVariablesSet.get(varNameWithoutQuotes);
-		} else {
-			res = Symbol.CreateString(this.externalVariables.get(varNameWithoutQuotes)
-					.getDefaultValue());
-		}
-
-		return res;
+	@Override
+	public Environment getEnvironment() {
+		return this.environment;
 	}
 }

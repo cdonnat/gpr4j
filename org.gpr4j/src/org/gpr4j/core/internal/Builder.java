@@ -38,7 +38,7 @@ public class Builder {
 
 			gprProject.setExecutable(true);
 
-			for (String execName : this.referenceProject.getAttribute(MAIN_ATTRIBUTE)
+			for (String execName : this.referenceProject.getAttribute(MAIN_ATTRIBUTE).getValue()
 					.getAsStringList()) {
 				gprProject.addSourceExecutableName(execName);
 			}
@@ -48,22 +48,22 @@ public class Builder {
 	private void addObjectDir(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(OBJECT_DIRECTORY_ATTRIBUTE)) {
 			gprProject.setObjectDir(this.referenceProject.getAttribute(OBJECT_DIRECTORY_ATTRIBUTE)
-					.getAsString());
+					.getValue().getAsString());
 		}
 	}
 
 	private void addExecDir(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(EXECUTABLE_DIRECTORY_ATTRIBUTE)) {
 			gprProject.setExecutable(true);
-			gprProject.setExecutableDir(this.referenceProject.getAttribute(
-					EXECUTABLE_DIRECTORY_ATTRIBUTE).getAsString());
+			gprProject.setExecutableDir(this.referenceProject
+					.getAttribute(EXECUTABLE_DIRECTORY_ATTRIBUTE).getValue().getAsString());
 		}
 	}
 
 	private void addSourceDirs(Gpr gprProject) {
 		if (this.referenceProject.attributeIsDefined(SOURCE_DIRECTORIES_ATTRIBUTE)) {
 			for (String sourceDir : this.referenceProject
-					.getAttribute(SOURCE_DIRECTORIES_ATTRIBUTE).getAsStringList()) {
+					.getAttribute(SOURCE_DIRECTORIES_ATTRIBUTE).getValue().getAsStringList()) {
 				gprProject.addSourceDir(sourceDir);
 			}
 		}

@@ -1,90 +1,61 @@
 package org.gpr4j.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.gpr4j.utilities.StringUtilities;
-
-import com.google.common.base.Preconditions;
+import org.gpr4j.core.internal.model.Item;
+import org.gpr4j.core.internal.model.Term;
 
 /**
  * A Symbol corresponds to a variable or to an attribute of a project unit.
  * 
  */
-public class Symbol {
+public class Symbol extends Item {
 
-	private static final int STRING = 1;
-	private static final int STRING_LIST = 2;
+	protected Term value;
+	private Type type;
 
-	private ArrayList<String> value;
-	private int type;
-
-	public static Symbol CreateString(String value) {
-		return new Symbol(value);
+	/**
+	 * Create an untyped symbol.
+	 * 
+	 * @param name Name of the symbol.
+	 * @param value Value of the symbol.
+	 */
+	public Symbol(String name, Term value) {
+		this(name, value, null);
 	}
 
-	public static Symbol CreateStringList(List<String> value) {
-		return new Symbol(value);
+	/**
+	 * Create a symbol.
+	 * 
+	 * @param name Name of the symbol.
+	 * @param value Value of the symbol.
+	 * @param type Type of the symbol for a typed symbol or null.
+	 */
+	public Symbol(String name, Term value, Type type) {
+		super(name);
+		this.value = value;
+		this.type = type;
 	}
 
-	private Symbol(String value) {
-		this.value = new ArrayList<String>(1);
-		this.value.add(StringUtilities.RemoveQuotes(value));
-		this.type = STRING;
+	/**
+	 * 
+	 * @return The value of the symbol.
+	 */
+	public Term getValue() {
+		return this.value;
 	}
 
-	private Symbol(List<String> value) {
-		this.value = new ArrayList<String>(StringUtilities.RemoveQuotes(value));
-		this.type = STRING_LIST;
+	/**
+	 * 
+	 * @return The type of the symbol or null if none.
+	 */
+	public Type getType() {
+		return this.type;
 	}
 
-	public boolean isAString() {
-		return type == STRING;
-	}
-
-	public String getAsString() {
-		Preconditions.checkArgument(isAString());
-		return value.get(0);
-	}
-
-	public List<String> getAsStringList() {
-		return value;
-	}
-
-	private static Symbol ConcatStringLists(Symbol left, Symbol right) {
-		Preconditions.checkArgument(!left.isAString() && !right.isAString());
-
-		List<String> concatenatedList = new ArrayList<String>(left.getAsStringList());
-		concatenatedList.addAll(right.getAsStringList());
-
-		return CreateStringList(concatenatedList);
-	}
-
-	private static Symbol ConcatStrings(Symbol left, Symbol right) {
-		Preconditions.checkArgument(left.isAString() && right.isAString());
-
-		return CreateString(left.getAsString() + right.getAsString());
-	}
-
-	public static Symbol Concat(Symbol left, Symbol right) {
-		Preconditions.checkArgument((left != null) && (right != null));
-		Preconditions.checkArgument((left.isAString() && right.isAString()) || !left.isAString());
-
-		Symbol concatenatedSymbol;
-
-		if (left.isAString()) {
-			concatenatedSymbol = ConcatStrings(left, right);
-		} else {
-			if (right.isAString()) {
-				List<String> concatenatedList = new ArrayList<String>(left.getAsStringList());
-				concatenatedList.add(right.getAsString());
-
-				concatenatedSymbol = CreateStringList(concatenatedList);
-			} else {
-				concatenatedSymbol = ConcatStringLists(left, right);
-			}
-		}
-
-		return concatenatedSymbol;
+	/**
+	 * 
+	 * @return True is returned if the symbol is typed.
+	 */
+	public boolean isTyped() {
+		return this.type != null;
 	}
 }

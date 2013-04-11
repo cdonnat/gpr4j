@@ -17,6 +17,8 @@ Mode_Included :  Sample_project_included.Included_Mode_Type  := external ("inc_m
  
 for Object_Dir  use Project'Exec_Dir;
 
+type my_type is ("null");
+
 my_var := "My_Var" & external ("var_ext", "1");
 my_var2 : my_type := "My_Var2";
 Name      := my_var;

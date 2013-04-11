@@ -127,12 +127,12 @@ public class LoaderTest {
 
 	private void checkVariable(String variableName, String expectedValue) {
 		assertEquals("Variable value " + variableName, expectedValue, sut.getLoadedProjects()
-				.get(0).getVariable(variableName).getAsString());
+				.get(0).getVariable(variableName).getValue().getAsString());
 	}
 
 	private void checkVariable(String variableName, String[] expectedValues) {
 		List<String> computed = sut.getLoadedProjects().get(0).getVariable(variableName)
-				.getAsStringList();
+				.getValue().getAsStringList();
 		assertEquals("Variable size " + variableName, expectedValues.length, computed.size());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Variable n?" + i, expectedValues[i], computed.get(i));
@@ -141,12 +141,12 @@ public class LoaderTest {
 
 	private void checkAttribute(String attributeName, String expectedValue) {
 		assertEquals("Attribute value", expectedValue,
-				sut.getLoadedProjects().get(0).getAttribute(attributeName).getAsString());
+				sut.getLoadedProjects().get(0).getAttribute(attributeName).getValue().getAsString());
 	}
 
 	private void checkAttribute(String attributeName, String[] expectedValues) {
 		List<String> computed = sut.getLoadedProjects().get(0).getAttribute(attributeName)
-				.getAsStringList();
+				.getValue().getAsStringList();
 		assertEquals("Attribute size", expectedValues.length, computed.size());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Attribute n?" + i, expectedValues[i], computed.get(i));
@@ -154,7 +154,7 @@ public class LoaderTest {
 	}
 
 	private void checkType(String typeName, String[] expectedValues) {
-		List<String> computed = sut.getLoadedProjects().get(0).getType(typeName).getAsStringList();
+		List<String> computed = sut.getLoadedProjects().get(0).getType(typeName).getValues();
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Attribute n?" + i, expectedValues[i], computed.get(i));
 		}
@@ -165,7 +165,7 @@ public class LoaderTest {
 
 		ExternalVariable computed = null;
 
-		for (ExternalVariable tmp : sut.getExternalVariables()) {
+		for (ExternalVariable tmp : sut.getEnvironment().getExternalVariables()) {
 			if (tmp.getName().equals(name)) {
 				computed = tmp;
 				break;
@@ -174,12 +174,12 @@ public class LoaderTest {
 
 		assertEquals("Variable is typed", computed.isTyped(), isTyped);
 		assertEquals("Variable name", name, computed.getName());
-		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
+		assertEquals("Variable default value", defaultValue, computed.getDefaultValue().getAsString());
 		if (isTyped) {
 			assertEquals("Variable possible values", expectedValues.length, computed
-					.getTypeValues().size());
+					.getType().getValues().size());
 			for (int i = 0; i < expectedValues.length; i++) {
-				assertEquals("Attribute n?" + i, expectedValues[i], computed.getTypeValues().get(i));
+				assertEquals("Attribute n?" + i, expectedValues[i], computed.getType().getValues().get(i));
 			}
 		}
 	}

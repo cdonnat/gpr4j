@@ -5,7 +5,8 @@ package org.gpr4j.grammar;
 
 import java.util.ArrayList;
 import org.gpr4j.core.internal.Loader;
-import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.model.Term;
+import org.gpr4j.utilities.StringUtilities;
 }
 
 @lexer::header {
@@ -111,10 +112,10 @@ typed_string_declaration
   simple_name {ArrayList<String> values = new ArrayList<String>();}
   IS 
   '(' 
-  first = STRING_LITERAL { values.add($first.text); } 
-  (',' other = STRING_LITERAL {values.add($other.text);})* 
+  first = STRING_LITERAL { values.add(StringUtilities.RemoveQuotes($first.text)); } 
+  (',' other = STRING_LITERAL {values.add(StringUtilities.RemoveQuotes($other.text));})* 
   ')'
-  {gprLoader.addType ($simple_name.text, Symbol.CreateStringList(values)); } 
+  {gprLoader.addType ($simple_name.text, values); } 
   ';'
   ;
 
@@ -202,7 +203,7 @@ attribute_designator returns [String result]
   | att = simple_name ( '(' STRING_LITERAL ')' ) {$result = $att.text + "(" + $STRING_LITERAL.text + ")";}
   ; 
  
- attribute_reference returns [Symbol result]
+ attribute_reference returns [Term result]
   :
   attribute_prefix '\'' simple_name 
     { String attributeName;
@@ -215,7 +216,7 @@ attribute_designator returns [String result]
     }
     ('(' STRING_LITERAL ')' { attributeName += "(" + $STRING_LITERAL.text + ")";})? 
 
-   { result = gprLoader.getAttribute(attributeName); }
+   { result = gprLoader.getAttribute(attributeName).getValue(); }
   ;
  
  attribute_prefix returns [String result]
@@ -225,15 +226,15 @@ attribute_designator returns [String result]
     ('.' package_name = simple_name {result += "." + $package_name.text;})? 
   ;
  
-external_value returns [Symbol result] 
+external_value returns [Term result] 
   : 
   EXTERNAL
   '(' 
   external_name = STRING_LITERAL
   (',' defaultValue = STRING_LITERAL)? 
   ')'
-   {gprLoader.addExternalVariable($external_name.text, $defaultValue.text);}
-   { $result = gprLoader.getExternalVariable($external_name.text);}
+   {gprLoader.addExternalVariable(StringUtilities.RemoveQuotes($external_name.text), $defaultValue.text);}
+   { $result = gprLoader.getExternalVariable(StringUtilities.RemoveQuotes($external_name.text)).getValue();}
   ; 
 
 variable_declaration 
@@ -245,13 +246,13 @@ variable_declaration
   {gprLoader.addVariable ($simple_name.text, $expression.result);}
   ;
 
-expression returns [Symbol result]
+expression returns [Term result]
   :
   first = term {result = $first.result;}
-  ( '&' other = term {result = Symbol.Concat(result, $other.result);} )* 
+  ( '&' other = term {result = Term.Concat(result, $other.result);} )* 
   ;
 
-term returns [Symbol result]
+term returns [Term result]
   : 
   string_expression 
     {$result = $string_expression.result;}
@@ -259,19 +260,19 @@ term returns [Symbol result]
     {$result = $string_list.result;}
   ;
   
-string_expression returns [Symbol result] // TODO : complete rule
+string_expression returns [Term result] // TODO : complete rule
   :
-  STRING_LITERAL {result = Symbol.CreateString($STRING_LITERAL.text);}
-  | name {result = gprLoader.getVariable($name.result);}
+  STRING_LITERAL {result = Term.CreateString($STRING_LITERAL.text);}
+  | name {result = gprLoader.getVariable($name.result).getValue();}
   | external_value {result = $external_value.result;}
   | attribute_reference {result = $attribute_reference.result;}
   ;
 
-string_list returns [Symbol result] // TODO : complete rule 
+string_list returns [Term result] // TODO : complete rule 
   :
-  '(' {result = Symbol.CreateStringList(new ArrayList<String>());}
-  first = expression? {if (first != null) {result = Symbol.Concat (result, $first.result);}} 
-  ( ',' other = expression {result = Symbol.Concat(result, $other.result);}  )* 
+  '(' {result = Term.CreateStringList(new ArrayList<String>());}
+  first = expression? {if (first != null) {result = Term.Concat (result, $first.result);}} 
+  ( ',' other = expression {result = Term.Concat(result, $other.result);}  )* 
   ')'
   ;
 

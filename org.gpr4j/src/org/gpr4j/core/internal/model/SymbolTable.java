@@ -1,6 +1,8 @@
 package org.gpr4j.core.internal.model;
 
-import org.gpr4j.core.Symbol;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gpr4j.utilities.KeyStringMap;
 
 /**
@@ -8,15 +10,15 @@ import org.gpr4j.utilities.KeyStringMap;
  * 
  * 
  */
-public class SymbolTable implements ISymbolProvider {
+public class SymbolTable<I extends Item> implements ISymbolProvider<I> {
 
-	private KeyStringMap<Symbol> properties;
+	private KeyStringMap<I> properties;
 
 	/**
 	 * Default constructor.
 	 */
 	public SymbolTable() {
-		this.properties = new KeyStringMap<Symbol>();
+		this.properties = new KeyStringMap<I>();
 	}
 
 	/**
@@ -39,8 +41,8 @@ public class SymbolTable implements ISymbolProvider {
 	 * @param value
 	 *            Symbol value.
 	 */
-	public void add(String name, Symbol value) {
-		this.properties.put(FormatName(name), value);
+	public void add(I item) {
+		this.properties.put(FormatName(item.getName()), item);
 	}
 
 	/**
@@ -51,10 +53,14 @@ public class SymbolTable implements ISymbolProvider {
 	 * @return Symbol value.
 	 */
 	@Override
-	public Symbol get(String name) {
+	public I get(String name) {
 		return this.properties.get(FormatName(name));
 	}
 
+	public List<I> getAll() {
+		return new ArrayList<>(this.properties.values());
+	}
+	
 	/**
 	 * Return a formated name. Formated = lower case and no white spaces.
 	 * 

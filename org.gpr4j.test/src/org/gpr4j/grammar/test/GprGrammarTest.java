@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gpr4j.core.Symbol;
+import org.gpr4j.core.internal.model.Term;
 import org.junit.Test;
 
 public class GprGrammarTest {
@@ -69,24 +69,24 @@ public class GprGrammarTest {
 	@Test
 	public void testExpression() {
 		assertTrue(GprGrammarTestUtils.IsExpressionIdentified(
-				"\"simple_string\"", Symbol.CreateString("simple_string")));
+				"\"simple_string\"", Term.CreateString("simple_string")));
 
 		assertTrue("String & string",
 				GprGrammarTestUtils.IsExpressionIdentified(
 						"\"string\" & \"string\"",
-						Symbol.CreateString("stringstring")));
+						Term.CreateString("stringstring")));
 
 		List<String> expStringList = new ArrayList<String>();
 		expStringList.add("File_Name");
 		assertTrue("List & string", GprGrammarTestUtils.IsExpressionIdentified(
-				"() & \"File_Name\"", Symbol.CreateStringList(expStringList)));
+				"() & \"File_Name\"", Term.CreateStringList(expStringList)));
 
 		expStringList.clear();
 		expStringList.add("File_Name");
 		expStringList.add("File_Name.orig");
 		assertTrue("List & list", GprGrammarTestUtils.IsExpressionIdentified(
 				"() & \"File_Name\" & (\"File_Name\" & \".orig\")",
-				Symbol.CreateStringList(expStringList)));
+				Term.CreateStringList(expStringList)));
 	}
 
 	@Test
@@ -94,22 +94,22 @@ public class GprGrammarTest {
 		assertTrue(
 				"String literal",
 				GprGrammarTestUtils.IsStringExpressionIdentified("\"Toto\"",
-						Symbol.CreateString("Toto")));
+						Term.CreateString("Toto")));
 		
 		assertTrue(
 				"Name",
 				GprGrammarTestUtils.IsStringExpressionIdentified("My.Name;",
-						Symbol.CreateString("")));
+						Term.CreateString("")));
 		
 		assertTrue(
 				"External value",
 				GprGrammarTestUtils.IsStringExpressionIdentified("external(\"External\", \"default\"));",
-						Symbol.CreateString("")));
+						Term.CreateString("")));
 		
 		assertTrue(
 				"Attribute reference",
 				GprGrammarTestUtils.IsStringExpressionIdentified("project'Source_Dir;",
-						Symbol.CreateString("")));
+						Term.CreateString("")));
 	}
 
 	@Test
@@ -191,13 +191,13 @@ public class GprGrammarTest {
 		assertTrue(
 				"String expression",
 				GprGrammarTestUtils.IsTermIdentified("\"Toto\"",
-						Symbol.CreateString("Toto")));
+						Term.CreateString("Toto")));
 
 		List<String> expStringList = new ArrayList<String>();
 		expStringList.add("Toto");
 		expStringList.add("Titi");
 		assertTrue("String list", GprGrammarTestUtils.IsTermIdentified(
-				"(\"Toto\", \"Titi\")", Symbol.CreateStringList(expStringList)));
+				"(\"Toto\", \"Titi\")", Term.CreateStringList(expStringList)));
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class GprGrammarTest {
 		List<String> expStringList = new ArrayList<String>();
 		expStringList.add("One_Element");
 		assertTrue(GprGrammarTestUtils.IsStringListIdentified(
-				"(\"One_Element\")", Symbol.CreateStringList(expStringList)));
+				"(\"One_Element\")", Term.CreateStringList(expStringList)));
 
 		expStringList.clear();
 		expStringList.add("First");
@@ -214,10 +214,10 @@ public class GprGrammarTest {
 
 		assertTrue(GprGrammarTestUtils.IsStringListIdentified(
 				"(\"First\", \"Second\", \"Third\"))",
-				Symbol.CreateStringList(expStringList)));
+				Term.CreateStringList(expStringList)));
 
 		assertFalse(GprGrammarTestUtils.IsStringListIdentified(
-				"(\"Missing\" \"comma\")", Symbol.CreateString("")));
+				"(\"Missing\" \"comma\")", Term.CreateString("")));
 	}
 
 	@Test
