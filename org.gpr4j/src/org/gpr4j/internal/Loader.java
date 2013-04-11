@@ -33,11 +33,7 @@ public class Loader implements ILoader {
 	private List<ProjectUnit> loadedProjects;
 	private Environment environment;
 	private Type currentType;
-
-	public boolean test() {
-		return false;
-	}
-
+	
 	public Loader() {
 		this.projectsToLoad = new Stack<>();
 		this.loadedProjects = new ArrayList<>();
