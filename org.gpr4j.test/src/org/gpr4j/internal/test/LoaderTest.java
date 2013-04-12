@@ -17,12 +17,12 @@ public class LoaderTest {
 	private ILoader sut;
 	private Path pathToProjectToLoad;
 
-	private static final String SampleFolder = System.getProperty("user.dir")
+	private static final String SAMPLE_FOLDER = System.getProperty("user.dir")
 			+ "/src/org/gpr4j/test/gpr/";
 
 	private void createFixture(String gprProjectName) {
 		sut = Factory.CreateLoader();
-		pathToProjectToLoad = Paths.get(SampleFolder, gprProjectName);
+		pathToProjectToLoad = Paths.get(SAMPLE_FOLDER, gprProjectName);
 	}
 
 	private void exercize() {
@@ -70,7 +70,7 @@ public class LoaderTest {
 		this.exercize();
 
 		this.checkAttribute("name", "sample_project");
-		this.checkAttribute("project_dir", SampleFolder.substring(0, SampleFolder.length() - 1));
+		this.checkAttribute("project_dir", SAMPLE_FOLDER.substring(0, SAMPLE_FOLDER.length() - 1));
 
 	}
 
@@ -140,7 +140,7 @@ public class LoaderTest {
 	}
 
 	private void checkAttribute(String attributeName, String expectedValue) {
-		assertEquals("Attribute value", expectedValue,
+		assertEquals("Attribute value", Paths.get(expectedValue).toString(),
 				sut.getLoadedProjects().get(0).getAttribute(attributeName).getValue().getAsString());
 	}
 

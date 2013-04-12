@@ -3,6 +3,7 @@
 	<name>org.gpr4j.test</name>
 	<comment></comment>
 	<projects>
+		<project>org.gpr4j</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

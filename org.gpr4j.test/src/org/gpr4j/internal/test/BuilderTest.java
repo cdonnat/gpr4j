@@ -43,7 +43,7 @@ public class BuilderTest {
 		Gpr gpr = Factory.CreateGpr(this.project);
 
 		assertEquals("sample_project", gpr.getName());
-		assertEquals(projectPath, gpr.getRootDirPath().toString());
+		assertEquals(Paths.get(projectPath).toString(), gpr.getRootDirPath().toString());
 		assertEquals("new_exe", gpr.getExecutableDir());
 		assertEquals("obj", gpr.getObjectDir());
 		assertEquals(2, gpr.getSourcesDir().size());
