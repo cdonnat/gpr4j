@@ -3,6 +3,7 @@ package org.gpr4j.internal.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gpr4j.api.Item;
 import org.gpr4j.internal.utilities.KeyStringMap;
 
 /**

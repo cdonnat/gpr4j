@@ -131,8 +131,8 @@ public class LoaderTest {
 	}
 
 	private void checkVariable(String variableName, String[] expectedValues) {
-		List<String> computed = sut.getLoadedProjects().get(0).getVariable(variableName)
-				.getValue().getAsStringList();
+		List<String> computed = sut.getLoadedProjects().get(0).getVariable(variableName).getValue()
+				.getAsStringList();
 		assertEquals("Variable size " + variableName, expectedValues.length, computed.size());
 		for (int i = 0; i < expectedValues.length; i++) {
 			assertEquals("Variable n?" + i, expectedValues[i], computed.get(i));
@@ -140,8 +140,8 @@ public class LoaderTest {
 	}
 
 	private void checkAttribute(String attributeName, String expectedValue) {
-		assertEquals("Attribute value", Paths.get(expectedValue).toString(),
-				sut.getLoadedProjects().get(0).getAttribute(attributeName).getValue().getAsString());
+		assertEquals("Attribute value", Paths.get(expectedValue).toString(), sut
+				.getLoadedProjects().get(0).getAttribute(attributeName).getValue().getAsString());
 	}
 
 	private void checkAttribute(String attributeName, String[] expectedValues) {
@@ -165,7 +165,7 @@ public class LoaderTest {
 
 		ExternalVariable computed = null;
 
-		for (ExternalVariable tmp : sut.getEnvironment().getExternalVariables()) {
+		for (ExternalVariable tmp : sut.getLoadedProjects().get(0).getExternalVariables()) {
 			if (tmp.getName().equals(name)) {
 				computed = tmp;
 				break;
@@ -174,12 +174,13 @@ public class LoaderTest {
 
 		assertEquals("Variable is typed", computed.isTyped(), isTyped);
 		assertEquals("Variable name", name, computed.getName());
-		assertEquals("Variable default value", defaultValue, computed.getDefaultValue().getAsString());
+		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
 		if (isTyped) {
-			assertEquals("Variable possible values", expectedValues.length, computed
-					.getType().getValues().size());
+			assertEquals("Variable possible values", expectedValues.length, computed.getType()
+					.getValues().size());
 			for (int i = 0; i < expectedValues.length; i++) {
-				assertEquals("Attribute n?" + i, expectedValues[i], computed.getType().getValues().get(i));
+				assertEquals("Attribute n?" + i, expectedValues[i], computed.getType().getValues()
+						.get(i));
 			}
 		}
 	}

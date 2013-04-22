@@ -28,7 +28,7 @@ public final class Factory {
 	 *            Project unit.
 	 * @return A Gpr corresponding to the given IProjectUnit.
 	 */
-	public static Gpr CreateGpr(IProjectUnit projectUnit) {
+	public static IGpr CreateGpr(IProjectUnit projectUnit) {
 		Builder builder = new Builder(projectUnit);
 		return builder.build();
 	}

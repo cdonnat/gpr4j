@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.Factory;
-import org.gpr4j.api.Gpr;
+import org.gpr4j.api.IGpr;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.internal.model.ProjectUnit;
 import org.gpr4j.internal.model.Term;
@@ -39,8 +40,9 @@ public class BuilderTest {
 		List<String> main = new ArrayList<String>();
 		main.add("main.adb");
 		this.project.addAttribute(new Symbol("Main", Term.CreateStringList(main)));
+		this.project.addExternalVariable(new ExternalVariable("ExtVar", "Default", null));
 
-		Gpr gpr = Factory.CreateGpr(this.project);
+		IGpr gpr = Factory.CreateGpr(this.project);
 
 		assertEquals("sample_project", gpr.getName());
 		assertEquals(Paths.get(projectPath).toString(), gpr.getRootDirPath().toString());
@@ -51,6 +53,7 @@ public class BuilderTest {
 		assertEquals("include", gpr.getSourcesDir().get(1));
 		assertTrue(gpr.isExecutable());
 		assertEquals("main.adb", gpr.getExecutableSourceNames().get(0));
+		assertEquals(1, gpr.getExternalVariables().size());
 
 	}
 

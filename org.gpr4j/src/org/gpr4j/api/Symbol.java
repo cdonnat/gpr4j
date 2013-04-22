@@ -1,6 +1,5 @@
 package org.gpr4j.api;
 
-import org.gpr4j.internal.model.Item;
 import org.gpr4j.internal.model.Term;
 
 /**

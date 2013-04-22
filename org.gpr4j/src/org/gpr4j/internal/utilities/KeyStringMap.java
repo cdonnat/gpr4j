@@ -2,14 +2,16 @@ package org.gpr4j.internal.utilities;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Implements a map <String, T>. The string used as a key is not case sensitive.
- *  
- * @param <T> Type of map value.
+ * 
+ * @param <T>
+ *            Type of map value.
  */
-public final class KeyStringMap<T> {
+public final class KeyStringMap<T> implements Iterable<T> {
 
 	private Map<String, T> map;
 
@@ -21,9 +23,11 @@ public final class KeyStringMap<T> {
 	}
 
 	/**
-	 * Returns true if this map contains a mapping for the specified key. False otherwise.
+	 * Returns true if this map contains a mapping for the specified key. False
+	 * otherwise.
 	 * 
-	 * @param key Key whose presence in this map is to be tested
+	 * @param key
+	 *            Key whose presence in this map is to be tested
 	 * @return True if this map contains a mapping for the specified key.
 	 */
 	public boolean contains(String key) {
@@ -32,7 +36,9 @@ public final class KeyStringMap<T> {
 
 	/**
 	 * Returns the value to which the specified key is mapped
-	 * @param key  Key whose associated value is to be returned
+	 * 
+	 * @param key
+	 *            Key whose associated value is to be returned
 	 * @returnVvalue to which the specified key is mapped
 	 */
 	public T get(String key) {
@@ -41,8 +47,11 @@ public final class KeyStringMap<T> {
 
 	/**
 	 * Associates the specified value with the specified key in this map
-	 * @param key Key with which the specified value is to be associated
-	 * @param value Value to be associated with the specified key
+	 * 
+	 * @param key
+	 *            Key with which the specified value is to be associated
+	 * @param value
+	 *            Value to be associated with the specified key
 	 */
 	public void put(String key, T value) {
 		this.map.put(key.toLowerCase(), value);
@@ -50,9 +59,15 @@ public final class KeyStringMap<T> {
 
 	/**
 	 * Returns a Collection view of the values contained in this map.
+	 * 
 	 * @return A collection view of the values contained in this map
 	 */
 	public Collection<T> values() {
 		return this.map.values();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return this.map.values().iterator();
 	}
 }

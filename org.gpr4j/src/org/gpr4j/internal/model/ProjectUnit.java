@@ -2,9 +2,13 @@ package org.gpr4j.internal.model;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.IProjectUnit;
+import org.gpr4j.api.Item;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.api.Type;
 import org.gpr4j.internal.delegates.AttributesProviderDelegate;
@@ -45,7 +49,6 @@ public class ProjectUnit implements IProjectUnit {
 		this.references = new KeyStringMap<ProjectUnit>();
 		this.currentPackage = this.selfPackage;
 		this.addDefaultAttribute();
-
 	}
 
 	/**
@@ -150,6 +153,24 @@ public class ProjectUnit implements IProjectUnit {
 	 */
 	public void addReferenceProject(ProjectUnit referenceProject) {
 		this.references.put(referenceProject.getName(), referenceProject);
+	}
+
+	public void addExternalVariable(ExternalVariable var) {
+		this.currentPackage.addExternalVariable(var);
+	}
+
+	public Set<ExternalVariable> getExternalVariables() {
+		Set<ExternalVariable> res = new HashSet<>();
+
+		res.addAll(this.selfPackage.getExternalVariables());
+		for (PackageUnit tmp : this.packages) {
+			res.addAll(tmp.getExternalVariables());
+		}
+		for (ProjectUnit tmp : this.references) {
+			res.addAll(tmp.getExternalVariables());
+		}
+
+		return res;
 	}
 
 	/**

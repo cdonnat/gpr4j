@@ -33,7 +33,7 @@ public class Loader implements ILoader {
 	private List<ProjectUnit> loadedProjects;
 	private Environment environment;
 	private Type currentType;
-	
+
 	public Loader() {
 		this.projectsToLoad = new Stack<>();
 		this.loadedProjects = new ArrayList<>();
@@ -283,7 +283,8 @@ public class Loader implements ILoader {
 	 */
 	public void addExternalVariable(String name, String defaultValue) {
 		this.environment.addExternalVariable(name, defaultValue, this.currentType);
-
+		this.getCurrentProject().addExternalVariable(
+				new ExternalVariable(name, defaultValue, this.currentType));
 	}
 
 	@Override
@@ -291,12 +292,7 @@ public class Loader implements ILoader {
 		this.environment.setExternalVariable(varName, value);
 	}
 
-	public ExternalVariable getExternalVariable(String varName) {
+	public Symbol getExternalVariable(String varName) {
 		return this.environment.getExternalVariable(varName);
-	}
-
-	@Override
-	public Environment getEnvironment() {
-		return this.environment;
 	}
 }

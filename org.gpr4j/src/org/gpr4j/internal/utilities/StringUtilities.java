@@ -9,8 +9,10 @@ public class StringUtilities {
 
 	public static String RemoveQuotes(String input) {
 		String res = input;
-		if (input.startsWith("\"") && input.endsWith("\"")) {
-			res = input.substring(1, input.length() - 1);
+		if (input != null) {
+			if (input.startsWith("\"") && input.endsWith("\"")) {
+				res = input.substring(1, input.length() - 1);
+			}
 		}
 		return res;
 	}

@@ -1,5 +1,9 @@
 package org.gpr4j.internal.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.api.Type;
 
@@ -15,6 +19,7 @@ public class PackageUnit implements IUnit {
 	private ItemTable<Symbol> variables;
 	private ItemTable<Symbol> attributes;
 	private ItemTable<Type> types;
+	private Set<ExternalVariable> externalVariables;
 
 	/**
 	 * Constructors
@@ -24,9 +29,10 @@ public class PackageUnit implements IUnit {
 	 */
 	public PackageUnit(String name) {
 		this.name = new String(name.toLowerCase());
-		this.variables = new ItemTable<Symbol>();
-		this.attributes = new ItemTable<Symbol>();
-		this.types = new ItemTable<Type>();
+		this.variables = new ItemTable<>();
+		this.attributes = new ItemTable<>();
+		this.types = new ItemTable<>();
+		this.externalVariables = new HashSet<>();
 	}
 
 	/**
@@ -83,6 +89,11 @@ public class PackageUnit implements IUnit {
 		return this.types.get(name);
 	}
 
+	@Override
+	public Set<ExternalVariable> getExternalVariables() {
+		return this.externalVariables;
+	}
+
 	/**
 	 * Add a variable to the package.
 	 * 
@@ -112,5 +123,15 @@ public class PackageUnit implements IUnit {
 	 */
 	public void addType(Type type) {
 		this.types.add(type);
+	}
+
+	/**
+	 * Add an external variable to the package.
+	 * 
+	 * @param externalVariable
+	 *            External variable to add.
+	 */
+	public void addExternalVariable(ExternalVariable externalVariable) {
+		this.externalVariables.add(externalVariable);
 	}
 }

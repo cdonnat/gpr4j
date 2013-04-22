@@ -1,5 +1,8 @@
 package org.gpr4j.internal.model;
 
+import java.util.Set;
+
+import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.api.Type;
 
@@ -61,4 +64,9 @@ public interface IUnit {
 	 * @return The type name is returned.
 	 */
 	public abstract Type getType(String name);
+
+	/**
+	 * @return The list of the external variable impacting the unit.
+	 */
+	public abstract Set<ExternalVariable> getExternalVariables();
 }

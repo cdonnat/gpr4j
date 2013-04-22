@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.GprLexer;
@@ -24,7 +23,7 @@ public class GprGrammarFixture {
 		when(this.loader.variableIsDefined(anyString())).thenReturn(forceVariableDefinition);
 		when(this.loader.getVariable(anyString())).thenReturn(new Symbol("", Term.CreateString("")));
 		when(this.loader.getAttribute(anyString())).thenReturn(new Symbol("",Term.CreateString("")));
-		when(this.loader.getExternalVariable(anyString())).thenReturn(new ExternalVariable("","", null));
+		when(this.loader.getExternalVariable(anyString())).thenReturn(new Symbol("",Term.CreateString("")));
 	}
 	
 	public GprGrammarFixture(String testString, boolean forceVariableDefinition) {

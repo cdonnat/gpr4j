@@ -1,4 +1,4 @@
-package org.gpr4j.internal.model;
+package org.gpr4j.api;
 
 public class Item {
 

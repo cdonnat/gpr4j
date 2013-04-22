@@ -2,8 +2,10 @@ package org.gpr4j.internal;
 
 import java.nio.file.Path;
 
-import org.gpr4j.api.Gpr;
+import org.gpr4j.api.ExternalVariable;
+import org.gpr4j.api.IGpr;
 import org.gpr4j.api.IProjectUnit;
+import org.gpr4j.internal.model.Gpr;
 
 /**
  * A Builder converts a project unit to a Gpr.
@@ -24,12 +26,13 @@ public class Builder {
 		this.referencePath = project.getPath();
 	}
 
-	public Gpr build() {
+	public IGpr build() {
 		Gpr res = new Gpr(this.referenceProject.getName(), this.referencePath.getParent());
 		this.addSourceDirs(res);
 		this.addExecDir(res);
 		this.addObjectDir(res);
 		this.addExecutables(res);
+		this.addExternalVariables(res);
 		return res;
 	}
 
@@ -66,6 +69,12 @@ public class Builder {
 					.getAttribute(SOURCE_DIRECTORIES_ATTRIBUTE).getValue().getAsStringList()) {
 				gprProject.addSourceDir(sourceDir);
 			}
+		}
+	}
+	
+	private void addExternalVariables(Gpr gprProject) {
+		for (ExternalVariable var : this.referenceProject.getExternalVariables()) {
+			gprProject.addExternalVariable (var);
 		}
 	}
 

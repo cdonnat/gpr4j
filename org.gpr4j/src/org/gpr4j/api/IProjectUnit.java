@@ -71,5 +71,4 @@ public interface IProjectUnit extends IUnit {
 	 */
 	public abstract List<IProjectUnit> getReferenceProjects();
 
-
 }

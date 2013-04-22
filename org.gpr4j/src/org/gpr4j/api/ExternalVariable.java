@@ -1,10 +1,12 @@
 package org.gpr4j.api;
 
-import org.gpr4j.internal.model.Term;
 
-public class ExternalVariable extends Symbol {
+import com.google.common.base.Preconditions;
 
-	private Term defaultValue;
+public class ExternalVariable extends Item {
+
+	private String defaultValue;
+	private Type type;
 
 	/**
 	 * @pre name != null
@@ -16,8 +18,9 @@ public class ExternalVariable extends Symbol {
 	 *            Variable type if the variable is typed, null otherwise.
 	 */
 	public ExternalVariable(String name, String defaultValue, Type type) {
-		super(name, Term.CreateString(defaultValue), type);
-		this.defaultValue = defaultValue == null ? Term.CreateString("") : this.getValue();
+		super(name);
+		this.defaultValue = defaultValue == null ? "" : defaultValue;
+		this.type = type;
 	}
 
 	/**
@@ -25,16 +28,20 @@ public class ExternalVariable extends Symbol {
 	 * @return The default value if specified or empty string if the default
 	 *         value was not given during construction.
 	 */
-	public Term getDefaultValue() {
+	public String getDefaultValue() {
 		return this.defaultValue;
 	}
 
 	/**
 	 * 
-	 * @param value
-	 *            The new value is set to the external variable.
+	 * @return The type of the external variable.
 	 */
-	public void setValue(String value) {
-		this.value = Term.CreateString(value);
+	public Type getType() {
+		Preconditions.checkState(this.isTyped());
+		return this.type;
+	}
+
+	public boolean isTyped() {		
+		return this.type != null;
 	}
 }

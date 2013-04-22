@@ -2,7 +2,6 @@ package org.gpr4j.api;
 
 import java.util.List;
 
-import org.gpr4j.internal.model.Item;
 
 import com.google.common.base.Preconditions;
 

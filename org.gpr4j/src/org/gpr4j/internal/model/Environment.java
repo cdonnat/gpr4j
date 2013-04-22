@@ -1,9 +1,6 @@
 package org.gpr4j.internal.model;
 
-import java.util.List;
-
-import org.gpr4j.api.ExternalVariable;
-import org.gpr4j.api.IEnvironment;
+import org.gpr4j.api.Symbol;
 import org.gpr4j.api.Type;
 
 import com.google.common.base.Preconditions;
@@ -13,9 +10,9 @@ import com.google.common.base.Preconditions;
  * and allows to set them to a specific value.
  * 
  */
-public class Environment implements IEnvironment {
+public class Environment {
 
-	private ItemTable<ExternalVariable> externalVariables;
+	private ItemTable<Symbol> externalVariables;
 
 	/**
 	 * Default constructor.
@@ -34,30 +31,44 @@ public class Environment implements IEnvironment {
 	 */
 	public void addExternalVariable(String name, String defaultValue, Type type) {
 		if (!this.externalVariables.isDefined(name)) {
-			this.externalVariables.add(new ExternalVariable(name, defaultValue, type));
+			this.externalVariables.add(new Symbol(name, Term.CreateString(defaultValue), type));
 		}
 	}
 
-	@Override
+	/**
+	 * Provides whether a external variable is defined or not.
+	 * 
+	 * @param varName
+	 *            Name of the external variable.
+	 * @return True if the external variable is defined in the environment.
+	 */
 	public boolean isDefined(String varName) {
 		return this.externalVariables.isDefined(varName);
 	}
 
-	@Override
+	/**
+	 * Set the value of an external variable.
+	 * 
+	 * @param varName
+	 *            Name of the external variable to set.
+	 * 
+	 * @param value
+	 *            Value to set.
+	 */
 	public void setExternalVariable(String varName, String value) {
-		Preconditions.checkArgument(this.isDefined(varName));
-		this.externalVariables.get(varName).setValue(value);
+		this.externalVariables.add(new Symbol(varName, Term.CreateString(value)));
 	}
 
-	@Override
-	public ExternalVariable getExternalVariable(String varName) {
+	/**
+	 * Provides the external variable required.
+	 * 
+	 * @param varName
+	 *            Name of the external variable.
+	 * @return The external variable.
+	 */
+	public Symbol getExternalVariable(String varName) {
 		Preconditions.checkArgument(this.isDefined(varName));
 		return this.externalVariables.get(varName);
-	}
-
-	@Override
-	public List<ExternalVariable> getExternalVariables() {
-		return this.externalVariables.getAll();
 	}
 
 }

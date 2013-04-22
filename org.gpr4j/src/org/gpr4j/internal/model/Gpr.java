@@ -1,8 +1,13 @@
-package org.gpr4j.api;
+package org.gpr4j.internal.model;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.gpr4j.api.ExternalVariable;
+import org.gpr4j.api.IGpr;
 
 import com.google.common.base.Preconditions;
 
@@ -10,14 +15,15 @@ import com.google.common.base.Preconditions;
  * A Gpr provides a user friendly API to use project unit.
  * 
  */
-public final class Gpr {
+public final class Gpr implements IGpr {
 
 	private String name;
-	private List<String> sourcesDir = new ArrayList<String>();
+	private List<String> sourcesDir = new ArrayList<>();
 	private String objectDir = null;
 	private boolean isExecutable = false;
 	private String execDir = null;
-	private List<String> execSourceNames = new ArrayList<String>(1);
+	private List<String> execSourceNames = new ArrayList<>(1);
+	private Set<ExternalVariable> externalVariables = new HashSet<>();
 	private Path rootDirPath;
 
 	/**
@@ -36,6 +42,48 @@ public final class Gpr {
 		this.rootDirPath = rootDir;
 	}
 
+	@Override
+	public List<String> getSourcesDir() {
+		return sourcesDir;
+	}
+
+	@Override
+	public String getObjectDir() {
+		return objectDir;
+	}
+
+	@Override
+	public String getExecutableDir() {
+		Preconditions.checkArgument(this.isExecutable());
+
+		return execDir;
+	}
+
+	@Override
+	public boolean isExecutable() {
+		return this.isExecutable;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public List<String> getExecutableSourceNames() {
+		return this.execSourceNames;
+	}
+
+	@Override
+	public Path getRootDirPath() {
+		return this.rootDirPath;
+	}
+
+	@Override
+	public Set<ExternalVariable> getExternalVariables() {
+		return this.externalVariables;
+	}
+
 	/**
 	 * Add a new source directory
 	 * 
@@ -44,24 +92,6 @@ public final class Gpr {
 	 */
 	public void addSourceDir(String dirName) {
 		this.sourcesDir.add(dirName);
-	}
-
-	/**
-	 * Return the list of sources directory.
-	 * 
-	 * @return The list of sources directory.
-	 */
-	public List<String> getSourcesDir() {
-		return sourcesDir;
-	}
-
-	/**
-	 * Return the object directory or null if none was specified.
-	 * 
-	 * @return Object directory.
-	 */
-	public String getObjectDir() {
-		return objectDir;
 	}
 
 	/**
@@ -96,27 +126,6 @@ public final class Gpr {
 	}
 
 	/**
-	 * Return executable directory or null if none was specified.
-	 * 
-	 * @pre GPR is an executable project.
-	 * @return The executable directory
-	 */
-	public String getExecutableDir() {
-		Preconditions.checkArgument(this.isExecutable());
-
-		return execDir;
-	}
-
-	/**
-	 * Return true if the GPR is an executable project, false otherwise.
-	 * 
-	 * @return true if the GPR is an executable project, false otherwise.
-	 */
-	public boolean isExecutable() {
-		return this.isExecutable;
-	}
-
-	/**
 	 * Set the executable directory.
 	 * 
 	 * @pre GPR is an executable project.
@@ -125,25 +134,6 @@ public final class Gpr {
 		Preconditions.checkState(this.isExecutable());
 
 		this.execDir = execDir;
-	}
-
-	/**
-	 * The project name is returned.
-	 * 
-	 * @return The project name.
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Returns the names of the executable source files of the project.
-	 * 
-	 * @return a list of String corresponding to the names of executable source
-	 *         files.
-	 */
-	public List<String> getExecutableSourceNames() {
-		return this.execSourceNames;
 	}
 
 	/**
@@ -186,9 +176,7 @@ public final class Gpr {
 		stringBuilder.append("project " + this.getName() + " is\n");
 
 		this.appendSourceDirsIfAny(stringBuilder);
-
 		this.appendObjectDirIfDefined(stringBuilder);
-
 		this.appendExecSourceNamesIfAny(stringBuilder);
 
 		stringBuilder.append("end " + this.getName() + ";");
@@ -223,12 +211,8 @@ public final class Gpr {
 		}
 	}
 
-	/**
-	 * Returns the path to the root directory of the project.
-	 * 
-	 * @return a path denoting the root directory
-	 */
-	public Path getRootDirPath() {
-		return this.rootDirPath;
+	public void addExternalVariable(ExternalVariable var) {
+		this.externalVariables.add(var);
 	}
+
 }

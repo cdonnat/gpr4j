@@ -233,7 +233,7 @@ external_value returns [Term result]
   external_name = STRING_LITERAL
   (',' defaultValue = STRING_LITERAL)? 
   ')'
-   {gprLoader.addExternalVariable(StringUtilities.RemoveQuotes($external_name.text), $defaultValue.text);}
+   {gprLoader.addExternalVariable(StringUtilities.RemoveQuotes($external_name.text), StringUtilities.RemoveQuotes($defaultValue.text));}
    { $result = gprLoader.getExternalVariable(StringUtilities.RemoveQuotes($external_name.text)).getValue();}
   ; 
 

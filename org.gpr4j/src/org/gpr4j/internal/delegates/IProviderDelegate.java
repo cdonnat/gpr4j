@@ -1,7 +1,7 @@
 package org.gpr4j.internal.delegates;
 
+import org.gpr4j.api.Item;
 import org.gpr4j.internal.model.IUnit;
-import org.gpr4j.internal.model.Item;
 
 public interface IProviderDelegate <I extends Item>{
 	

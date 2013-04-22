@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
-import org.gpr4j.internal.model.Environment;
 
 /**
  * Provides an interface to load project units.
@@ -37,10 +36,4 @@ public interface ILoader {
 	 */
 	public List<IProjectUnit> getLoadedProjects();
 	
-	/**
-	 * Provides the environment. 
-	 * 
-	 * @return The environment.
-	 */
-	public Environment getEnvironment();
 }
