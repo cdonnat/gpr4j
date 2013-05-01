@@ -277,7 +277,7 @@ public class Loader implements ILoader {
 	}
 
 	/**
-	 * Add a external variable.
+	 * Add an external variable.
 	 * 
 	 * @param name
 	 *            Name of the external variable.
