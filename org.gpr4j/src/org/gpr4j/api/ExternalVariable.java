@@ -1,6 +1,5 @@
 package org.gpr4j.api;
 
-
 import com.google.common.base.Preconditions;
 
 public class ExternalVariable extends Item {
@@ -19,7 +18,7 @@ public class ExternalVariable extends Item {
 	 */
 	public ExternalVariable(String name, String defaultValue, Type type) {
 		super(name);
-		this.defaultValue = defaultValue == null ? "" : defaultValue;
+		this.defaultValue = defaultValue == null ? "" : defaultValue.toLowerCase();
 		this.type = type;
 	}
 
@@ -33,7 +32,7 @@ public class ExternalVariable extends Item {
 	}
 
 	/**
-	 * 
+	 * @pre External variable is typed.
 	 * @return The type of the external variable.
 	 */
 	public Type getType() {
@@ -41,7 +40,36 @@ public class ExternalVariable extends Item {
 		return this.type;
 	}
 
-	public boolean isTyped() {		
+	/**
+	 * 
+	 * @return True if the external variable is typed;
+	 */
+	public boolean isTyped() {
 		return this.type != null;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+
+		if (!(o instanceof ExternalVariable))
+			return false;
+
+		ExternalVariable var = (ExternalVariable) o;
+		boolean areEqual = this.getName().equals(var.getName())
+				&& this.getDefaultValue().equals(var.getDefaultValue())
+				&& this.isTyped() == var.isTyped();
+		if (this.isTyped()) {
+			areEqual = areEqual && this.getType().equals(var.getType());
+		}
+
+		return areEqual;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getName().hashCode() + this.getDefaultValue().hashCode()
+				+ (this.isTyped() ? this.type.hashCode() : 0);
 	}
 }

@@ -1,10 +1,12 @@
 package org.gpr4j.internal.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
 import org.gpr4j.api.ExternalVariable;
@@ -154,9 +156,10 @@ public class LoaderTest {
 	}
 
 	private void checkType(String typeName, String[] expectedValues) {
-		List<String> computed = sut.getLoadedProjects().get(0).getType(typeName).getValues();
+		Set<String> computed = sut.getLoadedProjects().get(0).getType(typeName).getValues();
+		assertEquals("Type possible values", expectedValues.length, computed.size());
 		for (int i = 0; i < expectedValues.length; i++) {
-			assertEquals("Attribute n?" + i, expectedValues[i], computed.get(i));
+			assertTrue("Attribute n?" + i, computed.contains(expectedValues[i]));
 		}
 	}
 
@@ -179,8 +182,8 @@ public class LoaderTest {
 			assertEquals("Variable possible values", expectedValues.length, computed.getType()
 					.getValues().size());
 			for (int i = 0; i < expectedValues.length; i++) {
-				assertEquals("Attribute n?" + i, expectedValues[i], computed.getType().getValues()
-						.get(i));
+				assertTrue("Attribute n?" + i,
+						computed.getType().getValues().contains(expectedValues[i]));
 			}
 		}
 	}

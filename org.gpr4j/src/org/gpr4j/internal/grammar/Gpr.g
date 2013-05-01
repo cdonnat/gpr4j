@@ -3,7 +3,7 @@ grammar Gpr;
 @header {
 package org.gpr4j.internal.grammar;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.model.Term;
 import org.gpr4j.internal.utilities.StringUtilities;
@@ -109,7 +109,7 @@ simple_declarative_item
 typed_string_declaration 
   :
   TYPE 
-  simple_name {ArrayList<String> values = new ArrayList<String>();}
+  simple_name {HashSet<String> values = new HashSet<String>();}
   IS 
   '(' 
   first = STRING_LITERAL { values.add(StringUtilities.RemoveQuotes($first.text)); } 

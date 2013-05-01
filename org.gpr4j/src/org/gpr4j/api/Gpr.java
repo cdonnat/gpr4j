@@ -1,4 +1,4 @@
-package org.gpr4j.internal.model;
+package org.gpr4j.api;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.gpr4j.api.ExternalVariable;
-import org.gpr4j.api.IGpr;
 
 import com.google.common.base.Preconditions;
 

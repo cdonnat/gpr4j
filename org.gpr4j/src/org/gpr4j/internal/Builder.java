@@ -3,9 +3,9 @@ package org.gpr4j.internal;
 import java.nio.file.Path;
 
 import org.gpr4j.api.ExternalVariable;
+import org.gpr4j.api.Gpr;
 import org.gpr4j.api.IGpr;
 import org.gpr4j.api.IProjectUnit;
-import org.gpr4j.internal.model.Gpr;
 
 /**
  * A Builder converts a project unit to a Gpr.

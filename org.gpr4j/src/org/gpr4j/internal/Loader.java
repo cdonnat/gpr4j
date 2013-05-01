@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import org.antlr.runtime.ANTLRFileStream;
@@ -257,7 +258,7 @@ public class Loader implements ILoader {
 	 * @param type
 	 *            Type to add.
 	 */
-	public void addType(String typeName, List<String> values) {
+	public void addType(String typeName, Set<String> values) {
 		this.getCurrentProject().addType(new Type(typeName, values));
 	}
 

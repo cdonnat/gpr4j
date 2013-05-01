@@ -3,7 +3,7 @@ package org.gpr4j.internal.model.test;
 
 import static org.junit.Assert.*;
 
-import org.gpr4j.internal.model.Gpr;
+import org.gpr4j.api.Gpr;
 import org.junit.Test;
 
 public class GprTest {
