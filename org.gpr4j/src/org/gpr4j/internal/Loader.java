@@ -34,11 +34,20 @@ public class Loader implements ILoader {
 	private List<ProjectUnit> loadedProjects;
 	private Environment environment;
 	private Type currentType;
+	private Stack<String> caseVariables;
+
+	private enum CaseState {
+		IDLE, IN_PROGRESS, DONE
+	};
+
+	private Stack<CaseState> state;
 
 	public Loader() {
 		this.projectsToLoad = new Stack<>();
 		this.loadedProjects = new ArrayList<>();
 		this.environment = new Environment();
+		this.caseVariables = new Stack<>();
+		this.state = new Stack<>();
 	}
 
 	/**
@@ -48,7 +57,9 @@ public class Loader implements ILoader {
 	 *            Variable to add.
 	 */
 	public void addVariable(String varName, Term value) {
-		this.getCurrentProject().addVariable(new Symbol(varName, value, this.currentType));
+		if (this.statementShallBeTakenIntoAccount()) {
+			this.getCurrentProject().addVariable(new Symbol(varName, value, this.currentType));
+		}
 	}
 
 	/**
@@ -58,7 +69,9 @@ public class Loader implements ILoader {
 	 *            Attribute to add.
 	 */
 	public void addAttribute(String attributeName, Term value) {
-		this.getCurrentProject().addAttribute(new Symbol(attributeName, value, null));
+		if (this.statementShallBeTakenIntoAccount()) {
+			this.getCurrentProject().addAttribute(new Symbol(attributeName, value, null));
+		}
 	}
 
 	/**
@@ -295,5 +308,42 @@ public class Loader implements ILoader {
 
 	public Symbol getExternalVariable(String varName) {
 		return this.environment.getExternalVariable(varName);
+	}
+
+	public void beginCase(String varName) {
+		this.caseVariables.push(this.getVariable(varName).getValue().getAsString());
+		if (this.statementShallBeTakenIntoAccount()) {
+			this.state.push(CaseState.IDLE);
+		}
+		else {
+			this.state.push(CaseState.DONE);
+		}
+	}
+
+	public void endCase() {
+		this.caseVariables.pop();
+		this.state.pop();
+	}
+
+	public void setCaseDiscreteChoices(List<String> discreteChoices) {
+		switch (this.state.peek()) {
+		case IDLE:
+			if (discreteChoices.contains(this.caseVariables.peek())
+					|| discreteChoices.contains("others")) {
+				this.state.pop();
+				this.state.push(CaseState.IN_PROGRESS);
+			}
+			break;
+		case IN_PROGRESS:
+			this.state.pop();
+			this.state.push(CaseState.DONE);
+			break;
+		case DONE:
+			break;
+		}
+	}
+
+	private boolean statementShallBeTakenIntoAccount() {
+		return this.state.isEmpty() || this.state.peek() == CaseState.IN_PROGRESS;
 	}
 }

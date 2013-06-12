@@ -104,7 +104,7 @@ public class LoaderTest {
 	}
 
 	@Test
-	public void testExternalVarialbe() {
+	public void testExternalVariable() {
 		this.createFixture("sample_project.gpr");
 
 		this.exercize();
@@ -120,6 +120,28 @@ public class LoaderTest {
 		this.checkVariable("mode", "release");
 		this.checkVariable("mode_included", "second");
 
+	}
+
+	@Test
+	public void testCase() {
+		this.createFixture("project_with_case.gpr");
+
+		this.exercize();
+		this.checkAttribute("exec_dir", "native_zfp_exe");
+		this.checkAttribute("object_dir", "obj");
+		this.checkAttribute("source_dirs", new String[] { "src", "include", "native" });
+
+		this.sut.setExternalVariable("Platform", "native-full");
+		this.exercize();
+		this.checkAttribute("exec_dir", "native_full_exe");
+		this.checkAttribute("object_dir", "obj_full");
+		this.checkAttribute("source_dirs", new String[] { "src", "include", "native" });
+
+		this.sut.setExternalVariable("Platform", "xcov-zfp");
+		this.exercize();
+		this.checkAttribute("exec_dir", "other_exe");
+		this.checkAttribute("object_dir", "obj_others");
+		this.checkAttribute("source_dirs", new String[] { "src", "include" });
 	}
 
 	private void checkNbOfLoadedProjects(int expectedNumberOfLoadedProject) {

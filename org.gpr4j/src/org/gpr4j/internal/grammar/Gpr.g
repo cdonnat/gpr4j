@@ -121,7 +121,11 @@ typed_string_declaration
 
 case_statement 
   :
-  CASE name IS (case_item)* END CASE ';'
+  CASE name {gprLoader.beginCase($name.text);}
+  IS 
+  (case_item)* 
+  END CASE ';'
+  {gprLoader.endCase();}
   ;
 
 case_item
@@ -135,9 +139,12 @@ case_item
   
 discrete_choice_list
   :
-  STRING_LITERAL ( '|' STRING_LITERAL)* 
-  | OTHERS
-  ;
+  {List<String> discreteChoices = new ArrayList<>();}
+  first=STRING_LITERAL {if ($first != null) discreteChoices.add(StringUtilities.RemoveQuotes($first.text)); }
+  ( '|' other=STRING_LITERAL {discreteChoices.add(StringUtilities.RemoveQuotes($other.text));})*  {gprLoader.setCaseDiscreteChoices(discreteChoices);} 
+  | OTHERS {List<String> discreteChoices = new ArrayList<>(); discreteChoices.add(StringUtilities.RemoveQuotes($OTHERS.text));}
+  {gprLoader.setCaseDiscreteChoices(discreteChoices);} 
+   ;
 
 package_declaration 
   :
