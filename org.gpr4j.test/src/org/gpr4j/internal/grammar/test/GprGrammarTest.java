@@ -1,6 +1,5 @@
 package org.gpr4j.internal.grammar.test;
 
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -40,9 +39,14 @@ public class GprGrammarTest {
 		assertFalse("Two underscores next to each other",
 				GprGrammarTestUtils.IsSimpleName("identif__er"));
 
-		//FIXME fails with a NullPointerException
-//		assertFalse("Ends with an underscore",
-//				GprGrammarTestUtils.IsSimpleName("identifier_"));
+		boolean isSimpleName;
+		try {
+			isSimpleName = GprGrammarTestUtils.IsSimpleName("identifier_");
+		} catch (Exception e) {
+			isSimpleName = false;
+		}
+
+		assertFalse("Ends with an underscore", isSimpleName);
 
 	}
 
@@ -91,25 +95,21 @@ public class GprGrammarTest {
 
 	@Test
 	public void testStringExpression() {
-		assertTrue(
-				"String literal",
+		assertTrue("String literal",
 				GprGrammarTestUtils.IsStringExpressionIdentified("\"Toto\"",
 						Term.CreateString("Toto")));
-		
-		assertTrue(
-				"Name",
-				GprGrammarTestUtils.IsStringExpressionIdentified("My.Name;",
+
+		assertTrue("Name", GprGrammarTestUtils.IsStringExpressionIdentified(
+				"My.Name;", Term.CreateString("")));
+
+		assertTrue("External value",
+				GprGrammarTestUtils.IsStringExpressionIdentified(
+						"external(\"External\", \"default\"));",
 						Term.CreateString("")));
-		
-		assertTrue(
-				"External value",
-				GprGrammarTestUtils.IsStringExpressionIdentified("external(\"External\", \"default\"));",
-						Term.CreateString("")));
-		
-		assertTrue(
-				"Attribute reference",
-				GprGrammarTestUtils.IsStringExpressionIdentified("project'Source_Dir;",
-						Term.CreateString("")));
+
+		assertTrue("Attribute reference",
+				GprGrammarTestUtils.IsStringExpressionIdentified(
+						"project'Source_Dir;", Term.CreateString("")));
 	}
 
 	@Test
