@@ -1,6 +1,9 @@
 package org.gpr4j.internal;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,8 +12,9 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.ILoader;
 import org.gpr4j.api.IProjectUnit;
@@ -120,7 +124,10 @@ public class Loader implements ILoader {
 	private void parseGpr(Path path) throws RecognitionException {
 		GprLexer lexer;
 		try {
-			lexer = new GprLexer(new ANTLRFileStream(path.toFile().getAbsolutePath()));
+			Reader reader = new FileReader(path.toFile());
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			ANTLRInputStream input = new ANTLRInputStream(bufferedReader);
+			lexer = new GprLexer(input);
 			GprParser parser = new GprParser(this, new CommonTokenStream(lexer));
 			parser.project();
 		} catch (IOException e) {

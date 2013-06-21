@@ -1,14 +1,13 @@
 package org.gpr4j.internal.grammar.test;
 
-
-
 import java.io.IOException;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
 import org.gpr4j.internal.Loader;
+import org.gpr4j.internal.grammar.ErrorLogger;
 import org.gpr4j.internal.grammar.GprLexer;
 import org.gpr4j.internal.grammar.GprParser;
 import org.gpr4j.internal.model.Term;
@@ -24,16 +23,15 @@ public class GprGrammarTestUtils {
 	}
 
 	public static GprLexer CreateLexer(String testString) throws IOException {
-		CharStream stream = new ANTLRStringStream(testString);
+		CharStream stream = new ANTLRInputStream(testString);
 		GprLexer lexer = new GprLexer(stream);
 
 		return lexer;
 	}
 
 	public static boolean NoRecognitionExceptionOccurred(GprParser parser,
-			GprLexer lexer) {
-		return parser.getExceptions().isEmpty()
-				&& lexer.getExceptions().isEmpty();
+			GprLexer lexer, ErrorLogger errorLogger) {
+		return errorLogger.getExceptions().isEmpty();
 	}
 
 	private static boolean RunSimpleParserRuleCheck(
@@ -94,7 +92,7 @@ public class GprGrammarTestUtils {
 			}
 
 			return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-					fixture.parser, fixture.lexer)
+					fixture.parser, fixture.lexer, fixture.errorLogger)
 					&& this.areSymbolsIdentical(result, expectedSymbol);
 		}
 
@@ -115,7 +113,7 @@ public class GprGrammarTestUtils {
 			}
 
 			return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-					fixture.parser, fixture.lexer)
+					fixture.parser, fixture.lexer, fixture.errorLogger)
 					&& result.equals(expectedString);
 		}
 
@@ -133,7 +131,7 @@ public class GprGrammarTestUtils {
 			}
 
 			return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-					fixture.parser, fixture.lexer);
+					fixture.parser, fixture.lexer, fixture.errorLogger);
 		}
 
 		protected abstract void executeParserRule(GprGrammarFixture fixture)
@@ -141,18 +139,18 @@ public class GprGrammarTestUtils {
 	}
 
 	public static boolean IsNameIdentified(String inputName) {
-		GprParser.name_return ruleReturn = new GprParser.name_return();
+		String result = null;
 		GprGrammarFixture fixture = new GprGrammarFixture(inputName);
 
 		try {
-			ruleReturn = fixture.parser.name();
+			result = fixture.parser.name().result;
 		} catch (RecognitionException e) {
 
 		}
 
 		return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-				fixture.parser, fixture.lexer)
-				&& ruleReturn.result.equals(inputName);
+				fixture.parser, fixture.lexer, fixture.errorLogger)
+				&& result.equals(inputName);
 	}
 
 	public static boolean IsEmptyDeclaration(String input) {
@@ -175,12 +173,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.expression();
+				return fixture.parser.expression().result;
 			}
 		};
 
-		return RunTermParserRuleCheck(expressionChecker, input,
-				expectedSymbol);
+		return RunTermParserRuleCheck(expressionChecker, input, expectedSymbol);
 	}
 
 	public static boolean IsVariableDeclaration(String input) {
@@ -210,19 +207,17 @@ public class GprGrammarTestUtils {
 		return RunSimpleParserRuleCheck(typedVariableDecChecker, input, false);
 	}
 
-	public static boolean IsStringListIdentified(String input,
-			Term expectedTerm) {
+	public static boolean IsStringListIdentified(String input, Term expectedTerm) {
 		TermParserRuleChecker stringListChecker = new TermParserRuleChecker() {
 
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.string_list();
+				return fixture.parser.string_list().result;
 			}
 		};
 
-		return RunTermParserRuleCheck(stringListChecker, input,
-				expectedTerm);
+		return RunTermParserRuleCheck(stringListChecker, input, expectedTerm);
 	}
 
 	public static boolean IsAttributeDeclaration(String input) {
@@ -380,7 +375,7 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.path_name();
+				return fixture.parser.path_name().result;
 			}
 		};
 
@@ -506,7 +501,7 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.attribute_designator();
+				return fixture.parser.attribute_designator().result;
 			}
 		};
 
@@ -519,7 +514,7 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.attribute_prefix();
+				return fixture.parser.attribute_prefix().result;
 			}
 		};
 
@@ -532,7 +527,7 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.expression();
+				return fixture.parser.expression().result;
 			}
 		};
 
@@ -546,7 +541,7 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.string_expression();
+				return fixture.parser.string_expression().result;
 			}
 		};
 
