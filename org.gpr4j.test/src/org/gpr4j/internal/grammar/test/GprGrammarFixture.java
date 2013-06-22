@@ -39,6 +39,10 @@ public class GprGrammarFixture {
 			this.parser = GprGrammarTestUtils.CreateParser(this.lexer,
 					this.loader);
 			this.errorLogger = new ErrorLogger();
+			this.lexer.removeErrorListeners();
+			this.parser.removeErrorListeners();
+			this.lexer.addErrorListener(this.errorLogger);
+			this.parser.addErrorListener(this.errorLogger);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

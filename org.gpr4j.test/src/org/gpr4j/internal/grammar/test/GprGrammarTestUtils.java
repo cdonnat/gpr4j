@@ -32,6 +32,7 @@ public class GprGrammarTestUtils {
 	public static boolean NoRecognitionExceptionOccurred(GprParser parser,
 			GprLexer lexer, ErrorLogger errorLogger) {
 		return errorLogger.getExceptions().isEmpty();
+
 	}
 
 	private static boolean RunSimpleParserRuleCheck(

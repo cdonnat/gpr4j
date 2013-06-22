@@ -100,7 +100,7 @@ public class GprGrammarTest {
 						Term.CreateString("Toto")));
 
 		assertTrue("Name", GprGrammarTestUtils.IsStringExpressionIdentified(
-				"My.Name;", Term.CreateString("")));
+				"My.Name", Term.CreateString("")));
 
 		assertTrue("External value",
 				GprGrammarTestUtils.IsStringExpressionIdentified(
@@ -307,7 +307,7 @@ public class GprGrammarTest {
 
 	@Test
 	public void testContextClause() {
-		assertTrue(GprGrammarTestUtils.IsContextClause("\"\""));
+		assertTrue(GprGrammarTestUtils.IsContextClause(""));
 		assertTrue(GprGrammarTestUtils
 				.IsContextClause("with \"../../my_project.gpr\"; with \"..\\..\\my_project_windows.gpr\";"));
 	}

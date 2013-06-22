@@ -266,7 +266,7 @@ COMMENT
     | '\r'
     | '\f'
    )*
-  -> skip;
+  -> channel(HIDDEN);
   
 STRING_LITERAL  
   : 
@@ -324,7 +324,7 @@ WS  :
   |'\r'
   |'\b'
   |'\n' 
-  |'\f' )+ -> skip;
+  |'\f' )+ -> channel(HIDDEN);
   
 fragment A:('a'|'A');
 fragment B:('b'|'B');

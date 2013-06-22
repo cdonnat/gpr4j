@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.gpr4j.api.ExternalVariable;
