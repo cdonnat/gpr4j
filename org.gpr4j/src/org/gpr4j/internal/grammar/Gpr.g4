@@ -25,14 +25,13 @@ context_clause : with_clause*;
 
 with_clause 
   : WITH 
-    first_path=path_name {gprLoader.addProject($first_path.result);}
-    (COMMA other_path=path_name {gprLoader.addProject($other_path.result);})*  
+    first_path=path_name
+    (COMMA other_path=path_name)*  
     SEMI_COLON;
 
 path_name returns [String result] 
   : 
   STRING_LITERAL
-  {$result = $STRING_LITERAL.text.replaceAll("\"", "");}
   ;
 
 project_declaration : simple_project_declaration;
@@ -51,8 +50,8 @@ simple_project_declaration
 
 name returns [String result]
   :
-  first = simple_name {$result = $first.text;} 
-  (DOT other = simple_name {$result += "." + $other.text;})*
+  first = simple_name
+  (DOT other = simple_name)*
   ;
   
 simple_name
@@ -79,23 +78,21 @@ simple_declarative_item
 typed_string_declaration 
   :
   TYPE 
-  simple_name {HashSet<String> values = new HashSet<String>();}
+  simple_name
   IS 
   LPAR 
-  first = STRING_LITERAL { values.add(StringUtilities.RemoveQuotes($first.text)); } 
-  (COMMA other = STRING_LITERAL {values.add(StringUtilities.RemoveQuotes($other.text));})* 
+  first = STRING_LITERAL
+  (COMMA other = STRING_LITERAL)* 
   RPAR
-  {gprLoader.addType ($simple_name.text, values); } 
   SEMI_COLON
   ;
 
 case_statement 
   :
-  CASE name {gprLoader.beginCase($name.text);}
+  CASE name
   IS 
   (case_item)* 
   END CASE SEMI_COLON
-  {gprLoader.endCase();}
   ;
 
 case_item
@@ -109,17 +106,15 @@ case_item
   
 discrete_choice_list
   :
-  {List<String> discreteChoices = new ArrayList<>();}
-  first=STRING_LITERAL {if ($first != null) discreteChoices.add(StringUtilities.RemoveQuotes($first.text)); }
-  ( PIPE other=STRING_LITERAL {discreteChoices.add(StringUtilities.RemoveQuotes($other.text));})*  {gprLoader.setCaseDiscreteChoices(discreteChoices);} 
-  | OTHERS {List<String> discreteChoices = new ArrayList<>(); discreteChoices.add(StringUtilities.RemoveQuotes($OTHERS.text));}
-  {gprLoader.setCaseDiscreteChoices(discreteChoices);} 
+  first=STRING_LITERAL 
+  ( PIPE other=STRING_LITERAL )*
+  | OTHERS
    ;
 
 package_declaration 
   :
-  package_spec 
-  | package_renaming 
+  package_spec
+  | package_renaming
   | package_extension
   ;
   

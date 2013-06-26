@@ -19,6 +19,7 @@ import org.gpr4j.api.ILoader;
 import org.gpr4j.api.IProjectUnit;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.api.Type;
+import org.gpr4j.internal.grammar.GprFileListener;
 import org.gpr4j.internal.grammar.GprLexer;
 import org.gpr4j.internal.grammar.GprParser;
 import org.gpr4j.internal.model.Environment;
@@ -128,6 +129,7 @@ public class Loader implements ILoader {
 			ANTLRInputStream input = new ANTLRInputStream(bufferedReader);
 			lexer = new GprLexer(input);
 			GprParser parser = new GprParser(this, new CommonTokenStream(lexer));
+			parser.addParseListener(new GprFileListener(this));
 			parser.project();
 		} catch (IOException e) {
 			e.printStackTrace();

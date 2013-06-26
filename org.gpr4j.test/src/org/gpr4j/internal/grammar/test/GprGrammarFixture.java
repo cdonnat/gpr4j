@@ -9,7 +9,9 @@ import java.io.IOException;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.ErrorLogger;
+import org.gpr4j.internal.grammar.GprFileListener;
 import org.gpr4j.internal.grammar.GprLexer;
+import org.gpr4j.internal.grammar.GprListener;
 import org.gpr4j.internal.grammar.GprParser;
 import org.gpr4j.internal.model.Term;
 
@@ -19,6 +21,7 @@ public class GprGrammarFixture {
 	public GprParser parser;
 	public Loader loader;
 	public ErrorLogger errorLogger;
+	public GprListener gprListener;
 
 	public void createMock(boolean forceVariableDefinition) {
 		this.loader = mock(Loader.class);
@@ -43,6 +46,8 @@ public class GprGrammarFixture {
 			this.parser.removeErrorListeners();
 			this.lexer.addErrorListener(this.errorLogger);
 			this.parser.addErrorListener(this.errorLogger);
+			this.gprListener = new GprFileListener(this.loader);
+			this.parser.addParseListener(this.gprListener);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

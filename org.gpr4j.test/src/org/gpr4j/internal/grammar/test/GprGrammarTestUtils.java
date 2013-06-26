@@ -143,11 +143,7 @@ public class GprGrammarTestUtils {
 		String result = null;
 		GprGrammarFixture fixture = new GprGrammarFixture(inputName);
 
-		try {
-			result = fixture.parser.name().result;
-		} catch (RecognitionException e) {
-
-		}
+		result = fixture.parser.name().result;
 
 		return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
 				fixture.parser, fixture.lexer, fixture.errorLogger)

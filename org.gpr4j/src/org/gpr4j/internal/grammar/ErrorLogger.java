@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.antlr.v4.runtime.*;
 
+/**
+ * This class is used to store errors encountered from both lexer and parsers.
+ * 
+ * @author rs
+ * 
+ */
 public class ErrorLogger extends BaseErrorListener {
 
 	private List<RecognitionException> exceptions;
