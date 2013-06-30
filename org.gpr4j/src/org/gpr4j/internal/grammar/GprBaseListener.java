@@ -1,10 +1,7 @@
-// Generated from /home/rs/workspace_ada/gpr4j/org.gpr4j/src/org/gpr4j/internal/grammar/Gpr.g4 by ANTLR 4.0
+// Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.0
 package org.gpr4j.internal.grammar;
 
-import java.util.HashSet;
-import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.model.Term;
-import org.gpr4j.internal.utilities.StringUtilities;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,6 +13,12 @@ public class GprBaseListener implements GprListener {
 	@Override public void enterExpression(GprParser.ExpressionContext ctx) { }
 	@Override public void exitExpression(GprParser.ExpressionContext ctx) { }
 
+	@Override public void enterStringExpressionAttributeReference(GprParser.StringExpressionAttributeReferenceContext ctx) { }
+	@Override public void exitStringExpressionAttributeReference(GprParser.StringExpressionAttributeReferenceContext ctx) { }
+
+	@Override public void enterStringExpressionVariableName(GprParser.StringExpressionVariableNameContext ctx) { }
+	@Override public void exitStringExpressionVariableName(GprParser.StringExpressionVariableNameContext ctx) { }
+
 	@Override public void enterPackage_extension(GprParser.Package_extensionContext ctx) { }
 	@Override public void exitPackage_extension(GprParser.Package_extensionContext ctx) { }
 
@@ -24,9 +27,6 @@ public class GprBaseListener implements GprListener {
 
 	@Override public void enterPackage_spec(GprParser.Package_specContext ctx) { }
 	@Override public void exitPackage_spec(GprParser.Package_specContext ctx) { }
-
-	@Override public void enterString_expression(GprParser.String_expressionContext ctx) { }
-	@Override public void exitString_expression(GprParser.String_expressionContext ctx) { }
 
 	@Override public void enterSimple_declarative_item(GprParser.Simple_declarative_itemContext ctx) { }
 	@Override public void exitSimple_declarative_item(GprParser.Simple_declarative_itemContext ctx) { }
@@ -85,6 +85,9 @@ public class GprBaseListener implements GprListener {
 	@Override public void enterProject(GprParser.ProjectContext ctx) { }
 	@Override public void exitProject(GprParser.ProjectContext ctx) { }
 
+	@Override public void enterStringExpressionExternalValue(GprParser.StringExpressionExternalValueContext ctx) { }
+	@Override public void exitStringExpressionExternalValue(GprParser.StringExpressionExternalValueContext ctx) { }
+
 	@Override public void enterDiscrete_choice_list(GprParser.Discrete_choice_listContext ctx) { }
 	@Override public void exitDiscrete_choice_list(GprParser.Discrete_choice_listContext ctx) { }
 
@@ -99,6 +102,9 @@ public class GprBaseListener implements GprListener {
 
 	@Override public void enterDeclarative_item(GprParser.Declarative_itemContext ctx) { }
 	@Override public void exitDeclarative_item(GprParser.Declarative_itemContext ctx) { }
+
+	@Override public void enterStringExpressionLiteral(GprParser.StringExpressionLiteralContext ctx) { }
+	@Override public void exitStringExpressionLiteral(GprParser.StringExpressionLiteralContext ctx) { }
 
 	@Override public void enterExternal_value(GprParser.External_valueContext ctx) { }
 	@Override public void exitExternal_value(GprParser.External_valueContext ctx) { }

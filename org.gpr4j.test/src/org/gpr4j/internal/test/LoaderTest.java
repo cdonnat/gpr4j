@@ -197,7 +197,7 @@ public class LoaderTest {
 			}
 		}
 
-		assertEquals("Variable is typed", computed.isTyped(), isTyped);
+		assertEquals("Variable is typed", isTyped, computed.isTyped());
 		assertEquals("Variable name", name, computed.getName());
 		assertEquals("Variable default value", defaultValue, computed.getDefaultValue());
 		if (isTyped) {

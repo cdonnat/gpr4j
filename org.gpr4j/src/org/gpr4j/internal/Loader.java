@@ -14,6 +14,8 @@ import java.util.Stack;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.gpr4j.api.ExternalVariable;
 import org.gpr4j.api.ILoader;
 import org.gpr4j.api.IProjectUnit;
@@ -62,7 +64,8 @@ public class Loader implements ILoader {
 	 */
 	public void addVariable(String varName, Term value) {
 		if (this.statementShallBeTakenIntoAccount()) {
-			this.getCurrentProject().addVariable(new Symbol(varName, value, this.currentType));
+			this.getCurrentProject().addVariable(
+					new Symbol(varName, value, this.currentType));
 		}
 	}
 
@@ -74,7 +77,8 @@ public class Loader implements ILoader {
 	 */
 	public void addAttribute(String attributeName, Term value) {
 		if (this.statementShallBeTakenIntoAccount()) {
-			this.getCurrentProject().addAttribute(new Symbol(attributeName, value, null));
+			this.getCurrentProject().addAttribute(
+					new Symbol(attributeName, value, null));
 		}
 	}
 
@@ -128,9 +132,10 @@ public class Loader implements ILoader {
 			BufferedReader bufferedReader = new BufferedReader(reader);
 			ANTLRInputStream input = new ANTLRInputStream(bufferedReader);
 			lexer = new GprLexer(input);
-			GprParser parser = new GprParser(this, new CommonTokenStream(lexer));
-			parser.addParseListener(new GprFileListener(this));
-			parser.project();
+			GprParser parser = new GprParser(new CommonTokenStream(lexer));
+			ParseTree parseTree = parser.project();
+			ParseTreeWalker treeWalker = new ParseTreeWalker();
+			treeWalker.walk(new GprFileListener(this), parseTree);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -145,7 +150,8 @@ public class Loader implements ILoader {
 	 */
 	private Path evaluatePath(String relativeProjectPath) {
 		Path referencePath = this.getCurrentProject().getPath().getParent();
-		Path path = Paths.get(referencePath.toString(), relativeProjectPath).normalize();
+		Path path = Paths.get(referencePath.toString(), relativeProjectPath)
+				.normalize();
 		boolean hasExtension = path.getFileName().toString().split("\\.").length == 2;
 
 		if (!hasExtension) {
@@ -181,7 +187,8 @@ public class Loader implements ILoader {
 	 * @param relativeProjectPath
 	 *            Relative path to the Gpr file of the project to add.
 	 */
-	public void addProject(String relativeProjectPath) throws RecognitionException {
+	public void addProject(String relativeProjectPath)
+			throws RecognitionException {
 		Path projectToAddPath = evaluatePath(relativeProjectPath);
 
 		if (this.projectIsAlreadyLoaded(projectToAddPath)) {
@@ -198,7 +205,8 @@ public class Loader implements ILoader {
 	 */
 	@Override
 	public List<IProjectUnit> getLoadedProjects() {
-		List<IProjectUnit> loadedProjects = new ArrayList<IProjectUnit>(this.loadedProjects.size());
+		List<IProjectUnit> loadedProjects = new ArrayList<IProjectUnit>(
+				this.loadedProjects.size());
 		for (ProjectUnit project : this.loadedProjects) {
 			loadedProjects.add(project);
 		}
@@ -232,8 +240,10 @@ public class Loader implements ILoader {
 	 * @param packageName
 	 *            Name of the package to copy.
 	 */
-	public void addPackageFrom(String newPackageName, String projectName, String packageName) {
-		this.getCurrentProject().addPackageFrom(newPackageName, projectName, packageName);
+	public void addPackageFrom(String newPackageName, String projectName,
+			String packageName) {
+		this.getCurrentProject().addPackageFrom(newPackageName, projectName,
+				packageName);
 	}
 
 	/**
@@ -255,7 +265,8 @@ public class Loader implements ILoader {
 	private ProjectUnit getProject(Path pathToGpr) {
 		ProjectUnit project = null;
 		for (ProjectUnit loadedProject : this.loadedProjects) {
-			if (loadedProject.getPath().toString().equalsIgnoreCase(pathToGpr.toString())) {
+			if (loadedProject.getPath().toString()
+					.equalsIgnoreCase(pathToGpr.toString())) {
 				project = loadedProject;
 				break;
 			}
@@ -304,7 +315,8 @@ public class Loader implements ILoader {
 	 *            Name of the external variable.
 	 */
 	public void addExternalVariable(String name, String defaultValue) {
-		this.environment.addExternalVariable(name, defaultValue, this.currentType);
+		this.environment.addExternalVariable(name, defaultValue,
+				this.currentType);
 		this.getCurrentProject().addExternalVariable(
 				new ExternalVariable(name, defaultValue, this.currentType));
 	}
@@ -319,11 +331,11 @@ public class Loader implements ILoader {
 	}
 
 	public void beginCase(String varName) {
-		this.caseVariables.push(this.getVariable(varName).getValue().getAsString());
+		this.caseVariables.push(this.getVariable(varName).getValue()
+				.getAsString());
 		if (this.statementShallBeTakenIntoAccount()) {
 			this.state.push(CaseState.IDLE);
-		}
-		else {
+		} else {
 			this.state.push(CaseState.DONE);
 		}
 	}
@@ -335,23 +347,24 @@ public class Loader implements ILoader {
 
 	public void setCaseDiscreteChoices(List<String> discreteChoices) {
 		switch (this.state.peek()) {
-		case IDLE:
-			if (discreteChoices.contains(this.caseVariables.peek())
-					|| discreteChoices.contains("others")) {
+			case IDLE:
+				if (discreteChoices.contains(this.caseVariables.peek())
+						|| discreteChoices.contains("others")) {
+					this.state.pop();
+					this.state.push(CaseState.IN_PROGRESS);
+				}
+				break;
+			case IN_PROGRESS:
 				this.state.pop();
-				this.state.push(CaseState.IN_PROGRESS);
-			}
-			break;
-		case IN_PROGRESS:
-			this.state.pop();
-			this.state.push(CaseState.DONE);
-			break;
-		case DONE:
-			break;
+				this.state.push(CaseState.DONE);
+				break;
+			case DONE:
+				break;
 		}
 	}
 
 	private boolean statementShallBeTakenIntoAccount() {
-		return this.state.isEmpty() || this.state.peek() == CaseState.IN_PROGRESS;
+		return this.state.isEmpty()
+				|| this.state.peek() == CaseState.IN_PROGRESS;
 	}
 }

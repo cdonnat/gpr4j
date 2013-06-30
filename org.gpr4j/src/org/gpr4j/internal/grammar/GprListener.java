@@ -1,10 +1,7 @@
-// Generated from /home/rs/workspace_ada/gpr4j/org.gpr4j/src/org/gpr4j/internal/grammar/Gpr.g4 by ANTLR 4.0
+// Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.0
 package org.gpr4j.internal.grammar;
 
-import java.util.HashSet;
-import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.model.Term;
-import org.gpr4j.internal.utilities.StringUtilities;
 
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.Token;
@@ -12,6 +9,12 @@ import org.antlr.v4.runtime.Token;
 public interface GprListener extends ParseTreeListener {
 	void enterExpression(GprParser.ExpressionContext ctx);
 	void exitExpression(GprParser.ExpressionContext ctx);
+
+	void enterStringExpressionAttributeReference(GprParser.StringExpressionAttributeReferenceContext ctx);
+	void exitStringExpressionAttributeReference(GprParser.StringExpressionAttributeReferenceContext ctx);
+
+	void enterStringExpressionVariableName(GprParser.StringExpressionVariableNameContext ctx);
+	void exitStringExpressionVariableName(GprParser.StringExpressionVariableNameContext ctx);
 
 	void enterPackage_extension(GprParser.Package_extensionContext ctx);
 	void exitPackage_extension(GprParser.Package_extensionContext ctx);
@@ -21,9 +24,6 @@ public interface GprListener extends ParseTreeListener {
 
 	void enterPackage_spec(GprParser.Package_specContext ctx);
 	void exitPackage_spec(GprParser.Package_specContext ctx);
-
-	void enterString_expression(GprParser.String_expressionContext ctx);
-	void exitString_expression(GprParser.String_expressionContext ctx);
 
 	void enterSimple_declarative_item(GprParser.Simple_declarative_itemContext ctx);
 	void exitSimple_declarative_item(GprParser.Simple_declarative_itemContext ctx);
@@ -82,6 +82,9 @@ public interface GprListener extends ParseTreeListener {
 	void enterProject(GprParser.ProjectContext ctx);
 	void exitProject(GprParser.ProjectContext ctx);
 
+	void enterStringExpressionExternalValue(GprParser.StringExpressionExternalValueContext ctx);
+	void exitStringExpressionExternalValue(GprParser.StringExpressionExternalValueContext ctx);
+
 	void enterDiscrete_choice_list(GprParser.Discrete_choice_listContext ctx);
 	void exitDiscrete_choice_list(GprParser.Discrete_choice_listContext ctx);
 
@@ -96,6 +99,9 @@ public interface GprListener extends ParseTreeListener {
 
 	void enterDeclarative_item(GprParser.Declarative_itemContext ctx);
 	void exitDeclarative_item(GprParser.Declarative_itemContext ctx);
+
+	void enterStringExpressionLiteral(GprParser.StringExpressionLiteralContext ctx);
+	void exitStringExpressionLiteral(GprParser.StringExpressionLiteralContext ctx);
 
 	void enterExternal_value(GprParser.External_valueContext ctx);
 	void exitExternal_value(GprParser.External_valueContext ctx);

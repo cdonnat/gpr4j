@@ -6,6 +6,11 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.ErrorLogger;
@@ -21,33 +26,51 @@ public class GprGrammarFixture {
 	public GprParser parser;
 	public Loader loader;
 	public ErrorLogger errorLogger;
-	public GprListener gprListener;
+	private GprListener gprListener;
+	private ParseTreeWalker walker;
 
-	public void createMock(boolean forceVariableDefinition) {
-		this.loader = mock(Loader.class);
-		when(this.loader.variableIsDefined(anyString())).thenReturn(
+	public static GprParser CreateParser(GprLexer lexer, Loader loader)
+			throws IOException {
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		GprParser parser = new GprParser(tokens);
+
+		return parser;
+	}
+
+	public static GprLexer CreateLexer(String testString) throws IOException {
+		CharStream stream = new ANTLRInputStream(testString);
+		GprLexer lexer = new GprLexer(stream);
+
+		return lexer;
+	}
+
+	public static Loader CreateLoaderMock(boolean forceVariableDefinition) {
+		Loader loader = mock(Loader.class);
+		when(loader.variableIsDefined(anyString())).thenReturn(
 				forceVariableDefinition);
-		when(this.loader.getVariable(anyString())).thenReturn(
+		when(loader.getVariable(anyString())).thenReturn(
 				new Symbol("", Term.CreateString("")));
-		when(this.loader.getAttribute(anyString())).thenReturn(
+		when(loader.getAttribute(anyString())).thenReturn(
 				new Symbol("", Term.CreateString("")));
-		when(this.loader.getExternalVariable(anyString())).thenReturn(
+		when(loader.getExternalVariable(anyString())).thenReturn(
 				new Symbol("", Term.CreateString("")));
+
+		return loader;
 	}
 
 	public GprGrammarFixture(String testString, boolean forceVariableDefinition) {
 		try {
-			this.createMock(forceVariableDefinition);
-			this.lexer = GprGrammarTestUtils.CreateLexer(testString);
-			this.parser = GprGrammarTestUtils.CreateParser(this.lexer,
-					this.loader);
+			this.loader = CreateLoaderMock(forceVariableDefinition);
+			this.lexer = CreateLexer(testString);
+			this.parser = CreateParser(this.lexer, this.loader);
 			this.errorLogger = new ErrorLogger();
 			this.lexer.removeErrorListeners();
 			this.parser.removeErrorListeners();
 			this.lexer.addErrorListener(this.errorLogger);
 			this.parser.addErrorListener(this.errorLogger);
 			this.gprListener = new GprFileListener(this.loader);
-			this.parser.addParseListener(this.gprListener);
+			this.walker = new ParseTreeWalker();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,6 +78,10 @@ public class GprGrammarFixture {
 
 	public GprGrammarFixture(String testString) {
 		this(testString, true);
+	}
+
+	public void walk(ParseTree parseTree) {
+		this.walker.walk(this.gprListener, parseTree);
 	}
 
 }

@@ -1,33 +1,21 @@
 package org.gpr4j.internal.grammar.test;
 
-import java.io.IOException;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
-import org.gpr4j.internal.Loader;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.gpr4j.internal.grammar.ErrorLogger;
 import org.gpr4j.internal.grammar.GprLexer;
 import org.gpr4j.internal.grammar.GprParser;
+import org.gpr4j.internal.grammar.GprParser.Attribute_designatorContext;
+import org.gpr4j.internal.grammar.GprParser.Attribute_prefixContext;
+import org.gpr4j.internal.grammar.GprParser.ExpressionContext;
+import org.gpr4j.internal.grammar.GprParser.NameContext;
+import org.gpr4j.internal.grammar.GprParser.Path_nameContext;
+import org.gpr4j.internal.grammar.GprParser.String_expressionContext;
+import org.gpr4j.internal.grammar.GprParser.String_listContext;
+import org.gpr4j.internal.grammar.GprParser.TermContext;
 import org.gpr4j.internal.model.Term;
 
 public class GprGrammarTestUtils {
-
-	public static GprParser CreateParser(GprLexer lexer, Loader loader)
-			throws IOException {
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		GprParser parser = new GprParser(loader, tokens);
-
-		return parser;
-	}
-
-	public static GprLexer CreateLexer(String testString) throws IOException {
-		CharStream stream = new ANTLRInputStream(testString);
-		GprLexer lexer = new GprLexer(stream);
-
-		return lexer;
-	}
 
 	public static boolean NoRecognitionExceptionOccurred(GprParser parser,
 			GprLexer lexer, ErrorLogger errorLogger) {
@@ -115,7 +103,7 @@ public class GprGrammarTestUtils {
 
 			return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
 					fixture.parser, fixture.lexer, fixture.errorLogger)
-					&& result.equals(expectedString);
+					&& expectedString.equals(result);
 		}
 
 		protected abstract String executeParserRule(GprGrammarFixture fixture)
@@ -124,39 +112,54 @@ public class GprGrammarTestUtils {
 	}
 
 	public static abstract class SimpleParserRuleChecker {
+		boolean preconditionFailed = false;
+
 		public boolean isInputRecognizedByParserRule(GprGrammarFixture fixture) {
 			try {
-				this.executeParserRule(fixture);
+				ParseTree parseTree = this.executeParserRule(fixture);
+
+				// no need to walk parse tree if exception already occurred
+				if (fixture.errorLogger.getExceptions().isEmpty()) {
+					fixture.walk(parseTree);
+				}
 			} catch (RecognitionException e) {
 				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				preconditionFailed = true;
 			}
 
-			return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-					fixture.parser, fixture.lexer, fixture.errorLogger);
+			return !preconditionFailed
+					&& GprGrammarTestUtils.NoRecognitionExceptionOccurred(
+							fixture.parser, fixture.lexer, fixture.errorLogger);
 		}
 
-		protected abstract void executeParserRule(GprGrammarFixture fixture)
+		protected abstract ParseTree executeParserRule(GprGrammarFixture fixture)
 				throws RecognitionException;
 	}
 
 	public static boolean IsNameIdentified(String inputName) {
-		String result = null;
-		GprGrammarFixture fixture = new GprGrammarFixture(inputName);
+		StringParserRuleChecker nameChecker = new StringParserRuleChecker() {
 
-		result = fixture.parser.name().result;
+			@Override
+			protected String executeParserRule(GprGrammarFixture fixture)
+					throws RecognitionException {
 
-		return GprGrammarTestUtils.NoRecognitionExceptionOccurred(
-				fixture.parser, fixture.lexer, fixture.errorLogger)
-				&& result.equals(inputName);
+				NameContext parseTree = fixture.parser.name();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
+			}
+		};
+		return RunStringParserRuleCheck(nameChecker, inputName, inputName);
 	}
 
 	public static boolean IsEmptyDeclaration(String input) {
 		SimpleParserRuleChecker emptyDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.empty_declaration();
+				return fixture.parser.empty_declaration();
 			}
 		};
 
@@ -170,7 +173,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.expression().result;
+
+				ExpressionContext parseTree = fixture.parser.expression();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -181,9 +188,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker varDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			public void executeParserRule(GprGrammarFixture fixture)
+			public ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.variable_declaration();
+				return fixture.parser.variable_declaration();
 
 			}
 		};
@@ -195,9 +202,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker typedVariableDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.typed_variable_declaration();
+				return fixture.parser.typed_variable_declaration();
 			}
 		};
 
@@ -210,7 +217,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.string_list().result;
+
+				String_listContext parseTree = fixture.parser.string_list();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -221,9 +232,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker attributeDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			public void executeParserRule(GprGrammarFixture fixture)
+			public ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.attribute_declaration();
+				return fixture.parser.attribute_declaration();
 
 			}
 		};
@@ -235,9 +246,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker attributeRefChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			public void executeParserRule(GprGrammarFixture fixture)
+			public ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.attribute_reference();
+				return fixture.parser.attribute_reference();
 
 			}
 		};
@@ -249,9 +260,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker projectDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			public void executeParserRule(GprGrammarFixture fixture)
+			public ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.project_declaration();
+				return fixture.parser.project_declaration();
 
 			}
 		};
@@ -263,23 +274,23 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker simpleProjectDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			public void executeParserRule(GprGrammarFixture fixture)
+			public ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.simple_project_declaration();
+				return fixture.parser.simple_project_declaration();
 
 			}
 		};
 
-		return RunSimpleParserRuleCheck(simpleProjectDecChecker, input);
+		return RunSimpleParserRuleCheck(simpleProjectDecChecker, input, false);
 	}
 
 	public static boolean IsExternalValue(String input) {
 		SimpleParserRuleChecker externalValueChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.external_value();
+				return fixture.parser.external_value();
 			}
 		};
 
@@ -290,9 +301,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker withClauseChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.with_clause();
+				return fixture.parser.with_clause();
 			}
 		};
 
@@ -303,9 +314,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker ctxtClauseChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.context_clause();
+				return fixture.parser.context_clause();
 			}
 		};
 
@@ -316,9 +327,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker caseStmtChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.case_statement();
+				return fixture.parser.case_statement();
 			}
 		};
 
@@ -329,9 +340,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker typedStringDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.typed_string_declaration();
+				return fixture.parser.typed_string_declaration();
 			}
 		};
 
@@ -342,9 +353,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker packageDecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.package_declaration();
+				return fixture.parser.package_declaration();
 			}
 		};
 
@@ -355,9 +366,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker projectChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.project();
+				return fixture.parser.project();
 
 			}
 		};
@@ -372,7 +383,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.path_name().result;
+
+				Path_nameContext parseTree = fixture.parser.path_name();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -383,9 +398,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker simpleNameChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.simple_name();
+				return fixture.parser.simple_name();
 
 			}
 		};
@@ -397,9 +412,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker simpleDecItemChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.simple_declarative_item();
+				return fixture.parser.simple_declarative_item();
 
 			}
 		};
@@ -411,9 +426,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker declarativeItemChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.declarative_item();
+				return fixture.parser.declarative_item();
 
 			}
 		};
@@ -425,9 +440,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker discreteChoiceChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.discrete_choice_list();
+				return fixture.parser.discrete_choice_list();
 
 			}
 		};
@@ -439,9 +454,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker caseItemChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.case_item();
+				return fixture.parser.case_item();
 
 			}
 		};
@@ -453,9 +468,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker packageSpecChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.package_spec();
+				return fixture.parser.package_spec();
 
 			}
 		};
@@ -467,9 +482,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker packageRenamingChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.package_renaming();
+				return fixture.parser.package_renaming();
 
 			}
 		};
@@ -481,9 +496,9 @@ public class GprGrammarTestUtils {
 		SimpleParserRuleChecker packageExtensionChecker = new SimpleParserRuleChecker() {
 
 			@Override
-			protected void executeParserRule(GprGrammarFixture fixture)
+			protected ParseTree executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				fixture.parser.package_extension();
+				return fixture.parser.package_extension();
 
 			}
 		};
@@ -498,7 +513,12 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.attribute_designator().result;
+
+				Attribute_designatorContext parseTree = fixture.parser
+						.attribute_designator();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -511,7 +531,12 @@ public class GprGrammarTestUtils {
 			@Override
 			protected String executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.attribute_prefix().result;
+
+				Attribute_prefixContext parseTree = fixture.parser
+						.attribute_prefix();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -524,7 +549,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.expression().result;
+
+				TermContext parseTree = fixture.parser.term();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
@@ -538,7 +567,11 @@ public class GprGrammarTestUtils {
 			@Override
 			protected Term executeParserRule(GprGrammarFixture fixture)
 					throws RecognitionException {
-				return fixture.parser.string_expression().result;
+				String_expressionContext parseTree = fixture.parser
+						.string_expression();
+				fixture.walk(parseTree);
+
+				return parseTree.result;
 			}
 		};
 
