@@ -1,13 +1,9 @@
 // Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.0
 package org.gpr4j.internal.grammar;
 
-import org.gpr4j.internal.model.Term;
-
-
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class GprBaseListener implements GprListener {
 	@Override public void enterExpression(GprParser.ExpressionContext ctx) { }
