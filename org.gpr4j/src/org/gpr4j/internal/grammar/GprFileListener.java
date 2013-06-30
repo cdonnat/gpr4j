@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.gpr4j.api.ParsingFailedException;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.GprParser.Discrete_choice_listContext;
 import org.gpr4j.internal.grammar.GprParser.ExpressionContext;
@@ -96,6 +97,30 @@ public class GprFileListener extends GprBaseListener {
 		this.loader.setCaseDiscreteChoices(discreteChoices);
 	}
 
+	/**
+	 * Throws a ParsingFailedException if begin and end name do not match.
+	 * 
+	 * @param beginName
+	 *            begin name of scope
+	 * @param endName
+	 *            end name of scope
+	 * @param scopeType
+	 *            the type of scope (i.e. package, project...)
+	 */
+	private void throwExceptionIfNamesDontMatch(String beginName,
+			String endName, String scopeType) {
+		if (!beginName.equals(endName)) {
+
+			StringBuilder errorMsgBuilder = new StringBuilder(scopeType);
+			errorMsgBuilder.append(" name is ambiguous: ");
+			errorMsgBuilder.append(beginName);
+			errorMsgBuilder.append('/');
+			errorMsgBuilder.append(endName);
+
+			throw new ParsingFailedException(errorMsgBuilder.toString());
+		}
+	}
+
 	@Override
 	public void exitCase_statement(GprParser.Case_statementContext ctx) {
 		this.loader.endCase();
@@ -103,7 +128,10 @@ public class GprFileListener extends GprBaseListener {
 
 	@Override
 	public void enterPackage_spec(GprParser.Package_specContext ctx) {
-		this.loader.beginPackage(ctx.begin_pkg_name.IDENTIFIER().getText());
+		this.throwExceptionIfNamesDontMatch(ctx.begin_package_name.getText(),
+				ctx.end_package_name.getText(), "package");
+
+		this.loader.beginPackage(ctx.begin_package_name.IDENTIFIER().getText());
 	}
 
 	@Override
@@ -120,6 +148,9 @@ public class GprFileListener extends GprBaseListener {
 
 	@Override
 	public void exitPackage_extension(GprParser.Package_extensionContext ctx) {
+		this.throwExceptionIfNamesDontMatch(ctx.begin_package_name.getText(),
+				ctx.end_package_name.getText(), "package");
+
 		this.loader.addPackageFrom(ctx.begin_package_name.IDENTIFIER()
 				.getText(), ctx.projectName.IDENTIFIER().getText(),
 				ctx.extendedPackage.IDENTIFIER().getText());
@@ -134,8 +165,10 @@ public class GprFileListener extends GprBaseListener {
 	@Override
 	public void exitTyped_variable_declaration(
 			GprParser.Typed_variable_declarationContext ctx) {
-		Preconditions.checkArgument(!this.loader.variableIsDefined(ctx
-				.simple_name().getText()));
+		if (this.loader.variableIsDefined(ctx.simple_name().getText())) {
+			throw new ParsingFailedException(
+					"Typed variable cannot be declared several times");
+		}
 
 		this.loader.addVariable(ctx.simple_name().getText(),
 				ctx.string_expression().result);
@@ -279,5 +312,12 @@ public class GprFileListener extends GprBaseListener {
 			ctx.result = Term.Concat(ctx.result, expContext.result);
 		}
 
+	}
+
+	@Override
+	public void enterSimple_project_declaration(
+			GprParser.Simple_project_declarationContext ctx) {
+		this.throwExceptionIfNamesDontMatch(ctx.begin_project_name.getText(),
+				ctx.end_project_name.getText(), "project");
 	}
 }

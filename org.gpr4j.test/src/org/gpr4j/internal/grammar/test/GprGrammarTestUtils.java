@@ -2,6 +2,7 @@ package org.gpr4j.internal.grammar.test;
 
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.gpr4j.api.ParsingFailedException;
 import org.gpr4j.internal.grammar.ErrorLogger;
 import org.gpr4j.internal.grammar.GprLexer;
 import org.gpr4j.internal.grammar.GprParser;
@@ -112,7 +113,7 @@ public class GprGrammarTestUtils {
 	}
 
 	public static abstract class SimpleParserRuleChecker {
-		boolean preconditionFailed = false;
+		boolean parsingFailed = false;
 
 		public boolean isInputRecognizedByParserRule(GprGrammarFixture fixture) {
 			try {
@@ -125,10 +126,12 @@ public class GprGrammarTestUtils {
 			} catch (RecognitionException e) {
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				preconditionFailed = true;
+				parsingFailed = true;
+			} catch (ParsingFailedException e) {
+				parsingFailed = true;
 			}
 
-			return !preconditionFailed
+			return !parsingFailed
 					&& GprGrammarTestUtils.NoRecognitionExceptionOccurred(
 							fixture.parser, fixture.lexer, fixture.errorLogger);
 		}

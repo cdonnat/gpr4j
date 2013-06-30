@@ -34,7 +34,6 @@ simple_project_declaration
   END
   end_project_name=name
   SEMI_COLON
-  {$begin_project_name.text.equals($end_project_name.text)}?
   ;
 
 name returns [String result]
@@ -109,11 +108,10 @@ package_declaration
   
 package_spec
   :
-  PACKAGE begin_pkg_name = simple_name
+  PACKAGE begin_package_name = simple_name
   IS 
   (simple_declarative_item)* 
   END end_package_name = simple_name SEMI_COLON
-  {$begin_pkg_name.text.equals($end_package_name.text)}?
   ;
    
 package_renaming
@@ -130,7 +128,6 @@ package_extension
   projectName = simple_name DOT extendedPackage = simple_name IS
   (simple_declarative_item)*
   END end_package_name = simple_name SEMI_COLON
-  {$begin_package_name.text.equals($end_package_name.text)}?
   ;
 
 typed_variable_declaration 

@@ -283,7 +283,7 @@ public class GprGrammarTest {
 		assertFalse(GprGrammarTestUtils
 				.IsSimpleProjectDeclaration("project First_Name is	end Second_Name;"));
 		// FIXME find a way to check that multiple definitions for typed
-		// variables are not allowed (precondition does not fail with loader mock)
+		// variables are not allowed (exception is not thrown with loader mock)
 //		assertFalse(GprGrammarTestUtils
 //				.IsSimpleProjectDeclaration("project My_Proj is	my_var : my_type := \"Value\"; my_var : my_type := \"New_Value\"; end My_Proj;"));
 	}
