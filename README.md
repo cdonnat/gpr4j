@@ -1,2 +1,1 @@
-gpr4j
-=====
+GPR4J is a GNAT project file parser. It is written in Java and relies on ANTLR4 parser generator. It aims at providing a simple Java API for parsing and extracting information from GNAT project files. It's currently used for the [padacore](http://github.com/cdonnat/padacore) Ada plugin for Eclipse.
