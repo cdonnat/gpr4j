@@ -89,7 +89,7 @@ case_item
   (case_statement
   | attribute_declaration
   | variable_declaration
-  | empty_declaration)+
+  | empty_declaration)*
   ;
   
 discrete_choice_list

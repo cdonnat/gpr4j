@@ -359,6 +359,9 @@ public class GprGrammarTest {
 		assertTrue("Empty_declaration + variable declaration",
 				GprGrammarTestUtils
 						.IsCaseItem("when others => My_Var := \"Titi\"; null;"));
+		
+		assertTrue("No statement in case item",
+				GprGrammarTestUtils.IsCaseItem("when others => "));
 
 		assertFalse("Missing arrow",
 				GprGrammarTestUtils.IsCaseItem("when others null;"));
