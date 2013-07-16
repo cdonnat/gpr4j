@@ -1,6 +1,5 @@
 // Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.0
 package org.gpr4j.internal.grammar;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 public interface GprListener extends ParseTreeListener {

@@ -16,7 +16,6 @@ import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.ErrorLogger;
 import org.gpr4j.internal.grammar.GprFileListener;
 import org.gpr4j.internal.grammar.GprLexer;
-import org.gpr4j.internal.grammar.GprListener;
 import org.gpr4j.internal.grammar.GprParser;
 import org.gpr4j.internal.model.Term;
 
@@ -26,7 +25,7 @@ public class GprGrammarFixture {
 	public GprParser parser;
 	public Loader loader;
 	public ErrorLogger errorLogger;
-	private GprListener gprListener;
+	public GprFileListener gprListener;
 	private ParseTreeWalker walker;
 
 	public static GprParser CreateParser(GprLexer lexer, Loader loader)

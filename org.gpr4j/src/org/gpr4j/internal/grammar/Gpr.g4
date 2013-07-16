@@ -1,9 +1,5 @@
 grammar Gpr;
 
-@parser::header {
-import org.gpr4j.internal.model.Term;
-}
-  
 project
   :  
   context_clause project_declaration EOF
@@ -17,7 +13,7 @@ with_clause
     (COMMA other_path=path_name)*  
     SEMI_COLON;
 
-path_name returns [String result] 
+path_name
   : 
   STRING_LITERAL
   ;
@@ -36,7 +32,7 @@ simple_project_declaration
   SEMI_COLON
   ;
 
-name returns [String result]
+name
   :
   first = simple_name
   (DOT other = simple_name)*
@@ -149,26 +145,26 @@ attribute_declaration
  SEMI_COLON 
  ;
  
-attribute_designator returns [String result]
+attribute_designator
   :
   att = simple_name
   | att = simple_name ( LPAR STRING_LITERAL RPAR )
   ; 
  
- attribute_reference returns [Term result]
+ attribute_reference
   :
   attribute_prefix APOSTROPHE simple_name 
     (LPAR STRING_LITERAL RPAR)? 
   ;
  
- attribute_prefix returns [String result]
+ attribute_prefix
   :
   PROJECT
   | project_name = simple_name
     (DOT package_name = simple_name)? 
   ;
  
-external_value returns [Term result] 
+external_value
   : 
   EXTERNAL
   LPAR 
@@ -185,19 +181,19 @@ variable_declaration
   SEMI_COLON
   ;
 
-expression returns [Term result]
+expression
   :
   first = term
   ( AMPERSAND other = term )* 
   ;
 
-term returns [Term result]
+term
   : 
   string_expression 
   | string_list 
   ;
   
-string_expression returns [Term result] // TODO : complete rule
+string_expression // TODO : complete rule
   :
   STRING_LITERAL #stringExpressionLiteral
   | name #stringExpressionVariableName
@@ -205,7 +201,7 @@ string_expression returns [Term result] // TODO : complete rule
   | attribute_reference #stringExpressionAttributeReference
   ;
 
-string_list returns [Term result] // TODO : complete rule 
+string_list // TODO : complete rule 
   :
   LPAR
   first=expression?

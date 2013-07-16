@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.gpr4j.api.ParsingFailedException;
 import org.gpr4j.internal.Loader;
@@ -20,21 +22,72 @@ import com.google.common.base.Preconditions;
 public class GprFileListener extends GprBaseListener {
 
 	private Loader loader;
+	private ParseTreeProperty<Term> termNodes;
+	private ParseTreeProperty<String> stringNodes;
 
 	public GprFileListener(Loader loader) {
 		this.loader = loader;
+		this.termNodes = new ParseTreeProperty<Term>();
+		this.stringNodes = new ParseTreeProperty<String>();
+	}
+
+	/**
+	 * Provides the Term associated to given node.
+	 * 
+	 * @param node
+	 *            the node for which to retrieve associated Term
+	 * @return the Term associated to given node.
+	 */
+	public Term getTermFor(ParseTree node) {
+		return this.termNodes.get(node);
+	}
+
+	/**
+	 * Associates given Term to given node.
+	 * 
+	 * @param node
+	 *            the node to which associated the given Term.
+	 * @param term
+	 *            the Term to associate to given node.
+	 */
+	public void associateTermTo(ParseTree node, Term term) {
+		this.termNodes.put(node, term);
+	}
+
+	/**
+	 * Provides the String associated to given node.
+	 * 
+	 * @param node
+	 *            the node for which to retrieve associated String
+	 * @return the String associated to given node.
+	 */
+	public String getStringFor(ParseTree node) {
+		return this.stringNodes.get(node);
+	}
+
+	/**
+	 * Associates given String to given node.
+	 * 
+	 * @param node
+	 *            the node to which associated the given String.
+	 * @param term
+	 *            the String to associate to given node.
+	 */
+	public void associateStringTo(ParseTree node, String string) {
+		this.stringNodes.put(node, string);
 	}
 
 	@Override
 	public void exitWith_clause(GprParser.With_clauseContext ctx) {
 		for (Path_nameContext pathCtx : ctx.path_name()) {
-			this.loader.addProject(pathCtx.result);
+			this.loader.addProject(this.getStringFor(pathCtx));
 		}
 	}
 
 	@Override
 	public void exitPath_name(GprParser.Path_nameContext ctx) {
-		ctx.result = ctx.STRING_LITERAL().getText().replaceAll("\"", "");
+		this.associateStringTo(ctx,
+				ctx.STRING_LITERAL().getText().replaceAll("\"", ""));
 	}
 
 	@Override
@@ -47,7 +100,7 @@ public class GprFileListener extends GprBaseListener {
 		}
 		stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
-		ctx.result = stringBuilder.toString();
+		this.associateStringTo(ctx, stringBuilder.toString());
 	}
 
 	@Override
@@ -98,7 +151,7 @@ public class GprFileListener extends GprBaseListener {
 	}
 
 	/**
-	 * Throws a ParsingFailedException if begin and end name do not match.
+	 * Throws a ParsingFailedException if begin and end names do not match.
 	 * 
 	 * @param beginName
 	 *            begin name of scope
@@ -171,15 +224,15 @@ public class GprFileListener extends GprBaseListener {
 		}
 
 		this.loader.addVariable(ctx.simple_name().getText(),
-				ctx.string_expression().result);
+				this.getTermFor(ctx.string_expression()));
 		this.loader.setCurrentType(null);
 	}
 
 	@Override
 	public void exitAttribute_declaration(
 			GprParser.Attribute_declarationContext ctx) {
-		this.loader.addAttribute(ctx.attribute_designator().result,
-				ctx.expression().result);
+		this.loader.addAttribute(this.getStringFor(ctx.attribute_designator()),
+				this.getTermFor(ctx.expression()));
 	}
 
 	@Override
@@ -193,17 +246,17 @@ public class GprFileListener extends GprBaseListener {
 			attNameBuilder.append(')');
 		}
 
-		ctx.result = attNameBuilder.toString();
+		this.associateStringTo(ctx, attNameBuilder.toString());
 	}
 
 	@Override
 	public void exitAttribute_reference(GprParser.Attribute_referenceContext ctx) {
 		StringBuilder attNameBuilder = new StringBuilder();
 
-		if (ctx.attribute_prefix().result.isEmpty()) {
+		if (this.getStringFor(ctx.attribute_prefix()).isEmpty()) {
 			attNameBuilder.append(ctx.simple_name().getText());
 		} else {
-			attNameBuilder.append(ctx.attribute_prefix().result);
+			attNameBuilder.append(this.getStringFor(ctx.attribute_prefix()));
 			attNameBuilder.append("\'");
 			attNameBuilder.append(ctx.simple_name().getText());
 		}
@@ -214,8 +267,8 @@ public class GprFileListener extends GprBaseListener {
 			attNameBuilder.append(')');
 		}
 
-		ctx.result = this.loader.getAttribute(attNameBuilder.toString())
-				.getValue();
+		this.associateTermTo(ctx,
+				this.loader.getAttribute(attNameBuilder.toString()).getValue());
 
 	}
 
@@ -232,7 +285,7 @@ public class GprFileListener extends GprBaseListener {
 			}
 		}
 
-		ctx.result = prefixBuilder.toString();
+		this.associateStringTo(ctx, prefixBuilder.toString());
 	}
 
 	@Override
@@ -247,70 +300,80 @@ public class GprFileListener extends GprBaseListener {
 				StringUtilities.RemoveQuotes(ctx.external_name.getText()),
 				StringUtilities.RemoveQuotes(defaultValue));
 
-		ctx.result = this.loader.getExternalVariable(
-				StringUtilities.RemoveQuotes(ctx.external_name.getText()))
-				.getValue();
+		this.associateTermTo(
+				ctx,
+				this.loader.getExternalVariable(
+						StringUtilities.RemoveQuotes(ctx.external_name
+								.getText())).getValue());
 	}
 
 	@Override
 	public void exitVariable_declaration(
 			GprParser.Variable_declarationContext ctx) {
 		this.loader.addVariable(ctx.simple_name().getText(),
-				ctx.expression().result);
+				this.getTermFor(ctx.expression()));
 	}
 
 	@Override
 	public void exitExpression(GprParser.ExpressionContext ctx) {
-		ctx.result = ctx.first.result;
+
+		Term expression = this.getTermFor(ctx.first);
 
 		for (TermContext termContext : ctx.term().subList(1, ctx.term().size())) {
 
-			ctx.result = Term.Concat(ctx.result, termContext.result);
+			expression = Term.Concat(expression, this.getTermFor(termContext));
 		}
+
+		this.associateTermTo(ctx, expression);
 	}
 
 	@Override
 	public void exitTerm(GprParser.TermContext ctx) {
 		if (ctx.string_expression() != null) {
-			ctx.result = ctx.string_expression().result;
+			this.associateTermTo(ctx, this.getTermFor(ctx.string_expression()));
 		} else {
 			Preconditions.checkNotNull(ctx.string_list());
-			ctx.result = ctx.string_list().result;
+			this.associateTermTo(ctx, this.getTermFor(ctx.string_list()));
 		}
 	}
 
 	@Override
 	public void exitStringExpressionAttributeReference(
 			GprParser.StringExpressionAttributeReferenceContext ctx) {
-		ctx.result = ctx.attribute_reference().result;
+		this.associateTermTo(ctx, this.getTermFor(ctx.attribute_reference()));
 	}
 
 	@Override
 	public void exitStringExpressionVariableName(
 			GprParser.StringExpressionVariableNameContext ctx) {
-		ctx.result = this.loader.getVariable(ctx.name().result).getValue();
+		this.associateTermTo(ctx,
+				this.loader.getVariable(this.getStringFor(ctx.name()))
+						.getValue());
 	}
 
 	@Override
 	public void exitStringExpressionExternalValue(
 			GprParser.StringExpressionExternalValueContext ctx) {
-		ctx.result = ctx.external_value().result;
+		this.associateTermTo(ctx, this.getTermFor(ctx.external_value()));
 	}
 
 	@Override
 	public void exitStringExpressionLiteral(
 			GprParser.StringExpressionLiteralContext ctx) {
-		ctx.result = Term.CreateString(ctx.STRING_LITERAL().getText());
+		this.associateTermTo(ctx,
+				Term.CreateString(ctx.STRING_LITERAL().getText()));
 	}
 
 	@Override
 	public void exitString_list(GprParser.String_listContext ctx) {
-		ctx.result = Term.CreateStringList(new ArrayList<String>(ctx
+		Term stringList = Term.CreateStringList(new ArrayList<String>(ctx
 				.expression().size()));
 
 		for (ExpressionContext expContext : ctx.expression()) {
-			ctx.result = Term.Concat(ctx.result, expContext.result);
+			stringList = Term.Concat(stringList, this.getTermFor(expContext));
 		}
+
+		this.associateTermTo(ctx, stringList);
 
 	}
 

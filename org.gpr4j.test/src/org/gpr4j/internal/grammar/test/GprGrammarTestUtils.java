@@ -150,7 +150,7 @@ public class GprGrammarTestUtils {
 				NameContext parseTree = fixture.parser.name();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getStringFor(parseTree);
 			}
 		};
 		return RunStringParserRuleCheck(nameChecker, inputName, inputName);
@@ -180,7 +180,7 @@ public class GprGrammarTestUtils {
 				ExpressionContext parseTree = fixture.parser.expression();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getTermFor(parseTree);
 			}
 		};
 
@@ -224,7 +224,7 @@ public class GprGrammarTestUtils {
 				String_listContext parseTree = fixture.parser.string_list();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getTermFor(parseTree);
 			}
 		};
 
@@ -390,7 +390,7 @@ public class GprGrammarTestUtils {
 				Path_nameContext parseTree = fixture.parser.path_name();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getStringFor(parseTree);
 			}
 		};
 
@@ -521,7 +521,7 @@ public class GprGrammarTestUtils {
 						.attribute_designator();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getStringFor(parseTree);
 			}
 		};
 
@@ -539,7 +539,7 @@ public class GprGrammarTestUtils {
 						.attribute_prefix();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getStringFor(parseTree);
 			}
 		};
 
@@ -556,7 +556,7 @@ public class GprGrammarTestUtils {
 				TermContext parseTree = fixture.parser.term();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getTermFor(parseTree);
 			}
 		};
 
@@ -574,7 +574,7 @@ public class GprGrammarTestUtils {
 						.string_expression();
 				fixture.walk(parseTree);
 
-				return parseTree.result;
+				return fixture.gprListener.getTermFor(parseTree);
 			}
 		};
 

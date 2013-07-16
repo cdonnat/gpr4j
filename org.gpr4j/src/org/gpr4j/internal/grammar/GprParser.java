@@ -1,8 +1,5 @@
 // Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.0
 package org.gpr4j.internal.grammar;
-
-import org.gpr4j.internal.model.Term;
-
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -233,7 +230,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class Path_nameContext extends ParserRuleContext {
-		public String result;
 		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
 		public Path_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -380,7 +376,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class NameContext extends ParserRuleContext {
-		public String result;
 		public Simple_nameContext first;
 		public Simple_nameContext other;
 		public TerminalNode DOT(int i) {
@@ -1317,7 +1312,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class Attribute_designatorContext extends ParserRuleContext {
-		public String result;
 		public Simple_nameContext att;
 		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
 		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
@@ -1377,7 +1371,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class Attribute_referenceContext extends ParserRuleContext {
-		public Term result;
 		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
 		public Attribute_prefixContext attribute_prefix() {
 			return getRuleContext(Attribute_prefixContext.class,0);
@@ -1436,7 +1429,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class Attribute_prefixContext extends ParserRuleContext {
-		public String result;
 		public Simple_nameContext project_name;
 		public Simple_nameContext package_name;
 		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
@@ -1505,7 +1497,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class External_valueContext extends ParserRuleContext {
-		public Term result;
 		public Token external_name;
 		public Token defaultValue;
 		public TerminalNode EXTERNAL() { return getToken(GprParser.EXTERNAL, 0); }
@@ -1610,7 +1601,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
-		public Term result;
 		public TermContext first;
 		public TermContext other;
 		public List<TerminalNode> AMPERSAND() { return getTokens(GprParser.AMPERSAND); }
@@ -1673,7 +1663,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class TermContext extends ParserRuleContext {
-		public Term result;
 		public String_listContext string_list() {
 			return getRuleContext(String_listContext.class,0);
 		}
@@ -1731,7 +1720,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class String_expressionContext extends ParserRuleContext {
-		public Term result;
 		public String_expressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1740,7 +1728,6 @@ public class GprParser extends Parser {
 		public String_expressionContext() { }
 		public void copyFrom(String_expressionContext ctx) {
 			super.copyFrom(ctx);
-			this.result = ctx.result;
 		}
 	}
 	public static class StringExpressionVariableNameContext extends String_expressionContext {
@@ -1849,7 +1836,6 @@ public class GprParser extends Parser {
 	}
 
 	public static class String_listContext extends ParserRuleContext {
-		public Term result;
 		public ExpressionContext first;
 		public ExpressionContext other;
 		public List<ExpressionContext> expression() {
