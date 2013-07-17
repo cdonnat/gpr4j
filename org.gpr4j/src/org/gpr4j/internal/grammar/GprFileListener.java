@@ -22,8 +22,8 @@ import com.google.common.base.Preconditions;
 public class GprFileListener extends GprBaseListener {
 
 	private Loader loader;
-	private ParseTreeProperty<Term> termNodes;
-	private ParseTreeProperty<String> stringNodes;
+	protected ParseTreeProperty<Term> termNodes;
+	protected ParseTreeProperty<String> stringNodes;
 
 	public GprFileListener(Loader loader) {
 		this.loader = loader;
@@ -38,7 +38,7 @@ public class GprFileListener extends GprBaseListener {
 	 *            the node for which to retrieve associated Term
 	 * @return the Term associated to given node.
 	 */
-	public Term getTermFor(ParseTree node) {
+	private Term getTermFor(ParseTree node) {
 		return this.termNodes.get(node);
 	}
 
@@ -50,7 +50,7 @@ public class GprFileListener extends GprBaseListener {
 	 * @param term
 	 *            the Term to associate to given node.
 	 */
-	public void associateTermTo(ParseTree node, Term term) {
+	private void associateTermTo(ParseTree node, Term term) {
 		this.termNodes.put(node, term);
 	}
 
@@ -61,7 +61,7 @@ public class GprFileListener extends GprBaseListener {
 	 *            the node for which to retrieve associated String
 	 * @return the String associated to given node.
 	 */
-	public String getStringFor(ParseTree node) {
+	private String getStringFor(ParseTree node) {
 		return this.stringNodes.get(node);
 	}
 
@@ -73,7 +73,7 @@ public class GprFileListener extends GprBaseListener {
 	 * @param term
 	 *            the String to associate to given node.
 	 */
-	public void associateStringTo(ParseTree node, String string) {
+	private void associateStringTo(ParseTree node, String string) {
 		this.stringNodes.put(node, string);
 	}
 

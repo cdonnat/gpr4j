@@ -14,7 +14,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.gpr4j.api.Symbol;
 import org.gpr4j.internal.Loader;
 import org.gpr4j.internal.grammar.ErrorLogger;
-import org.gpr4j.internal.grammar.GprFileListener;
 import org.gpr4j.internal.grammar.GprLexer;
 import org.gpr4j.internal.grammar.GprParser;
 import org.gpr4j.internal.model.Term;
@@ -25,7 +24,7 @@ public class GprGrammarFixture {
 	public GprParser parser;
 	public Loader loader;
 	public ErrorLogger errorLogger;
-	public GprFileListener gprListener;
+	public GprFileListenerStub gprListener;
 	private ParseTreeWalker walker;
 
 	public static GprParser CreateParser(GprLexer lexer, Loader loader)
@@ -67,7 +66,7 @@ public class GprGrammarFixture {
 			this.parser.removeErrorListeners();
 			this.lexer.addErrorListener(this.errorLogger);
 			this.parser.addErrorListener(this.errorLogger);
-			this.gprListener = new GprFileListener(this.loader);
+			this.gprListener = new GprFileListenerStub(this.loader);
 			this.walker = new ParseTreeWalker();
 
 		} catch (IOException e) {
