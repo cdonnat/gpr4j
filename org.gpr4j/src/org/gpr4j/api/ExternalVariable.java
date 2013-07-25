@@ -18,7 +18,7 @@ public class ExternalVariable extends Item {
 	 */
 	public ExternalVariable(String name, String defaultValue, Type type) {
 		super(name);
-		this.defaultValue = defaultValue == null ? "" : defaultValue.toLowerCase();
+		this.defaultValue = defaultValue == null ? "" : defaultValue;
 		this.type = type;
 	}
 

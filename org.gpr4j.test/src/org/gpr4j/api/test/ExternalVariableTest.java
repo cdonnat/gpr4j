@@ -19,7 +19,7 @@ public class ExternalVariableTest {
 
 		ExternalVariable Platform = new ExternalVariable("Platform", "native-zfp", new Type(
 				"T_PLatform", typeValues));
-		ExternalVariable PlatformWithSameDefaultValueNotCaseSensitive = new ExternalVariable(
+		ExternalVariable PlatformWithSameDefaultValueButDifferentCase = new ExternalVariable(
 				"Platform", "natIve-zfp", new Type("T_PLatform", typeValues));
 		ExternalVariable PlatformWithDifferentDefaultValue = new ExternalVariable("Platform",
 				"native-full", new Type("T_PLatform", typeValues));
@@ -30,9 +30,9 @@ public class ExternalVariableTest {
 				typeValues));
 
 		assertEquals("Same instance shall be equal", Platform, Platform);
-		assertEquals("External variable shall not be case sensitive on the default value",
-				Platform, PlatformWithSameDefaultValueNotCaseSensitive);
-		assertEquals("External variable shall not be case sensitive on the name", Platform,
+		assertFalse("External variable shall be case-sensitive on the default value",
+				Platform.equals(PlatformWithSameDefaultValueButDifferentCase));
+		assertEquals("External variable shall not be case-sensitive on the name", Platform,
 				PLatform);
 		assertFalse("External variable with different default value shall not be equal",
 				Platform.equals(PlatformWithDifferentDefaultValue));
