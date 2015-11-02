@@ -1,6 +1,5 @@
+// Generated from org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.5
 package org.gpr4j.internal.grammar;
-
-// Generated from D:\Users\RS\workspace_ada\gpr4j\org.gpr4j\src\org\gpr4j\internal\grammar\Gpr.g4 by ANTLR 4.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class GprParser extends Parser {
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
+
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
@@ -21,13 +22,6 @@ public class GprParser extends Parser {
 		ALL=14, AT=15, CASE=16, END=17, FOR=18, IS=19, LIMITED=20, NULL=21, OTHERS=22, 
 		PACKAGE=23, PROJECT=24, RENAMES=25, TYPE=26, USE=27, WHEN=28, WITH=29, 
 		EXTENDS=30, EXTERNAL=31, IDENTIFIER=32, WS=33;
-	public static final String[] tokenNames = {
-		"<INVALID>", "COMMENT", "STRING_LITERAL", "','", "';'", "'.'", "'('", 
-		"')'", "'=>'", "'|'", "':'", "':='", "'&'", "'''", "ALL", "AT", "CASE", 
-		"END", "FOR", "IS", "LIMITED", "NULL", "OTHERS", "PACKAGE", "PROJECT", 
-		"RENAMES", "TYPE", "USE", "WHEN", "WITH", "EXTENDS", "EXTERNAL", "IDENTIFIER", 
-		"WS"
-	};
 	public static final int
 		RULE_project = 0, RULE_context_clause = 1, RULE_with_clause = 2, RULE_path_name = 3, 
 		RULE_project_declaration = 4, RULE_simple_project_declaration = 5, RULE_name = 6, 
@@ -50,14 +44,58 @@ public class GprParser extends Parser {
 		"term", "string_expression", "string_list", "empty_declaration"
 	};
 
+	private static final String[] _LITERAL_NAMES = {
+		null, null, null, "','", "';'", "'.'", "'('", "')'", "'=>'", "'|'", "':'", 
+		"':='", "'&'", "'''"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "COMMENT", "STRING_LITERAL", "COMMA", "SEMI_COLON", "DOT", "LPAR", 
+		"RPAR", "RARROW", "PIPE", "COLON", "AFFECTATION_SIGN", "AMPERSAND", "APOSTROPHE", 
+		"ALL", "AT", "CASE", "END", "FOR", "IS", "LIMITED", "NULL", "OTHERS", 
+		"PACKAGE", "PROJECT", "RENAMES", "TYPE", "USE", "WHEN", "WITH", "EXTENDS", 
+		"EXTERNAL", "IDENTIFIER", "WS"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
 	@Override
 	public String getGrammarFileName() { return "Gpr.g4"; }
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
+	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
-	public String[] getRuleNames() { return ruleNames; }
+	public String getSerializedATN() { return _serializedATN; }
 
 	@Override
 	public ATN getATN() { return _ATN; }
@@ -70,10 +108,10 @@ public class GprParser extends Parser {
 		public Context_clauseContext context_clause() {
 			return getRuleContext(Context_clauseContext.class,0);
 		}
-		public TerminalNode EOF() { return getToken(GprParser.EOF, 0); }
 		public Project_declarationContext project_declaration() {
 			return getRuleContext(Project_declarationContext.class,0);
 		}
+		public TerminalNode EOF() { return getToken(GprParser.EOF, 0); }
 		public ProjectContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -94,9 +132,12 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(60); context_clause();
-			setState(61); project_declaration();
-			setState(62); match(EOF);
+			setState(60);
+			context_clause();
+			setState(61);
+			project_declaration();
+			setState(62);
+			match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -111,11 +152,11 @@ public class GprParser extends Parser {
 	}
 
 	public static class Context_clauseContext extends ParserRuleContext {
-		public With_clauseContext with_clause(int i) {
-			return getRuleContext(With_clauseContext.class,i);
-		}
 		public List<With_clauseContext> with_clause() {
 			return getRuleContexts(With_clauseContext.class);
+		}
+		public With_clauseContext with_clause(int i) {
+			return getRuleContext(With_clauseContext.class,i);
 		}
 		public Context_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -144,7 +185,8 @@ public class GprParser extends Parser {
 			while (_la==WITH) {
 				{
 				{
-				setState(64); with_clause();
+				setState(64);
+				with_clause();
 				}
 				}
 				setState(69);
@@ -168,14 +210,14 @@ public class GprParser extends Parser {
 		public Path_nameContext first_path;
 		public Path_nameContext other_path;
 		public TerminalNode WITH() { return getToken(GprParser.WITH, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public List<Path_nameContext> path_name() {
 			return getRuleContexts(Path_nameContext.class);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public Path_nameContext path_name(int i) {
 			return getRuleContext(Path_nameContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(GprParser.COMMA, i);
 		}
@@ -200,23 +242,28 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(70); match(WITH);
-			setState(71); ((With_clauseContext)_localctx).first_path = path_name();
+			setState(70);
+			match(WITH);
+			setState(71);
+			((With_clauseContext)_localctx).first_path = path_name();
 			setState(76);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(72); match(COMMA);
-				setState(73); ((With_clauseContext)_localctx).other_path = path_name();
+				setState(72);
+				match(COMMA);
+				setState(73);
+				((With_clauseContext)_localctx).other_path = path_name();
 				}
 				}
 				setState(78);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(79); match(SEMI_COLON);
+			setState(79);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -252,7 +299,8 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81); match(STRING_LITERAL);
+			setState(81);
+			match(STRING_LITERAL);
 			}
 		}
 		catch (RecognitionException re) {
@@ -290,7 +338,8 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(83); simple_project_declaration();
+			setState(83);
+			simple_project_declaration();
 			}
 		}
 		catch (RecognitionException re) {
@@ -307,21 +356,21 @@ public class GprParser extends Parser {
 	public static class Simple_project_declarationContext extends ParserRuleContext {
 		public NameContext begin_project_name;
 		public NameContext end_project_name;
+		public TerminalNode PROJECT() { return getToken(GprParser.PROJECT, 0); }
+		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
+		public TerminalNode END() { return getToken(GprParser.END, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
+		public List<NameContext> name() {
+			return getRuleContexts(NameContext.class);
+		}
 		public NameContext name(int i) {
 			return getRuleContext(NameContext.class,i);
-		}
-		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
-		public Declarative_itemContext declarative_item(int i) {
-			return getRuleContext(Declarative_itemContext.class,i);
 		}
 		public List<Declarative_itemContext> declarative_item() {
 			return getRuleContexts(Declarative_itemContext.class);
 		}
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public TerminalNode END() { return getToken(GprParser.END, 0); }
-		public TerminalNode PROJECT() { return getToken(GprParser.PROJECT, 0); }
-		public List<NameContext> name() {
-			return getRuleContexts(NameContext.class);
+		public Declarative_itemContext declarative_item(int i) {
+			return getRuleContext(Declarative_itemContext.class,i);
 		}
 		public Simple_project_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -344,25 +393,32 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85); match(PROJECT);
-			setState(86); ((Simple_project_declarationContext)_localctx).begin_project_name = name();
-			setState(87); match(IS);
+			setState(85);
+			match(PROJECT);
+			setState(86);
+			((Simple_project_declarationContext)_localctx).begin_project_name = name();
+			setState(87);
+			match(IS);
 			setState(91);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CASE) | (1L << FOR) | (1L << NULL) | (1L << PACKAGE) | (1L << TYPE) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
-				setState(88); declarative_item();
+				setState(88);
+				declarative_item();
 				}
 				}
 				setState(93);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(94); match(END);
-			setState(95); ((Simple_project_declarationContext)_localctx).end_project_name = name();
-			setState(96); match(SEMI_COLON);
+			setState(94);
+			match(END);
+			setState(95);
+			((Simple_project_declarationContext)_localctx).end_project_name = name();
+			setState(96);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -379,13 +435,13 @@ public class GprParser extends Parser {
 	public static class NameContext extends ParserRuleContext {
 		public Simple_nameContext first;
 		public Simple_nameContext other;
-		public List<TerminalNode> DOT() { return getTokens(GprParser.DOT); }
-		public Simple_nameContext simple_name(int i) {
-			return getRuleContext(Simple_nameContext.class,i);
-		}
 		public List<Simple_nameContext> simple_name() {
 			return getRuleContexts(Simple_nameContext.class);
 		}
+		public Simple_nameContext simple_name(int i) {
+			return getRuleContext(Simple_nameContext.class,i);
+		}
+		public List<TerminalNode> DOT() { return getTokens(GprParser.DOT); }
 		public TerminalNode DOT(int i) {
 			return getToken(GprParser.DOT, i);
 		}
@@ -410,15 +466,18 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(98); ((NameContext)_localctx).first = simple_name();
+			setState(98);
+			((NameContext)_localctx).first = simple_name();
 			setState(103);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOT) {
 				{
 				{
-				setState(99); match(DOT);
-				setState(100); ((NameContext)_localctx).other = simple_name();
+				setState(99);
+				match(DOT);
+				setState(100);
+				((NameContext)_localctx).other = simple_name();
 				}
 				}
 				setState(105);
@@ -460,7 +519,8 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(106); match(IDENTIFIER);
+			setState(106);
+			match(IDENTIFIER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -475,14 +535,14 @@ public class GprParser extends Parser {
 	}
 
 	public static class Declarative_itemContext extends ParserRuleContext {
-		public Package_declarationContext package_declaration() {
-			return getRuleContext(Package_declarationContext.class,0);
+		public Simple_declarative_itemContext simple_declarative_item() {
+			return getRuleContext(Simple_declarative_itemContext.class,0);
 		}
 		public Typed_string_declarationContext typed_string_declaration() {
 			return getRuleContext(Typed_string_declarationContext.class,0);
 		}
-		public Simple_declarative_itemContext simple_declarative_item() {
-			return getRuleContext(Simple_declarative_itemContext.class,0);
+		public Package_declarationContext package_declaration() {
+			return getRuleContext(Package_declarationContext.class,0);
 		}
 		public Declarative_itemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -510,19 +570,22 @@ public class GprParser extends Parser {
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(108); simple_declarative_item();
+				setState(108);
+				simple_declarative_item();
 				}
 				break;
 			case TYPE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(109); typed_string_declaration();
+				setState(109);
+				typed_string_declaration();
 				}
 				break;
 			case PACKAGE:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(110); package_declaration();
+				setState(110);
+				package_declaration();
 				}
 				break;
 			default:
@@ -541,20 +604,20 @@ public class GprParser extends Parser {
 	}
 
 	public static class Simple_declarative_itemContext extends ParserRuleContext {
-		public Case_statementContext case_statement() {
-			return getRuleContext(Case_statementContext.class,0);
-		}
 		public Variable_declarationContext variable_declaration() {
 			return getRuleContext(Variable_declarationContext.class,0);
+		}
+		public Typed_variable_declarationContext typed_variable_declaration() {
+			return getRuleContext(Typed_variable_declarationContext.class,0);
 		}
 		public Attribute_declarationContext attribute_declaration() {
 			return getRuleContext(Attribute_declarationContext.class,0);
 		}
+		public Case_statementContext case_statement() {
+			return getRuleContext(Case_statementContext.class,0);
+		}
 		public Empty_declarationContext empty_declaration() {
 			return getRuleContext(Empty_declarationContext.class,0);
-		}
-		public Typed_variable_declarationContext typed_variable_declaration() {
-			return getRuleContext(Typed_variable_declarationContext.class,0);
 		}
 		public Simple_declarative_itemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -579,35 +642,36 @@ public class GprParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(113); variable_declaration();
+				setState(113);
+				variable_declaration();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(114); typed_variable_declaration();
+				setState(114);
+				typed_variable_declaration();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(115); attribute_declaration();
+				setState(115);
+				attribute_declaration();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(116); case_statement();
+				setState(116);
+				case_statement();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(117); empty_declaration();
+				setState(117);
+				empty_declaration();
 				}
 				break;
 			}
@@ -626,19 +690,19 @@ public class GprParser extends Parser {
 	public static class Typed_string_declarationContext extends ParserRuleContext {
 		public Token first;
 		public Token other;
-		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
 		public TerminalNode TYPE() { return getToken(GprParser.TYPE, 0); }
-		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public List<TerminalNode> STRING_LITERAL() { return getTokens(GprParser.STRING_LITERAL); }
-		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
-		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
-		public TerminalNode STRING_LITERAL(int i) {
-			return getToken(GprParser.STRING_LITERAL, i);
-		}
 		public Simple_nameContext simple_name() {
 			return getRuleContext(Simple_nameContext.class,0);
 		}
+		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
+		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
+		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
+		public List<TerminalNode> STRING_LITERAL() { return getTokens(GprParser.STRING_LITERAL); }
+		public TerminalNode STRING_LITERAL(int i) {
+			return getToken(GprParser.STRING_LITERAL, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(GprParser.COMMA, i);
 		}
@@ -663,27 +727,36 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(120); match(TYPE);
-			setState(121); simple_name();
-			setState(122); match(IS);
-			setState(123); match(LPAR);
-			setState(124); ((Typed_string_declarationContext)_localctx).first = match(STRING_LITERAL);
+			setState(120);
+			match(TYPE);
+			setState(121);
+			simple_name();
+			setState(122);
+			match(IS);
+			setState(123);
+			match(LPAR);
+			setState(124);
+			((Typed_string_declarationContext)_localctx).first = match(STRING_LITERAL);
 			setState(129);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(125); match(COMMA);
-				setState(126); ((Typed_string_declarationContext)_localctx).other = match(STRING_LITERAL);
+				setState(125);
+				match(COMMA);
+				setState(126);
+				((Typed_string_declarationContext)_localctx).other = match(STRING_LITERAL);
 				}
 				}
 				setState(131);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(132); match(RPAR);
-			setState(133); match(SEMI_COLON);
+			setState(132);
+			match(RPAR);
+			setState(133);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -699,20 +772,20 @@ public class GprParser extends Parser {
 
 	public static class Case_statementContext extends ParserRuleContext {
 		public List<TerminalNode> CASE() { return getTokens(GprParser.CASE); }
-		public Case_itemContext case_item(int i) {
-			return getRuleContext(Case_itemContext.class,i);
+		public TerminalNode CASE(int i) {
+			return getToken(GprParser.CASE, i);
 		}
-		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public TerminalNode END() { return getToken(GprParser.END, 0); }
 		public NameContext name() {
 			return getRuleContext(NameContext.class,0);
 		}
+		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
+		public TerminalNode END() { return getToken(GprParser.END, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public List<Case_itemContext> case_item() {
 			return getRuleContexts(Case_itemContext.class);
 		}
-		public TerminalNode CASE(int i) {
-			return getToken(GprParser.CASE, i);
+		public Case_itemContext case_item(int i) {
+			return getRuleContext(Case_itemContext.class,i);
 		}
 		public Case_statementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -735,25 +808,32 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(135); match(CASE);
-			setState(136); name();
-			setState(137); match(IS);
+			setState(135);
+			match(CASE);
+			setState(136);
+			name();
+			setState(137);
+			match(IS);
 			setState(141);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==WHEN) {
 				{
 				{
-				setState(138); case_item();
+				setState(138);
+				case_item();
 				}
 				}
 				setState(143);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(144); match(END);
-			setState(145); match(CASE);
-			setState(146); match(SEMI_COLON);
+			setState(144);
+			match(END);
+			setState(145);
+			match(CASE);
+			setState(146);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -768,34 +848,34 @@ public class GprParser extends Parser {
 	}
 
 	public static class Case_itemContext extends ParserRuleContext {
+		public TerminalNode WHEN() { return getToken(GprParser.WHEN, 0); }
+		public Discrete_choice_listContext discrete_choice_list() {
+			return getRuleContext(Discrete_choice_listContext.class,0);
+		}
+		public TerminalNode RARROW() { return getToken(GprParser.RARROW, 0); }
 		public List<Case_statementContext> case_statement() {
 			return getRuleContexts(Case_statementContext.class);
 		}
 		public Case_statementContext case_statement(int i) {
 			return getRuleContext(Case_statementContext.class,i);
 		}
-		public Variable_declarationContext variable_declaration(int i) {
-			return getRuleContext(Variable_declarationContext.class,i);
-		}
-		public Discrete_choice_listContext discrete_choice_list() {
-			return getRuleContext(Discrete_choice_listContext.class,0);
+		public List<Attribute_declarationContext> attribute_declaration() {
+			return getRuleContexts(Attribute_declarationContext.class);
 		}
 		public Attribute_declarationContext attribute_declaration(int i) {
 			return getRuleContext(Attribute_declarationContext.class,i);
 		}
-		public Empty_declarationContext empty_declaration(int i) {
-			return getRuleContext(Empty_declarationContext.class,i);
-		}
-		public TerminalNode WHEN() { return getToken(GprParser.WHEN, 0); }
-		public List<Attribute_declarationContext> attribute_declaration() {
-			return getRuleContexts(Attribute_declarationContext.class);
-		}
 		public List<Variable_declarationContext> variable_declaration() {
 			return getRuleContexts(Variable_declarationContext.class);
 		}
-		public TerminalNode RARROW() { return getToken(GprParser.RARROW, 0); }
+		public Variable_declarationContext variable_declaration(int i) {
+			return getRuleContext(Variable_declarationContext.class,i);
+		}
 		public List<Empty_declarationContext> empty_declaration() {
 			return getRuleContexts(Empty_declarationContext.class);
+		}
+		public Empty_declarationContext empty_declaration(int i) {
+			return getRuleContext(Empty_declarationContext.class,i);
 		}
 		public Case_itemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -818,9 +898,12 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(148); match(WHEN);
-			setState(149); discrete_choice_list();
-			setState(150); match(RARROW);
+			setState(148);
+			match(WHEN);
+			setState(149);
+			discrete_choice_list();
+			setState(150);
+			match(RARROW);
 			setState(157);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -830,22 +913,26 @@ public class GprParser extends Parser {
 				switch (_input.LA(1)) {
 				case CASE:
 					{
-					setState(151); case_statement();
+					setState(151);
+					case_statement();
 					}
 					break;
 				case FOR:
 					{
-					setState(152); attribute_declaration();
+					setState(152);
+					attribute_declaration();
 					}
 					break;
 				case IDENTIFIER:
 					{
-					setState(153); variable_declaration();
+					setState(153);
+					variable_declaration();
 					}
 					break;
 				case NULL:
 					{
-					setState(154); empty_declaration();
+					setState(154);
+					empty_declaration();
 					}
 					break;
 				default:
@@ -872,15 +959,15 @@ public class GprParser extends Parser {
 	public static class Discrete_choice_listContext extends ParserRuleContext {
 		public Token first;
 		public Token other;
-		public List<TerminalNode> PIPE() { return getTokens(GprParser.PIPE); }
-		public TerminalNode OTHERS() { return getToken(GprParser.OTHERS, 0); }
 		public List<TerminalNode> STRING_LITERAL() { return getTokens(GprParser.STRING_LITERAL); }
-		public TerminalNode PIPE(int i) {
-			return getToken(GprParser.PIPE, i);
-		}
 		public TerminalNode STRING_LITERAL(int i) {
 			return getToken(GprParser.STRING_LITERAL, i);
 		}
+		public List<TerminalNode> PIPE() { return getTokens(GprParser.PIPE); }
+		public TerminalNode PIPE(int i) {
+			return getToken(GprParser.PIPE, i);
+		}
+		public TerminalNode OTHERS() { return getToken(GprParser.OTHERS, 0); }
 		public Discrete_choice_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -905,15 +992,18 @@ public class GprParser extends Parser {
 			case STRING_LITERAL:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(160); ((Discrete_choice_listContext)_localctx).first = match(STRING_LITERAL);
+				setState(160);
+				((Discrete_choice_listContext)_localctx).first = match(STRING_LITERAL);
 				setState(165);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==PIPE) {
 					{
 					{
-					setState(161); match(PIPE);
-					setState(162); ((Discrete_choice_listContext)_localctx).other = match(STRING_LITERAL);
+					setState(161);
+					match(PIPE);
+					setState(162);
+					((Discrete_choice_listContext)_localctx).other = match(STRING_LITERAL);
 					}
 					}
 					setState(167);
@@ -925,7 +1015,8 @@ public class GprParser extends Parser {
 			case OTHERS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(168); match(OTHERS);
+				setState(168);
+				match(OTHERS);
 				}
 				break;
 			default:
@@ -976,21 +1067,22 @@ public class GprParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(171); package_spec();
+				setState(171);
+				package_spec();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(172); package_renaming();
+				setState(172);
+				package_renaming();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(173); package_extension();
+				setState(173);
+				package_extension();
 				}
 				break;
 			}
@@ -1009,21 +1101,21 @@ public class GprParser extends Parser {
 	public static class Package_specContext extends ParserRuleContext {
 		public Simple_nameContext begin_package_name;
 		public Simple_nameContext end_package_name;
-		public Simple_declarative_itemContext simple_declarative_item(int i) {
-			return getRuleContext(Simple_declarative_itemContext.class,i);
-		}
-		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
 		public TerminalNode PACKAGE() { return getToken(GprParser.PACKAGE, 0); }
-		public Simple_nameContext simple_name(int i) {
-			return getRuleContext(Simple_nameContext.class,i);
-		}
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
+		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
 		public TerminalNode END() { return getToken(GprParser.END, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public List<Simple_nameContext> simple_name() {
 			return getRuleContexts(Simple_nameContext.class);
 		}
+		public Simple_nameContext simple_name(int i) {
+			return getRuleContext(Simple_nameContext.class,i);
+		}
 		public List<Simple_declarative_itemContext> simple_declarative_item() {
 			return getRuleContexts(Simple_declarative_itemContext.class);
+		}
+		public Simple_declarative_itemContext simple_declarative_item(int i) {
+			return getRuleContext(Simple_declarative_itemContext.class,i);
 		}
 		public Package_specContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1046,25 +1138,32 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(176); match(PACKAGE);
-			setState(177); ((Package_specContext)_localctx).begin_package_name = simple_name();
-			setState(178); match(IS);
+			setState(176);
+			match(PACKAGE);
+			setState(177);
+			((Package_specContext)_localctx).begin_package_name = simple_name();
+			setState(178);
+			match(IS);
 			setState(182);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CASE) | (1L << FOR) | (1L << NULL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
-				setState(179); simple_declarative_item();
+				setState(179);
+				simple_declarative_item();
 				}
 				}
 				setState(184);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(185); match(END);
-			setState(186); ((Package_specContext)_localctx).end_package_name = simple_name();
-			setState(187); match(SEMI_COLON);
+			setState(185);
+			match(END);
+			setState(186);
+			((Package_specContext)_localctx).end_package_name = simple_name();
+			setState(187);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1082,15 +1181,15 @@ public class GprParser extends Parser {
 		public Simple_nameContext newPackageName;
 		public Simple_nameContext projectName;
 		public Simple_nameContext renamedPackage;
-		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
-		public TerminalNode RENAMES() { return getToken(GprParser.RENAMES, 0); }
 		public TerminalNode PACKAGE() { return getToken(GprParser.PACKAGE, 0); }
-		public Simple_nameContext simple_name(int i) {
-			return getRuleContext(Simple_nameContext.class,i);
-		}
+		public TerminalNode RENAMES() { return getToken(GprParser.RENAMES, 0); }
+		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
 		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public List<Simple_nameContext> simple_name() {
 			return getRuleContexts(Simple_nameContext.class);
+		}
+		public Simple_nameContext simple_name(int i) {
+			return getRuleContext(Simple_nameContext.class,i);
 		}
 		public Package_renamingContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1112,13 +1211,20 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(189); match(PACKAGE);
-			setState(190); ((Package_renamingContext)_localctx).newPackageName = simple_name();
-			setState(191); match(RENAMES);
-			setState(192); ((Package_renamingContext)_localctx).projectName = simple_name();
-			setState(193); match(DOT);
-			setState(194); ((Package_renamingContext)_localctx).renamedPackage = simple_name();
-			setState(195); match(SEMI_COLON);
+			setState(189);
+			match(PACKAGE);
+			setState(190);
+			((Package_renamingContext)_localctx).newPackageName = simple_name();
+			setState(191);
+			match(RENAMES);
+			setState(192);
+			((Package_renamingContext)_localctx).projectName = simple_name();
+			setState(193);
+			match(DOT);
+			setState(194);
+			((Package_renamingContext)_localctx).renamedPackage = simple_name();
+			setState(195);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1137,23 +1243,23 @@ public class GprParser extends Parser {
 		public Simple_nameContext projectName;
 		public Simple_nameContext extendedPackage;
 		public Simple_nameContext end_package_name;
-		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
-		public Simple_declarative_itemContext simple_declarative_item(int i) {
-			return getRuleContext(Simple_declarative_itemContext.class,i);
-		}
-		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
 		public TerminalNode PACKAGE() { return getToken(GprParser.PACKAGE, 0); }
-		public Simple_nameContext simple_name(int i) {
-			return getRuleContext(Simple_nameContext.class,i);
-		}
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public TerminalNode END() { return getToken(GprParser.END, 0); }
 		public TerminalNode EXTENDS() { return getToken(GprParser.EXTENDS, 0); }
+		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
+		public TerminalNode IS() { return getToken(GprParser.IS, 0); }
+		public TerminalNode END() { return getToken(GprParser.END, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public List<Simple_nameContext> simple_name() {
 			return getRuleContexts(Simple_nameContext.class);
 		}
+		public Simple_nameContext simple_name(int i) {
+			return getRuleContext(Simple_nameContext.class,i);
+		}
 		public List<Simple_declarative_itemContext> simple_declarative_item() {
 			return getRuleContexts(Simple_declarative_itemContext.class);
+		}
+		public Simple_declarative_itemContext simple_declarative_item(int i) {
+			return getRuleContext(Simple_declarative_itemContext.class,i);
 		}
 		public Package_extensionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1176,29 +1282,40 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(197); match(PACKAGE);
-			setState(198); ((Package_extensionContext)_localctx).begin_package_name = simple_name();
-			setState(199); match(EXTENDS);
-			setState(200); ((Package_extensionContext)_localctx).projectName = simple_name();
-			setState(201); match(DOT);
-			setState(202); ((Package_extensionContext)_localctx).extendedPackage = simple_name();
-			setState(203); match(IS);
+			setState(197);
+			match(PACKAGE);
+			setState(198);
+			((Package_extensionContext)_localctx).begin_package_name = simple_name();
+			setState(199);
+			match(EXTENDS);
+			setState(200);
+			((Package_extensionContext)_localctx).projectName = simple_name();
+			setState(201);
+			match(DOT);
+			setState(202);
+			((Package_extensionContext)_localctx).extendedPackage = simple_name();
+			setState(203);
+			match(IS);
 			setState(207);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CASE) | (1L << FOR) | (1L << NULL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
-				setState(204); simple_declarative_item();
+				setState(204);
+				simple_declarative_item();
 				}
 				}
 				setState(209);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(210); match(END);
-			setState(211); ((Package_extensionContext)_localctx).end_package_name = simple_name();
-			setState(212); match(SEMI_COLON);
+			setState(210);
+			match(END);
+			setState(211);
+			((Package_extensionContext)_localctx).end_package_name = simple_name();
+			setState(212);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1213,18 +1330,18 @@ public class GprParser extends Parser {
 	}
 
 	public static class Typed_variable_declarationContext extends ParserRuleContext {
+		public Simple_nameContext simple_name() {
+			return getRuleContext(Simple_nameContext.class,0);
+		}
 		public TerminalNode COLON() { return getToken(GprParser.COLON, 0); }
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
+		}
+		public TerminalNode AFFECTATION_SIGN() { return getToken(GprParser.AFFECTATION_SIGN, 0); }
 		public String_expressionContext string_expression() {
 			return getRuleContext(String_expressionContext.class,0);
 		}
 		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public NameContext name() {
-			return getRuleContext(NameContext.class,0);
-		}
-		public Simple_nameContext simple_name() {
-			return getRuleContext(Simple_nameContext.class,0);
-		}
-		public TerminalNode AFFECTATION_SIGN() { return getToken(GprParser.AFFECTATION_SIGN, 0); }
 		public Typed_variable_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1245,12 +1362,18 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(214); simple_name();
-			setState(215); match(COLON);
-			setState(216); name();
-			setState(217); match(AFFECTATION_SIGN);
-			setState(218); string_expression();
-			setState(219); match(SEMI_COLON);
+			setState(214);
+			simple_name();
+			setState(215);
+			match(COLON);
+			setState(216);
+			name();
+			setState(217);
+			match(AFFECTATION_SIGN);
+			setState(218);
+			string_expression();
+			setState(219);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1265,15 +1388,15 @@ public class GprParser extends Parser {
 	}
 
 	public static class Attribute_declarationContext extends ParserRuleContext {
+		public TerminalNode FOR() { return getToken(GprParser.FOR, 0); }
 		public Attribute_designatorContext attribute_designator() {
 			return getRuleContext(Attribute_designatorContext.class,0);
 		}
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public TerminalNode FOR() { return getToken(GprParser.FOR, 0); }
+		public TerminalNode USE() { return getToken(GprParser.USE, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode USE() { return getToken(GprParser.USE, 0); }
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public Attribute_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1294,11 +1417,16 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(221); match(FOR);
-			setState(222); attribute_designator();
-			setState(223); match(USE);
-			setState(224); expression();
-			setState(225); match(SEMI_COLON);
+			setState(221);
+			match(FOR);
+			setState(222);
+			attribute_designator();
+			setState(223);
+			match(USE);
+			setState(224);
+			expression();
+			setState(225);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1314,12 +1442,12 @@ public class GprParser extends Parser {
 
 	public static class Attribute_designatorContext extends ParserRuleContext {
 		public Simple_nameContext att;
-		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
-		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
-		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
 		public Simple_nameContext simple_name() {
 			return getRuleContext(Simple_nameContext.class,0);
 		}
+		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
+		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
+		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
 		public Attribute_designatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1343,18 +1471,22 @@ public class GprParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(227); ((Attribute_designatorContext)_localctx).att = simple_name();
+				setState(227);
+				((Attribute_designatorContext)_localctx).att = simple_name();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(228); ((Attribute_designatorContext)_localctx).att = simple_name();
+				setState(228);
+				((Attribute_designatorContext)_localctx).att = simple_name();
 				{
-				setState(229); match(LPAR);
-				setState(230); match(STRING_LITERAL);
-				setState(231); match(RPAR);
+				setState(229);
+				match(LPAR);
+				setState(230);
+				match(STRING_LITERAL);
+				setState(231);
+				match(RPAR);
 				}
 				}
 				break;
@@ -1372,16 +1504,16 @@ public class GprParser extends Parser {
 	}
 
 	public static class Attribute_referenceContext extends ParserRuleContext {
-		public TerminalNode APOSTROPHE() { return getToken(GprParser.APOSTROPHE, 0); }
-		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
 		public Attribute_prefixContext attribute_prefix() {
 			return getRuleContext(Attribute_prefixContext.class,0);
 		}
-		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
-		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
+		public TerminalNode APOSTROPHE() { return getToken(GprParser.APOSTROPHE, 0); }
 		public Simple_nameContext simple_name() {
 			return getRuleContext(Simple_nameContext.class,0);
 		}
+		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
+		public TerminalNode STRING_LITERAL() { return getToken(GprParser.STRING_LITERAL, 0); }
+		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
 		public Attribute_referenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1403,16 +1535,22 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(235); attribute_prefix();
-			setState(236); match(APOSTROPHE);
-			setState(237); simple_name();
+			setState(235);
+			attribute_prefix();
+			setState(236);
+			match(APOSTROPHE);
+			setState(237);
+			simple_name();
 			setState(241);
 			_la = _input.LA(1);
 			if (_la==LPAR) {
 				{
-				setState(238); match(LPAR);
-				setState(239); match(STRING_LITERAL);
-				setState(240); match(RPAR);
+				setState(238);
+				match(LPAR);
+				setState(239);
+				match(STRING_LITERAL);
+				setState(240);
+				match(RPAR);
 				}
 			}
 
@@ -1432,14 +1570,14 @@ public class GprParser extends Parser {
 	public static class Attribute_prefixContext extends ParserRuleContext {
 		public Simple_nameContext project_name;
 		public Simple_nameContext package_name;
-		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
-		public Simple_nameContext simple_name(int i) {
-			return getRuleContext(Simple_nameContext.class,i);
-		}
 		public TerminalNode PROJECT() { return getToken(GprParser.PROJECT, 0); }
 		public List<Simple_nameContext> simple_name() {
 			return getRuleContexts(Simple_nameContext.class);
 		}
+		public Simple_nameContext simple_name(int i) {
+			return getRuleContext(Simple_nameContext.class,i);
+		}
+		public TerminalNode DOT() { return getToken(GprParser.DOT, 0); }
 		public Attribute_prefixContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1464,19 +1602,23 @@ public class GprParser extends Parser {
 			case PROJECT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(243); match(PROJECT);
+				setState(243);
+				match(PROJECT);
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(244); ((Attribute_prefixContext)_localctx).project_name = simple_name();
+				setState(244);
+				((Attribute_prefixContext)_localctx).project_name = simple_name();
 				setState(247);
 				_la = _input.LA(1);
 				if (_la==DOT) {
 					{
-					setState(245); match(DOT);
-					setState(246); ((Attribute_prefixContext)_localctx).package_name = simple_name();
+					setState(245);
+					match(DOT);
+					setState(246);
+					((Attribute_prefixContext)_localctx).package_name = simple_name();
 					}
 				}
 
@@ -1501,13 +1643,13 @@ public class GprParser extends Parser {
 		public Token external_name;
 		public Token defaultValue;
 		public TerminalNode EXTERNAL() { return getToken(GprParser.EXTERNAL, 0); }
-		public TerminalNode COMMA() { return getToken(GprParser.COMMA, 0); }
-		public List<TerminalNode> STRING_LITERAL() { return getTokens(GprParser.STRING_LITERAL); }
 		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
 		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
+		public List<TerminalNode> STRING_LITERAL() { return getTokens(GprParser.STRING_LITERAL); }
 		public TerminalNode STRING_LITERAL(int i) {
 			return getToken(GprParser.STRING_LITERAL, i);
 		}
+		public TerminalNode COMMA() { return getToken(GprParser.COMMA, 0); }
 		public External_valueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1529,19 +1671,25 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(251); match(EXTERNAL);
-			setState(252); match(LPAR);
-			setState(253); ((External_valueContext)_localctx).external_name = match(STRING_LITERAL);
+			setState(251);
+			match(EXTERNAL);
+			setState(252);
+			match(LPAR);
+			setState(253);
+			((External_valueContext)_localctx).external_name = match(STRING_LITERAL);
 			setState(256);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(254); match(COMMA);
-				setState(255); ((External_valueContext)_localctx).defaultValue = match(STRING_LITERAL);
+				setState(254);
+				match(COMMA);
+				setState(255);
+				((External_valueContext)_localctx).defaultValue = match(STRING_LITERAL);
 				}
 			}
 
-			setState(258); match(RPAR);
+			setState(258);
+			match(RPAR);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1556,14 +1704,14 @@ public class GprParser extends Parser {
 	}
 
 	public static class Variable_declarationContext extends ParserRuleContext {
-		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
 		public Simple_nameContext simple_name() {
 			return getRuleContext(Simple_nameContext.class,0);
 		}
 		public TerminalNode AFFECTATION_SIGN() { return getToken(GprParser.AFFECTATION_SIGN, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode SEMI_COLON() { return getToken(GprParser.SEMI_COLON, 0); }
 		public Variable_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1584,10 +1732,14 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(260); simple_name();
-			setState(261); match(AFFECTATION_SIGN);
-			setState(262); expression();
-			setState(263); match(SEMI_COLON);
+			setState(260);
+			simple_name();
+			setState(261);
+			match(AFFECTATION_SIGN);
+			setState(262);
+			expression();
+			setState(263);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1635,15 +1787,18 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(265); ((ExpressionContext)_localctx).first = term();
+			setState(265);
+			((ExpressionContext)_localctx).first = term();
 			setState(270);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==AMPERSAND) {
 				{
 				{
-				setState(266); match(AMPERSAND);
-				setState(267); ((ExpressionContext)_localctx).other = term();
+				setState(266);
+				match(AMPERSAND);
+				setState(267);
+				((ExpressionContext)_localctx).other = term();
 				}
 				}
 				setState(272);
@@ -1696,13 +1851,15 @@ public class GprParser extends Parser {
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(273); string_expression();
+				setState(273);
+				string_expression();
 				}
 				break;
 			case LPAR:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(274); string_list();
+				setState(274);
+				string_list();
 				}
 				break;
 			default:
@@ -1796,31 +1953,32 @@ public class GprParser extends Parser {
 				_localctx = new StringExpressionLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(277); match(STRING_LITERAL);
+				setState(277);
+				match(STRING_LITERAL);
 				}
 				break;
-
 			case 2:
 				_localctx = new StringExpressionVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(278); name();
+				setState(278);
+				name();
 				}
 				break;
-
 			case 3:
 				_localctx = new StringExpressionExternalValueContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(279); external_value();
+				setState(279);
+				external_value();
 				}
 				break;
-
 			case 4:
 				_localctx = new StringExpressionAttributeReferenceContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(280); attribute_reference();
+				setState(280);
+				attribute_reference();
 				}
 				break;
 			}
@@ -1839,17 +1997,17 @@ public class GprParser extends Parser {
 	public static class String_listContext extends ParserRuleContext {
 		public ExpressionContext first;
 		public ExpressionContext other;
-		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
 		public TerminalNode LPAR() { return getToken(GprParser.LPAR, 0); }
 		public TerminalNode RPAR() { return getToken(GprParser.RPAR, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(GprParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(GprParser.COMMA, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
-		public TerminalNode COMMA(int i) {
-			return getToken(GprParser.COMMA, i);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public String_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1872,12 +2030,14 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(283); match(LPAR);
+			setState(283);
+			match(LPAR);
 			setState(285);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STRING_LITERAL) | (1L << LPAR) | (1L << PROJECT) | (1L << EXTERNAL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(284); ((String_listContext)_localctx).first = expression();
+				setState(284);
+				((String_listContext)_localctx).first = expression();
 				}
 			}
 
@@ -1887,15 +2047,18 @@ public class GprParser extends Parser {
 			while (_la==COMMA) {
 				{
 				{
-				setState(287); match(COMMA);
-				setState(288); ((String_listContext)_localctx).other = expression();
+				setState(287);
+				match(COMMA);
+				setState(288);
+				((String_listContext)_localctx).other = expression();
 				}
 				}
 				setState(293);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(294); match(RPAR);
+			setState(294);
+			match(RPAR);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1932,8 +2095,10 @@ public class GprParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(296); match(NULL);
-			setState(297); match(SEMI_COLON);
+			setState(296);
+			match(NULL);
+			setState(297);
+			match(SEMI_COLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1948,7 +2113,7 @@ public class GprParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3#\u012e\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#\u012e\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -1971,7 +2136,7 @@ public class GprParser extends Parser {
 		"\31\3\32\3\32\3\32\3\32\3\32\3\33\3\33\3\33\7\33\u010f\n\33\f\33\16\33"+
 		"\u0112\13\33\3\34\3\34\5\34\u0116\n\34\3\35\3\35\3\35\3\35\5\35\u011c"+
 		"\n\35\3\36\3\36\5\36\u0120\n\36\3\36\3\36\7\36\u0124\n\36\f\36\16\36\u0127"+
-		"\13\36\3\36\3\36\3\37\3\37\3\37\3\37\2 \2\4\6\b\n\f\16\20\22\24\26\30"+
+		"\13\36\3\36\3\36\3\37\3\37\3\37\3\37\2\2 \2\4\6\b\n\f\16\20\22\24\26\30"+
 		"\32\34\36 \"$&(*,.\60\62\64\668:<\2\2\u0131\2>\3\2\2\2\4E\3\2\2\2\6H\3"+
 		"\2\2\2\bS\3\2\2\2\nU\3\2\2\2\fW\3\2\2\2\16d\3\2\2\2\20l\3\2\2\2\22q\3"+
 		"\2\2\2\24x\3\2\2\2\26z\3\2\2\2\30\u0089\3\2\2\2\32\u0096\3\2\2\2\34\u00ab"+
@@ -2049,7 +2214,7 @@ public class GprParser extends Parser {
 		"\u008f\u009d\u009f\u00a7\u00ab\u00b0\u00b8\u00d1\u00eb\u00f3\u00f9\u00fb"+
 		"\u0102\u0110\u0115\u011b\u011f\u0125";
 	public static final ATN _ATN =
-		ATNSimulator.deserialize(_serializedATN.toCharArray());
+		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
